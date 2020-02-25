@@ -67,6 +67,8 @@ vis.binds["vistabbar"] = {
     console.log("---");
 
     console.log(document.getElementById("tab_bar"))
+
+    var wid = data.wid;
     
 
     //Initialize the tabbar
@@ -89,7 +91,8 @@ vis.binds["vistabbar"] = {
 
     //Set "home" as active.
     // tabbar.setActive(tab_home);
-    return tabbar.node;
+    // return tabbar.node;
+    document.getElementById(wid).appendChild(tabbar.node);
   }
 };
 
