@@ -82,29 +82,30 @@ vis.binds["vistabbar"] = {
     tabbar.init();
 
     //Add tabs
-    var tab_home = tabbar.addTab("TV / Küche", "fa-home", {
+    var tabs = {
+     "01_TV_Küche":  tabbar.addTab("TV / Küche", "fa-home", {
       events: {
         selected: function() {
           vis.changeView('01_TV_Küche');
         }
       }
-    });
+    }),
+    "81_Heizung_Flur0_Bad": tabbar.addTab("Heizung", "fa-home", {
+      events: {
+          selected: function() {
+              vis.changeView('81_Heizung_Flur0_Bad');
+            }
+      }
+  }),
+  "04_Bad": tabbar.addTab("Flur / Bad", "fa-home", {
+    events: {
+        selected: function() {
+            vis.changeView('04_Bad');
+          }
+    }
+})
+    };
 
-    var tab_pages = tabbar.addTab("Heizung", "fa-home", {
-        events: {
-            selected: function() {
-                vis.changeView('81_Heizung_Flur0_Bad');
-              }
-        }
-    });
-
-    var tab_flur_bad = tabbar.addTab("Flur / Bad", "fa-home", {
-        events: {
-            selected: function() {
-                vis.changeView('04_Bad');
-              }
-        }
-    });
 
     //Set "home" as active.
     // tabbar.setActive(tab_home);
@@ -113,7 +114,19 @@ vis.binds["vistabbar"] = {
     $div.html(tabbar.node);
     //Render the tabbar.
     tabbar.render();
-    tabbar.selectTab(tab_home);
+
+    // Go to the current view
+    // The current view has a special url format like: http://pi.local:8082/vis/index.html#01_TV_K%C3%BCche
+    // The last part (after the "#") identifies the current page and should be one of the tabs
+    // Select the current view / tab
+    var currentView = window.location.hash.substr(1);
+    if(currentView in tabs) {
+      tabbar.selectTab(tabs[currentView]);  
+    } else {
+      tabbar.selectTab(tabs["01_TV_Küche"]);
+    }
+
+    
 
     // document.getElementById("#" + datawid).appendChild(tabbar.node);
   }
