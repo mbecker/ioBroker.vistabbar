@@ -67,9 +67,6 @@ vis.binds["vistabbar"] = {
     console.log("--- DEBUG: data ---");
     console.log(data)
     console.log(data.height)
-    var data = {
-      height: "26px"
-    }
     if(!(data.height.includes("px") || data.height.includes("%"))) {
       if(typeof data.height !== "number") {
         data.height = defaultValues.height;
