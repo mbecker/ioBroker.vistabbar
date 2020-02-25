@@ -66,7 +66,6 @@ vis.binds["vistabbar"] = {
     var tab_home = tabbar.addTab("Home", "fa-home", {
       events: {
         selected: function() {
-          alert("Home selected!");
           vis.changeView('01_TV_Küche');
         }
       }
@@ -75,7 +74,6 @@ vis.binds["vistabbar"] = {
     var tab_pages = tabbar.addTab("Pages", "fa-home", {
         events: {
             selected: function() {
-                alert("Page selected!");
                 vis.changeView('81_Heizung_Flur0_Bad');
               }
         }
