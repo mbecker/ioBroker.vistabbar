@@ -43,6 +43,9 @@ AppTabBar.Tabbar = function(nodeId, options) {
 	this.init = function() {
 
 		var tabbarObj = document.getElementById(self.obj_ID);
+		console.log(self.obj_ID);
+		console.log(this.obj_ID);
+		console.log(tabbarObj);
 
 		self.tabbar_spacer = document.createElement('div');
 		var div_tabbar = document.createElement('div');
