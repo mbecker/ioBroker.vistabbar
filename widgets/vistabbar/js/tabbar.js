@@ -20,6 +20,9 @@ AppTabBar.Tabbar = function(nodeId, options) {
 	var self = this;
 
 	//Vars: objects main
+	this.node = document.createElement("div");;
+	this.node.id = "tab_bar";
+
 	this.obj_ID = nodeId;
 	this.obj = null; //DOM-object
 
@@ -42,20 +45,16 @@ AppTabBar.Tabbar = function(nodeId, options) {
 
 	this.init = function() {
 
-		var tabbarObj = document.getElementById(self.obj_ID);
-		console.log(self.obj_ID);
-		console.log(this.obj_ID);
-		console.log(tabbarObj);
+		// var tabbarObj = node;
 
 		self.tabbar_spacer = document.createElement('div');
 		var div_tabbar = document.createElement('div');
 
-		tabbarObj.appendChild(self.tabbar_spacer);
-		tabbarObj.appendChild(div_tabbar);
+		node.appendChild(self.tabbar_spacer);
+		node.appendChild(div_tabbar);
 
 		self.obj = div_tabbar;
-
-
+		
 	}
 
 	//--- CALCULATION METHODS ---

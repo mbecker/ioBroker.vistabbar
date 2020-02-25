@@ -89,6 +89,7 @@ vis.binds["vistabbar"] = {
 
     //Set "home" as active.
     tabbar.setActive(tab_home);
+    return tabbar.node;
   }
 };
 
