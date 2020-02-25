@@ -83,11 +83,19 @@ vis.binds["vistabbar"] = {
       events: {
         selected: function() {
           alert("Home selected!");
+          vis.changeView('01_TV_Küche');
         }
       }
     });
 
-    var tab_pages = tabbar.addTab("Pages", "fa-home");
+    var tab_pages = tabbar.addTab("Pages", "fa-home", {
+        events: {
+            selected: function() {
+                alert("Page selected!");
+                vis.changeView('81_Heizung_Flur0_Bad');
+              }
+        }
+    });
 
     //Set "home" as active.
     // tabbar.setActive(tab_home);
