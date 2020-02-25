@@ -147,7 +147,7 @@ vis.binds["vistabbar"] = {
     } else {
       // Check that the default tab is in the list of tabs
       if (defaultValues.tab in defaultValues.tabs) {
-        tabbar.selectTab(tabs[defaultValues.tabs]);
+        tabbar.selectTab(tabs[defaultValues.tab]);
       }
     }
 
