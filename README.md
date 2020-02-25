@@ -10,6 +10,10 @@
 
 [![NPM](https://nodei.co/npm/iobroker.vistabbar.png?downloads=true)](https://nodei.co/npm/iobroker.vistabbar/)
 
+## Fork
+
+Forked from: [https://github.com/ErlendEllingsen/app-tab-bar](https://github.com/ErlendEllingsen/app-tab-bar)
+
 ## vistabbar adapter for ioBroker
 
 Mobile tab bar
