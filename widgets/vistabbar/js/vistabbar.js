@@ -59,11 +59,13 @@ vis.binds["vistabbar"] = {
     }
 
     //Initialize the tabbar
-    var tabbar = new AppTabBar.Tabbar("tab_bar");
+    var tabbar = new AppTabBar.Tabbar('tab_bar', {
+        button_height: 60
+    });
     tabbar.init();
 
     //Add tabs
-    var tab_home = tabbar.addTab("Home", "fa-home", {
+    var tab_home = tabbar.addTab("TV / Küche", "fa-home", {
       events: {
         selected: function() {
           vis.changeView('01_TV_Küche');
@@ -71,10 +73,18 @@ vis.binds["vistabbar"] = {
       }
     });
 
-    var tab_pages = tabbar.addTab("Pages", "fa-home", {
+    var tab_pages = tabbar.addTab("Heizung", "fa-home", {
         events: {
             selected: function() {
                 vis.changeView('81_Heizung_Flur0_Bad');
+              }
+        }
+    });
+
+    var tab_flur_bad = tabbar.addTab("Flur / Bad", "fa-home", {
+        events: {
+            selected: function() {
+                vis.changeView('04_Bad');
               }
         }
     });
@@ -86,6 +96,7 @@ vis.binds["vistabbar"] = {
     $div.html(tabbar.node);
     //Render the tabbar.
     tabbar.render();
+    tabbar.selectTab(tab_home);
 
     // document.getElementById("#" + datawid).appendChild(tabbar.node);
   }
