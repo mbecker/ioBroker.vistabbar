@@ -170,7 +170,7 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		self.tabs.tab_selected.obj.setAttribute('class', self.tabs.tab_selected_classes);
 
 		//ADJUST STYLES
-		if ('tab_selected_style' in self.options) {
+		if (typeof self.options !== "undefined" && 'tab_selected_style' in self.options) {
 
 			var style = self.options.tab_selected_style;
 
