@@ -88,8 +88,9 @@ vis.binds["vistabbar"] = {
     //Set "home" as active.
     // tabbar.setActive(tab_home);
     // return tabbar.node;
-    // var $div = $('#' + wid).addClass('vis-hq-button-base')
-    document.getElementById("#" + datawid).appendChild(tabbar.node);
+    var $div = $('#' + wid).addClass('vis-hq-button-base')
+    $div.html(tabbar.node);
+    // document.getElementById("#" + datawid).appendChild(tabbar.node);
   }
 };
 
