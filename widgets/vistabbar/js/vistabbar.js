@@ -66,9 +66,7 @@ vis.binds["vistabbar"] = {
     };
 
     // Custom data
-    console.log("--- DEBUG: data ---");
-    console.log(data);
-    console.log(data.height);
+    
     if (!(data.height.includes("px") || data.height.includes("%"))) {
       if (typeof data.height !== "number") {
         data.height = defaultValues.height;
@@ -153,7 +151,9 @@ vis.binds["vistabbar"] = {
       }
     }
 
-    // document.getElementById("#" + datawid).appendChild(tabbar.node);
+    console.log("--- DEBUG: data ---");
+    console.log(defaultValues.tab);
+    console.log(defaultValues.tabs);
   }
 };
 
