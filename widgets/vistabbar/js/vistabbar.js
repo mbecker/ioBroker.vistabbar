@@ -58,9 +58,23 @@ vis.binds["vistabbar"] = {
       return;
     }
 
+    // Constants
+    var defaultValues = {
+      height: "60px"
+    };
+
+    // Custom data
+    if(!data.height.includes("px") || !data.height.includes("%")) {
+      if(typeof data.height !== "number") {
+        data.height = defaultValues.height;
+      } else {
+        data.height = data.height + "px";
+      }
+    }
+
     //Initialize the tabbar
     var tabbar = new AppTabBar.Tabbar('tab_bar', {
-        button_height: 60
+        button_height: data.height
     });
     tabbar.init();
 
