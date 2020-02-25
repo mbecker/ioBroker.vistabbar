@@ -95,7 +95,7 @@ vis.binds["vistabbar"] = {
           }
           defaultValues.tabs[splitView[0]] = splitView[1];
           
-          var addedTab = tabbar.addTab(splitView[1], {
+          var addedTab = tabbar.addTab(splitView[1], "icon", {
             events: {
               selected: function() {
                 vis.changeView(splitView[0]);
