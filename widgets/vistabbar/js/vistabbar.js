@@ -94,13 +94,15 @@ vis.binds["vistabbar"] = {
             defaultValues.tab = splitView[0];
           }
           defaultValues.tabs[splitView[0]] = splitView[1];
-          defaultValues.tabs[splitView[0]] = tabbar.addTab(splitView[1], {
+          
+          var addedTab = tabbar.addTab(splitView[1], {
             events: {
               selected: function() {
                 vis.changeView(splitView[0]);
               }
             }
           });
+          defaultValues.tabs[splitView[0]] = addedTab;
           tmpCounterTab = tmpCounterTab + 1;
         }
       });
