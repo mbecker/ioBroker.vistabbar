@@ -78,20 +78,25 @@ div.navigationBar div.navBtnCtn:after {
 
 div.navigationBar div.navBtnCtn button {
 	width: 100%;
-	font-size: 16px;
-	border-radius: 0px;
-	outline: none;
-	height: 60px;
-
-	border-left: 1px solid #000;
-	border-right: 0px;
-	border-bottom: 0px;
-	border-top: 1px solid #000;
-
-	color: #333;
-	background-color: #fff;
-	border-color: #ccc;
-
+    outline: none;
+    height: 60px;
+    
+    background: #434453!important;
+    border-radius: 0px!important;
+    border: 0px!important;
+    margin: 0px!important;
+    padding: 0px!important;
+    text-align: center!important;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.8em;
+    color: #f0fcff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    
+    font-family: Roboto, Helvetica, Arial, Tahoma, Verdana, sans-serif;
+    
+    letter-spacing: .075em;
+    
 }
 
 div.navigationBar div.navBtnCtn button:focus {
@@ -103,6 +108,5 @@ div.navigationBar div.navBtnCtn button:first-child {
 }
 
 div.navigationBar div.navBtnCtn.active button {
-	background-color: #2965A8;
-	color: #FFF;
+	background-color: #22adf6;
 }
