@@ -64,6 +64,9 @@ vis.binds["vistabbar"] = {
     };
 
     // Custom data
+    console.log("--- DEBUG: data ---");
+    console.log(data)
+    console.log(data.height)
     if(!data.height.includes("px") || !data.height.includes("%")) {
       if(typeof data.height !== "number") {
         data.height = defaultValues.height;
