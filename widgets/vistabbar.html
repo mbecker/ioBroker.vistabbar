@@ -150,26 +150,4 @@
     <div class="vis-widget <%== this.data.attr('class') %>" id="<%= this.data.attr('wid') %>">
         <div id="tab_bar"></div>
     </div>
-    <%
-    //Initialize the tabbar
-    var tabbar = new AppTabBar.Tabbar('tab_bar');
-    tabbar.init();
-    
-    //Add tabs
-    var tab_home = tabbar.addTab('Home', 'fa-home', {
-        events: {
-            selected: function(){
-                alert('Home selected!');
-            }
-        }
-    });
-    
-    var tab_pages = tabbar.addTab('Pages', 'fa-home');
-        
-    //Render the tabbar.
-    tabbar.render();
-    
-    //Set "home" as active.
-    tabbar.setActive(tab_home);
-    %>
 </script>
