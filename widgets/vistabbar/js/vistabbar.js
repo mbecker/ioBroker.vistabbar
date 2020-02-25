@@ -56,6 +56,7 @@ vis.binds["vistabbar"] = {
 
     console.log("view:");
     console.log(view);
+    console.log(view.getElementById("tab_bar"));
     console.log("---");
 
     console.log("data:");
