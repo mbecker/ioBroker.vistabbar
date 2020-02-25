@@ -60,15 +60,17 @@ vis.binds["vistabbar"] = {
 
     // Constants
     var defaultValues = {
-      height: "46px"
+      height: "46px",
+      tab: "",
+      tabs: {}
     };
 
     // Custom data
     console.log("--- DEBUG: data ---");
-    console.log(data)
-    console.log(data.height)
-    if(!(data.height.includes("px") || data.height.includes("%"))) {
-      if(typeof data.height !== "number") {
+    console.log(data);
+    console.log(data.height);
+    if (!(data.height.includes("px") || data.height.includes("%"))) {
+      if (typeof data.height !== "number") {
         data.height = defaultValues.height;
       } else {
         data.height = data.height + "px";
@@ -76,36 +78,58 @@ vis.binds["vistabbar"] = {
     }
 
     //Initialize the tabbar
-    var tabbar = new AppTabBar.Tabbar('tab_bar', {
-        button_height: data.height
+    var tabbar = new AppTabBar.Tabbar("tab_bar", {
+      button_height: data.height
     });
     tabbar.init();
 
     //Add tabs
-    var tabs = {
-     "01_TV_Küche":  tabbar.addTab("TV / Küche", "fa-home", {
-      events: {
-        selected: function() {
-          vis.changeView('01_TV_Küche');
-        }
-      }
-    }),
-    "81_Heizung_Flur0_Bad": tabbar.addTab("Heizung", "fa-home", {
-      events: {
-          selected: function() {
-              vis.changeView('81_Heizung_Flur0_Bad');
-            }
-      }
-  }),
-  "04_Bad": tabbar.addTab("Flur / Bad", "fa-home", {
-    events: {
-        selected: function() {
-            vis.changeView('04_Bad');
+    if (data.tabs.length > 0 && data.tabs.includes("::")) {
+      // Split by ";" to get the key/value: "view name"/"view key"
+      var splitViews = data.tabs.split(";");
+      // Set the first key/value as the default tab; for that we use an temp counter to identify the first key/value
+      var tmpCounterTab = 0;
+      splitViews.forEach(el => {
+        var splitView = el.split("::");
+        if (splitView.length == 2) {
+          if (tmpCounterTab == 0) {
+            defaultValues.tab = splitView[0];
           }
+          defaultValues.tabs[splitView[0]] = splitView[1];
+          defaultValues.tabs[splitView[0]] = tabbar.addTab(splitView[1], {
+            events: {
+              selected: function() {
+                vis.changeView(splitView[0]);
+              }
+            }
+          });
+          tmpCounterTab = tmpCounterTab + 1;
+        }
+      });
     }
-})
-    };
-
+    // var tabs = {
+    //   "01_TV_Küche": tabbar.addTab("TV / Küche", "fa-home", {
+    //     events: {
+    //       selected: function() {
+    //         vis.changeView("01_TV_Küche");
+    //       }
+    //     }
+    //   }),
+    //   "81_Heizung_Flur0_Bad": tabbar.addTab("Heizung", "fa-home", {
+    //     events: {
+    //       selected: function() {
+    //         vis.changeView("81_Heizung_Flur0_Bad");
+    //       }
+    //     }
+    //   }),
+    //   "04_Bad": tabbar.addTab("Flur / Bad", "fa-home", {
+    //     events: {
+    //       selected: function() {
+    //         vis.changeView("04_Bad");
+    //       }
+    //     }
+    //   })
+    // };
 
     //Set "home" as active.
     // tabbar.setActive(tab_home);
@@ -120,13 +144,14 @@ vis.binds["vistabbar"] = {
     // The last part (after the "#") identifies the current page and should be one of the tabs
     // Select the current view / tab
     var currentView = window.location.hash.substr(1);
-    if(currentView in tabs) {
-      tabbar.selectTab(tabs[currentView]);  
+    if (currentView in defaultValues.tabs) {
+      tabbar.selectTab(defaultValues.tabs[currentView]);
     } else {
-      tabbar.selectTab(tabs["01_TV_Küche"]);
+      // Check that the default tab is in the list of tabs
+      if (defaultValues.tab in defaultValues.tabs) {
+        tabbar.selectTab(tabs[defaultValues.tabs]);
+      }
     }
-
-    
 
     // document.getElementById("#" + datawid).appendChild(tabbar.node);
   }
