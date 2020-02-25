@@ -50,7 +50,7 @@ vis.binds["vistabbar"] = {
     }
   },
   createTabBar: function(datawid, view, data, style) {
-    var $div = $("#" + wid).addClass("vis-tabbar-base");
+    var $div = $("#" + datawid).addClass("vis-tabbar-base");
     if (!$div.length) {
       setTimeout(function() {
         vis.binds.createTabBar(datawid, view, data, style);
