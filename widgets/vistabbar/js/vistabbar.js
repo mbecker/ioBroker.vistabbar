@@ -66,10 +66,6 @@ vis.binds["vistabbar"] = {
     console.log(style);
     console.log("---");
 
-    console.log(document.getElementById("tab_bar"))
-
-    var wid = data.wid;
-    
 
     //Initialize the tabbar
     var tabbar = new AppTabBar.Tabbar("tab_bar");
@@ -92,7 +88,7 @@ vis.binds["vistabbar"] = {
     //Set "home" as active.
     // tabbar.setActive(tab_home);
     // return tabbar.node;
-    document.getElementById(wid).appendChild(tabbar.node);
+    document.getElementById(datawid).appendChild(tabbar.node);
   }
 };
 
