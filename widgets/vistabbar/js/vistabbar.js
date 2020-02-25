@@ -50,6 +50,14 @@ vis.binds["vistabbar"] = {
     }
   },
   createTabBar: function(datawid, view, data, style) {
+    var $div = $("#" + wid).addClass("vis-tabbar-base");
+    if (!$div.length) {
+      setTimeout(function() {
+        vis.binds.createTabBar(datawid, view, data, style);
+      }, 100);
+      return;
+    }
+
     console.log("data.wid:");
     console.log(datawid);
     console.log("---");
@@ -66,7 +74,6 @@ vis.binds["vistabbar"] = {
     console.log(style);
     console.log("---");
 
-
     //Initialize the tabbar
     var tabbar = new AppTabBar.Tabbar("tab_bar");
     tabbar.init();
@@ -82,14 +89,14 @@ vis.binds["vistabbar"] = {
 
     var tab_pages = tabbar.addTab("Pages", "fa-home");
 
-    //Render the tabbar.
-    tabbar.render();
-
     //Set "home" as active.
     // tabbar.setActive(tab_home);
     // return tabbar.node;
-    var $div = $('#' + wid).addClass('vis-hq-button-base')
+
     $div.html(tabbar.node);
+    //Render the tabbar.
+    tabbar.render();
+
     // document.getElementById("#" + datawid).appendChild(tabbar.node);
   }
 };
