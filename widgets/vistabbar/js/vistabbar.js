@@ -56,7 +56,6 @@ vis.binds["vistabbar"] = {
 
     console.log("view:");
     console.log(view);
-    console.log(view.getElementById("tab_bar"));
     console.log("---");
 
     console.log("data:");
@@ -66,6 +65,8 @@ vis.binds["vistabbar"] = {
     console.log("style:");
     console.log(style);
     console.log("---");
+
+    console.log(document.getElementById("tab_bar"))
     
 
     //Initialize the tabbar
