@@ -50,8 +50,8 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		self.tabbar_spacer = document.createElement('div');
 		var div_tabbar = document.createElement('div');
 
-		node.appendChild(self.tabbar_spacer);
-		node.appendChild(div_tabbar);
+		self.node.appendChild(self.tabbar_spacer);
+		self.node.appendChild(div_tabbar);
 
 		self.obj = div_tabbar;
 		
