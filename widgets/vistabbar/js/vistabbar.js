@@ -49,7 +49,24 @@ vis.binds["vistabbar"] = {
       });
     }
   },
-  createTabBar: function() {
+  createTabBar: function(datawid, view, data, style) {
+    console.log("data.wid:");
+    console.log(datawid);
+    console.log("---");
+
+    console.log("view:");
+    console.log(view);
+    console.log("---");
+
+    console.log("data:");
+    console.log(data);
+    console.log("---");
+
+    console.log("style:");
+    console.log(style);
+    console.log("---");
+    
+
     //Initialize the tabbar
     var tabbar = new AppTabBar.Tabbar("tab_bar");
     tabbar.init();

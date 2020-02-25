@@ -150,7 +150,7 @@
     <div class="vis-widget <%== this.data.attr('class') %>" id="<%= this.data.attr('wid') %>" style="position: fixed;bottom: 0;left: 0;right: 0;z-index: 0;height:60px;">
         <div id="tab_bar"></div>
         <%
-        vis.binds.vistabbar.createTabBar();
+        vis.binds.vistabbar.createTabBar(this.data.wid, this.view, this.data, this.style);
         %>  
     </div>
 </script> 
