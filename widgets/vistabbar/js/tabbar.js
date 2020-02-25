@@ -332,7 +332,8 @@ AppTabBar.Tab = function(id, name, icon, options, tabbar) {
 
 		var btnContent = '' +
 			'<button data-tab="' + self.id + '" type="button" class="navBtn btn btn-default">' +
-			'	<span style="display: block;">' + self.icon + '</span> ' +
+			// TODO: Add icon support
+			//'	<span style="display: block;">' + self.icon + '</span> ' +
 			'' + self.name +
 			'</button>';
 
