@@ -1,0 +1,82 @@
+{
+    "common": {
+        "name": "vistabbar",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "tabbar",
+        "titleLang": {
+            "en": "tabbar",
+            "de": "tabbar",
+            "ru": "tabbar",
+            "pt": "tabbar",
+            "nl": "tabbar",
+            "fr": "tabbar",
+            "it": "tabbar",
+            "es": "tabbar",
+            "pl": "tabbar",
+            "zh-cn": "tabbar"
+        },
+        "desc": {
+            "en": "Mobile tab bar",
+            "de": "Mobile tab bar",
+            "ru": "Mobile tab bar",
+            "pt": "Mobile tab bar",
+            "nl": "Mobile tab bar",
+            "fr": "Mobile tab bar",
+            "it": "Mobile tab bar",
+            "es": "Mobile tab bar",
+            "pl": "Mobile tab bar",
+            "zh-cn": "Mobile tab bar"
+        },
+        "authors": [
+            "mbecker <mats.becker@gmail.com>"
+        ],
+        "keywords": [
+            "mobile",
+            "tabbar",
+            "navigation",
+            "web",
+            "app",
+            "menu"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "vistabbar.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/mbecker/ioBroker.vistabbar/master/admin/vistabbar.png",
+        "readme": "https://github.com/mbecker/ioBroker.vistabbar/blob/master/README.md",
+        "loglevel": "info",
+        "restartAdapters": [
+            "vis"
+        ],
+        "localLink": "%web_protocol%://%ip%:%web_port%/vis/edit.html",
+        "onlyWWW": true,
+        "noConfig": true,
+        "singleton": true,
+        "type": "visualization-widgets",
+        "mode": "once",
+        "dependencies": [
+            "vis"
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": []
+}

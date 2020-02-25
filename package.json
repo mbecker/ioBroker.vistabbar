@@ -1,0 +1,39 @@
+{
+  "name": "iobroker.vistabbar",
+  "version": "0.0.1",
+  "description": "Mobile tab bar",
+  "author": {
+    "name": "mbecker",
+    "email": "mats.becker@gmail.com"
+  },
+  "homepage": "https://github.com/mbecker/ioBroker.vistabbar",
+  "license": "MIT",
+  "keywords": [
+    "mobile",
+    "tabbar",
+    "navigation",
+    "web",
+    "app",
+    "menu"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbecker/ioBroker.vistabbar"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@iobroker/testing": "^2.0.2",
+    "@types/gulp": "^4.0.6",
+    "axios": "^0.19.2",
+    "gulp": "^4.0.2"
+  },
+  "main": "widgets/vistabbar.html",
+  "scripts": {
+    "test:package": "mocha test/package --exit",
+    "test": "npm run test:package"
+  },
+  "bugs": {
+    "url": "https://github.com/mbecker/ioBroker.vistabbar/issues"
+  },
+  "readmeFilename": "README.md"
+}
