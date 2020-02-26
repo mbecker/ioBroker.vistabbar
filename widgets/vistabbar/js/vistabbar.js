@@ -58,6 +58,7 @@ vis.binds["vistabbar"] = {
       }, 100);
     }
 
+    var oidVal = vis.states[data.oid + '.val'];
     var text = '';
     text += '<div class="vistabbar-panel-column" >';
     text += '<!-- <div class="vistabbar-panel-heading"></div> --> ';
@@ -65,8 +66,8 @@ vis.binds["vistabbar"] = {
     text += '</div>';
     text += '<div class="vistabbar-panel-row">';
     text += '<div class="vistabbar-panel-row-info">';
-    text += '<p id="vistabbar-panel-row-info-value">';
-    text += vis.states[data.oid + '.val'];
+    text += '<p id="vistabbar-panel-row-info-value" class="' + vis.binds.vistabbar.getBooleanClass(oidVal) + '">';
+    text += vis.binds.vistabbar.getBooleanText(oidVal);
              //    <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
     text += '</p>';
     text += '</div>';
@@ -77,15 +78,21 @@ vis.binds["vistabbar"] = {
     // subscribe on updates of value
     if (data.oid) {
       vis.states.bind(data.oid + ".val", function(e, newVal, oldVal) {
-        var classes = '';
-        if(newVal) {
-          classes = 'vistabbar-green';
-        } else {
-          classes = 'vistabbar-red';
-        }
-        $div.find("#vistabbar-panel-row-info-value").html(newVal.toString());
+        vis.binds.vistabbar.addTextAndToggleClasses(newVal);
       });
     }
+  },
+  getBooleanText: function(val) {
+    return val ? "on" : "off";
+  },
+  getBooleanClass: function(val) {
+    return val ? "vistabbar-green" : "";
+  },
+  addTextAndToggleClasses: function(div, status) {
+    var $div = $div.find("#vistabbar-panel-row-info-value");
+    if($div.length) {
+      $div.html(vis.binds.vistabbar.getBooleanText(status).toggleClass("vistabbar-green"));
+    }    
   },
   createTabBar: function(datawid, view, data, style) {
     var $div = $("#" + datawid).addClass("vis-tabbar-base");

@@ -112,6 +112,10 @@ div.navigationBar div.navBtnCtn.active button {
 }
 
 
+.vistabbar-green {
+	color: #7CE490!important;
+}
+
 .vistabbar-panel {
 	background-color: rgb(41, 41, 51);
 	border-bottom-left-radius: 4px;
