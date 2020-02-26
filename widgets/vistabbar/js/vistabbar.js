@@ -77,8 +77,12 @@ vis.binds["vistabbar"] = {
     // subscribe on updates of value
     if (data.oid) {
       vis.states.bind(data.oid + ".val", function(e, newVal, oldVal) {
-        console.log(e);
-        console.log(newVal);
+        var classes = '';
+        if(newVal) {
+          classes = 'vistabbar-green';
+        } else {
+          classes = 'vistabbar-red';
+        }
         $div.find("#vistabbar-panel-row-info-value").html(newVal.toString());
       });
     }
