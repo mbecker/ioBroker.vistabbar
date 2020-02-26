@@ -78,7 +78,7 @@ vis.binds["vistabbar"] = {
     // subscribe on updates of value
     if (data.oid) {
       vis.states.bind(data.oid + ".val", function(e, newVal, oldVal) {
-        vis.binds.vistabbar.addTextAndToggleClasses(newVal);
+        vis.binds.vistabbar.addTextAndToggleClasses($div, newVal);
       });
     }
   },
@@ -89,7 +89,8 @@ vis.binds["vistabbar"] = {
     return val ? "vistabbar-green" : "";
   },
   addTextAndToggleClasses: function(div, status) {
-    var $div = $div.find("#vistabbar-panel-row-info-value");
+    var $div = div;
+    $div = $div.find("#vistabbar-panel-row-info-value");
     if($div.length) {
       $div.html(vis.binds.vistabbar.getBooleanText(status).toggleClass("vistabbar-green"));
     }    
