@@ -58,14 +58,18 @@ vis.binds["vistabbar"] = {
       }, 100);
     }
 
+
+    // Get data from user params
+    var oidVal = vis.states[data.oid + '.val'];
+
     var isNumberClass = '';
     var isNumberPercentage = 0;
-    if(typeof parseFloat(val) === "number") {
+    if(typeof parseFloat(oidVal) === "number") {
       isNumberClass = '-progress';
       isNumberPercentage = 2;
     }
 
-    var oidVal = vis.states[data.oid + '.val'];
+    
     var text = '';
     text += '<div class="vistabbar-panel-column" >';
     text += '<!-- <div class="vistabbar-panel-heading"></div> --> ';
