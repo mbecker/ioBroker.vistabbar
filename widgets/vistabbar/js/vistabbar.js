@@ -139,6 +139,13 @@ vis.binds["vistabbar"] = {
     //Render the tabbar.
     tabbar.render();
 
+    // TODO: Any existing solution to detect if we are in the vis editor?
+    // Check that the current widget is in the editor or main index.html page
+    var location = window.location.pathname; // "/vis/index.html" OR "/vis/edit.html"
+    if(location.includes("edit")) {
+      return;
+    }
+
     // Go to the current view
     // The current view has a special url format like: http://pi.local:8082/vis/index.html#01_TV_K%C3%BCche
     // The last part (after the "#") identifies the current page and should be one of the tabs
