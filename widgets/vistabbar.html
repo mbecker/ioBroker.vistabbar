@@ -161,7 +161,7 @@
   id="tplVistabbarPanel"
   type="text/ejs"
   class="vis-tpl"
-  data-vis-prev='<img src="widgets/vistabbar/images/tabbar_preview.png"></img>'
+  data-vis-prev='<img src="widgets/vistabbar/images/panel_preview.png"></img>'
   data-vis-attrs="height:text;title:text;info:text"
   data-vis-set="vistabbar"
   data-vis-type="static,helper"
@@ -180,7 +180,7 @@
           class="vistabbar-panel-row"
         >
           <div class="vistabbar-panel-row-info">
-            <p><% this.data.attr('info') %></p>
+            <p><%- this.data.attr('info') %></p>
           </div>
         </div>
       </div>

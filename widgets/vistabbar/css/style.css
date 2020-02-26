@@ -1,3 +1,53 @@
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 200;
+    src: url("widgets/vistabbar/fonts/3f68500b26.ttf") format("ttf")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    src: url("widgets/vistabbar/fonts/7b5fb88f12.ttf") format("ttf")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 400;
+    src: url("widgets/vistabbar/fonts/ac3f799d5b.ttf") format("ttf")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    src: url("widgets/vistabbar/fonts/fe13e41707.ttf") format("ttf")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 600;
+    src: url("widgets/vistabbar/fonts/d329cc8b34.ttf") format("ttf")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 700;
+    src: url("widgets/vistabbar/fonts/893fe14628.ttf") format("ttf")
+}
+
+@font-face {
+    font-family: RobotoMono;
+    font-style: normal;
+    font-weight: 500;
+    src: url("widgets/vistabbar/fonts/5a45b286f5.ttf") format("ttf")
+}
+
+
 /* Style your widget here */
 .vistabbar-class {
 	font-style: italic;
@@ -151,10 +201,7 @@ div.navigationBar div.navBtnCtn.active button {
 	margin-left: 0px;
 	margin-right: 0px;
 	margin-top: 0px;
-	padding-bottom: 32px;
-	padding-left: 32px;
-	padding-right: 32px;
-	padding-top: 32px;
+	padding: 16px;
 	text-align: center;
 	width: 300px;
 	-webkit-font-smoothing: antialiased;
@@ -165,7 +212,7 @@ div.navigationBar div.navBtnCtn.active button {
 	color: rgba(255, 255, 255, 0.75);
 	display: block;
 	font-family: Roboto, Helvetica, Arial, Tahoma, Verdana, sans-serif;
-	font-size: 1em;
+	font-size: 2.8em;
 	font-weight: 300;
 	height: 40px;
 	line-height: 40px;
