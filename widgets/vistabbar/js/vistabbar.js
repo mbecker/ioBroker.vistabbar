@@ -58,15 +58,22 @@ vis.binds["vistabbar"] = {
       }, 100);
     }
 
+    var isNumberClass = '';
+    var isNumberPercentage = 0;
+    if(typeof parseFloat(val) === "number") {
+      isNumberClass = '-progress';
+      isNumberPercentage = 2;
+    }
+
     var oidVal = vis.states[data.oid + '.val'];
     var text = '';
     text += '<div class="vistabbar-panel-column" >';
     text += '<!-- <div class="vistabbar-panel-heading"></div> --> ';
     text += '<h3 class="vistabbar-panel-heading">' + data.title + '</h3> ';
     text += '</div>';
-    text += '<div class="vistabbar-panel-row">';
-    text += '<div class="vistabbar-panel-row-info">';
-    text += '<p id="vistabbar-panel-row-info-value" class="' + vis.binds.vistabbar.getBooleanClass(oidVal) + '">';
+    text += '<div class="vistabbar-panel-row'+ isNumberClass +'" id="'+ widgetID +'-row" style="width: ' + isNumberPercentage + '%">';
+    text += '<div class="vistabbar-panel-row-info'+ isNumberClass +'">';
+    text += '<p id="vistabbar-panel-row-info-value'+ isNumberClass +'" class="' + vis.binds.vistabbar.getBooleanClass(oidVal) + '">';
     text += vis.binds.vistabbar.getBooleanText(oidVal);
              //    <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
     text += '</p>';
@@ -74,6 +81,7 @@ vis.binds["vistabbar"] = {
     text += '</div>';
 
     $("#" + widgetID).html(text);
+    $("#" + widgetID + '-row').width($("#" + widgetID).width());
 
     // subscribe on updates of value
     if (data.oid) {
@@ -83,18 +91,24 @@ vis.binds["vistabbar"] = {
     }
   },
   getBooleanText: function(val) {
+    if(typeof parseFloat(val) === "number") return parseFloat(val).toFixed(2);
     if(typeof val !== "boolean") return val;
     return val ? "on" : "off";
   },
   getBooleanClass: function(val) {
+    if(typeof parseFloat(val) === "number") return;
     return val ? "vistabbar-green" : "";
   },
   addTextAndToggleClasses: function(div, status) {
     var $div = div;
     $div = $div.find("#vistabbar-panel-row-info-value");
+    $progress = $div.find("#vistabbar-panel-row-progress");
     if($div.length) {
       $div.html(vis.binds.vistabbar.getBooleanText(status)).toggleClass("vistabbar-green");
-    }    
+    }
+    if($progress.length && typeof parseFloat(status) === "number") {
+      $progress.width(parseFloat(status) + '%');
+    }
   },
   createTabBar: function(datawid, view, data, style) {
     var $div = $("#" + datawid).addClass("vis-tabbar-base");
