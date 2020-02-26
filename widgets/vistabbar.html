@@ -163,7 +163,7 @@
   type="text/ejs"
   class="vis-tpl"
   data-vis-prev='<img src="widgets/vistabbar/images/panel_preview.png"></img>'
-  data-vis-attrs="height:text;title:text;info:text;code:text"
+  data-vis-attrs="oid/id;height:text;title:text;info:text;code:text"
   data-vis-set="vistabbar"
   data-vis-type="static,helper"
   data-vis-name="Panel"
@@ -181,7 +181,10 @@
           class="vistabbar-panel-row"
         >
           <div class="vistabbar-panel-row-info">
-            <p><%= this.data.attr('info') %><code><%= this.data.attr('code') %></code></p>
+            <p>
+                <%== vis.states[this.data.attr('oid') + '.val'] %>
+                <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
+            </p>
           </div>
         </div>
       </div>
