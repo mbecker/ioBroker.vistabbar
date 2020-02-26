@@ -83,6 +83,7 @@ vis.binds["vistabbar"] = {
     }
   },
   getBooleanText: function(val) {
+    if(typeof val !== "boolean") return val;
     return val ? "on" : "off";
   },
   getBooleanClass: function(val) {
