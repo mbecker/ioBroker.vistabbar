@@ -59,15 +59,11 @@ vis.binds["vistabbar"] = {
     }
 
     var text = '';
-    text += '<div';
-    text += 'class="vistabbar-panel-column"';
-    text += '>';
-    text += '<!-- <div class="vistabbar-panel-heading"></div> -->';
-    text += '<h3 class="vistabbar-panel-heading">' + data.title + '</h3>';
+    text += '<div class="vistabbar-panel-column" >';
+    text += '<!-- <div class="vistabbar-panel-heading"></div> --> ';
+    text += '<h3 class="vistabbar-panel-heading">' + data.title + '</h3> ';
     text += '</div>';
-    text += '<div';
-    text += 'class="vistabbar-panel-row"';
-    text += '>';
+    text += '<div class="vistabbar-panel-row">';
     text += '<div class="vistabbar-panel-row-info">';
     text += '<p id="vistabbar-panel-row-info-value">';
     text += vis.states[data.oid + '.val'];
