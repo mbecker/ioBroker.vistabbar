@@ -92,7 +92,7 @@ vis.binds["vistabbar"] = {
     var $div = div;
     $div = $div.find("#vistabbar-panel-row-info-value");
     if($div.length) {
-      $div.html(vis.binds.vistabbar.getBooleanText(status).toggleClass("vistabbar-green"));
+      $div.html(vis.binds.vistabbar.getBooleanText(status)).toggleClass("vistabbar-green");
     }    
   },
   createTabBar: function(datawid, view, data, style) {
