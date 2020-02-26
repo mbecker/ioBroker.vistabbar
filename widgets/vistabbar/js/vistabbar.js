@@ -70,7 +70,7 @@ vis.binds["vistabbar"] = {
     text += '>';
     text += '<div class="vistabbar-panel-row-info">';
     text += '<p id="vistabbar-panel-row-info-value">';
-    text += vis.states[this.data.attr('oid') + '.val'];
+    text += vis.states[data.oid + '.val'];
              //    <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
     text += '</p>';
     text += '</div>';
