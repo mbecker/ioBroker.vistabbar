@@ -49,6 +49,42 @@ vis.binds["vistabbar"] = {
       });
     }
   },
+  createPanel: function(widgetID, view, data, style) {
+    var $div = $("#" + widgetID);
+    // if nothing found => wait
+    if (!$div.length) {
+      return setTimeout(function() {
+        vis.binds["vistabbar"].createPanel(widgetID, view, data, style);
+      }, 100);
+    }
+
+    var text = '';
+    text += '<div';
+    text += 'class="vistabbar-panel-column"';
+    text += '>';
+    text += '<!-- <div class="vistabbar-panel-heading"></div> -->';
+    text += '<h3 class="vistabbar-panel-heading">' + data.title + '</h3>';
+    text += '</div>';
+    text += '<div';
+    text += 'class="vistabbar-panel-row"';
+    text += '>';
+    text += '<div class="vistabbar-panel-row-info">';
+    text += '<p id="vistabbar-panel-row-info-value">';
+    text += vis.states[this.data.attr('oid') + '.val'];
+             //    <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
+    text += '</p>';
+    text += '</div>';
+    text += '</div>';
+
+    $("#" + widgetID).html(text);
+
+    // subscribe on updates of value
+    if (data.oid) {
+      vis.states.bind(data.oid + ".val", function(e, newVal, oldVal) {
+        $div.find("#vistabbar-panel-row-info-value").html(newVal);
+      });
+    }
+  },
   createTabBar: function(datawid, view, data, style) {
     var $div = $("#" + datawid).addClass("vis-tabbar-base");
     if (!$div.length) {

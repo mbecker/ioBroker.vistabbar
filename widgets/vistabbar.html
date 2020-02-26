@@ -135,9 +135,11 @@
   data-vis-type="helper"
   data-vis-name="Helper"
 >
-  <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 230px; height: 210px" id="<%= this.data.attr('wid') %>"><%
+  <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 230px; height: 210px" id="<%= this.data.attr('wid') %>">
+    <%
       vis.binds.vistabbar.createWidget(this.data.wid, this.view, this.data, this.style);
-  %></div>
+    %>
+</div>
 </script>
 
 <script
@@ -169,35 +171,9 @@
   data-vis-name="Panel"
 >
     <div class="vis-widget <%== this.data.attr('class') %> vistabbar-panel" id="<%= this.data.attr('wid') %>">
-        <div
-          class="vistabbar-panel-column"
-          style="height: <%= this.data.attr('height') %>"
-        >
-          <!-- <div class="vistabbar-panel-heading"></div> -->
-          <h3 class="vistabbar-panel-heading"><%= this.data.attr('title') %></h3>
-          
-        </div>
-        <div
-          class="vistabbar-panel-row"
-        >
-          <div class="vistabbar-panel-row-info">
-            <p id="vistabbar-panel-row-info-value">
-                <%== vis.states[this.data.attr('oid') + '.val'] %>
-                <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
-            </p>
-          </div>
-        </div>
         <%
-      console.log("--- vistabbar DEBUG ---");
-      var $div = $("#" + this.data.attr('wid'));
-      var data = this.data.attr('oid');
-      if (data.oid) {
-        vis.states.bind(data.oid + ".val", function(e, newVal, oldVal) {
-            console.log("--- vistabbar DEBUG div find with new value: " + newVal);
-          $div.find("#vistabbar-panel-row-info-value").html(newVal);
-        });
-      }
-      %>
-      </div>
+      vis.binds.vistabbar.createPanel(this.data.wid, this.view, this.data, this.style);
+    %
+    </div>
       
 </script>        
