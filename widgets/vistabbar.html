@@ -187,13 +187,17 @@
             </p>
           </div>
         </div>
-      </div>
-      <%
+        <%
+      console.log("--- vistabbar DEBUG ---");
+      var $div = $("#" + this.data.attr('wid'));
       var data = this.data.attr('oid');
       if (data.oid) {
         vis.states.bind(data.oid + ".val", function(e, newVal, oldVal) {
+            console.log("--- vistabbar DEBUG div find with new value: " + newVal);
           $div.find("#vistabbar-panel-row-info-value").html(newVal);
         });
       }
       %>
+      </div>
+      
 </script>        
