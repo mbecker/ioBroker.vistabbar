@@ -75,7 +75,6 @@ vis.binds["vistabbar"] = {
     text += '</p>';
     text += '</div>';
     text += '</div>';
-    text += '</div>';
 
     $("#" + widgetID).html(text);
 
