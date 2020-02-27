@@ -7,6 +7,13 @@
 */
 "use strict";
 
+if ('addEventListener' in document) {
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body);
+    // FastClick.attach(node);
+  }, false);
+}
+
 // add translations for edit mode
 $.get("adapter/vistabbar/words.js", function (script) {
   let translation = script.substring(script.indexOf("{"), script.length);
@@ -49,6 +56,156 @@ vis.binds["vistabbar"] = {
       });
     }
   },
+  createPanelHeating: function (widgetID, view, data, style) {
+    var node = document.getElementById(widgetID);
+
+    // if nothing found => wait
+    if (!node) {
+      return setTimeout(function () {
+        vis.binds["vistabbar"].createPanelHeating(widgetID, view, data, style);
+      }, 100);
+    }
+
+
+    var panelContent = document.createElement("div");
+
+    var panelContentHeading = document.createElement("div");
+    panelContentHeading.className = "vistabbar-panel-column vistabbar-height-32px";
+    var heading = document.createElement("h3")
+    heading.className = "vistabbar-panel-heading";
+    heading.innerText = data.title;
+    panelContentHeading.appendChild(heading);
+
+    panelContent.appendChild(panelContentHeading);
+
+    /*
+     * panelContentColumns
+     */
+    var panelContentColumns = document.createElement("div");
+    panelContentColumns.className = "vistabbar-panel-column";
+    panelContentColumns.style.justifyContent = "flex-start";
+    panelContentColumns.style.minHeight = "120px";    
+
+    // 
+    var panelContentColumnsRow1 = document.createElement("div");
+    panelContentColumnsRow1.className = "vistabbar-panel-column-row";
+    
+    // 1st row - left
+    var panelContentColumnsRow1_1 = document.createElement("div");
+    // 1st row - left - left
+    var panelContentColumnsRow1_1_1 = document.createElement("div");
+    var panelContentColumnsRow1_1_1_text1 = document.createElement("p");
+    panelContentColumnsRow1_1_1_text1.innerText = data.text1;
+    panelContentColumnsRow1_1_1.appendChild(panelContentColumnsRow1_1_1_text1);
+    panelContentColumnsRow1_1.appendChild(panelContentColumnsRow1_1_1);
+    // 1st row - left - right
+    var panelContentColumnsRow1_1_2 = document.createElement("div");
+    var panelContentColumnsRow1_1_2_data1 = document.createElement("p");
+    panelContentColumnsRow1_1_2_data1.innerText = vis.states[data.hid1 + '.val'];
+    panelContentColumnsRow1_1_2.appendChild(panelContentColumnsRow1_1_2_data1);
+    panelContentColumnsRow1_1.appendChild(panelContentColumnsRow1_1_2);
+    
+    
+    panelContentColumnsRow1.appendChild(panelContentColumnsRow1_1);
+
+    
+    // 1st row - right
+    var panelContentColumnsRow1_2 = document.createElement("div");
+    // 1st row - right - left
+    var panelContentColumnsRow1_2_1 = document.createElement("div");
+    var panelContentColumnsRow1_2_1_text2 = document.createElement("p");
+    panelContentColumnsRow1_2_1_text2.innerText = data.text2;
+    panelContentColumnsRow1_2_1.appendChild(panelContentColumnsRow1_2_1_text2);
+    panelContentColumnsRow1_2.appendChild(panelContentColumnsRow1_2_1);
+    // 1st row - right - right
+    var panelContentColumnsRow1_2_2 = document.createElement("div");
+    var panelContentColumnsRow1_2_2_data2 = document.createElement("p");
+    panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'];
+    panelContentColumnsRow1_2_2.appendChild(panelContentColumnsRow1_2_2_data2);
+    panelContentColumnsRow1_2.appendChild(panelContentColumnsRow1_2_2);
+
+
+    panelContentColumnsRow1.appendChild(panelContentColumnsRow1_2);
+    panelContentColumns.appendChild(panelContentColumnsRow1);
+
+
+    // 2nd row
+    var panelContentColumnsRow2 = document.createElement("div");
+    panelContentColumnsRow2.className = "vistabbar-panel-column-row";
+    // 2nd row - left
+    var panelContentColumnsRow2_1 = document.createElement("div");
+    // 2nd row - left - left
+    var panelContentColumnsRow2_1_1 = document.createElement("div");
+    var panelContentColumnsRow2_1_1_text3 = document.createElement("p");
+    panelContentColumnsRow2_1_1_text3.innerText = data.text3;
+    panelContentColumnsRow2_1_1.appendChild(panelContentColumnsRow2_1_1_text3);
+    panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_1);
+    // 2nd row - left - right
+    var panelContentColumnsRow2_1_2 = document.createElement("div");
+    var panelContentColumnsRow2_1_2_data3 = document.createElement("p");
+    panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid3 + '.val'];
+    panelContentColumnsRow2_1_2.appendChild(panelContentColumnsRow2_1_2_data3);
+    panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_2);
+
+
+    panelContentColumnsRow2.appendChild(panelContentColumnsRow2_1);
+
+    
+    // 2nd row - right
+    var panelContentColumnsRow2_2 = document.createElement("div");
+    // 2nd row - right - left
+    var panelContentColumnsRow2_2_1 = document.createElement("div");
+    var panelContentColumnsRow2_2_1_text4 = document.createElement("p");
+    panelContentColumnsRow2_2_1_text4.innerText = data.text4;
+    panelContentColumnsRow2_2_1.appendChild(panelContentColumnsRow2_2_1_text4);
+    panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_1);
+    // 2nd row - right - right
+    var panelContentColumnsRow2_2_2 = document.createElement("div");
+    var panelContentColumnsRow2_2_2_data4 = document.createElement("p");
+    panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid4 + '.val'];
+    panelContentColumnsRow2_2_2.appendChild(panelContentColumnsRow2_2_2_data4);
+    panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_2);   
+    
+    
+    panelContentColumnsRow2.appendChild(panelContentColumnsRow2_2);
+    panelContentColumns.appendChild(panelContentColumnsRow2);
+
+
+    // 3rd row
+    var panelContentColumnsRow3 = document.createElement("div");
+    panelContentColumnsRow3.className = "vistabbar-panel-column-row";
+    var panelContentColumnsRow3_1 = document.createElement("div");
+    panelContentColumnsRow3_1.style.width = "100%";
+    panelContentColumnsRow3.appendChild(panelContentColumnsRow3_1);    
+    panelContentColumns.appendChild(panelContentColumnsRow3);
+
+    panelContent.appendChild(panelContentColumns);
+
+    /*
+     * END panelContentColumns
+     */
+    
+    var panelBottom = document.createElement("div");
+    panelBottom.className = "vistabbar-panel-heating-bottom";
+
+    var panelBottomColumn = document.createElement("div");
+    panelBottomColumn.className = "vistabbar-panel-row-info-progress";
+    var panelBottomColumInfo = document.createElement("p");
+    panelBottomColumInfo.className = "vistabbar-panel-row-info-value-progress";
+    panelBottomColumInfo.innerText = "test"
+    // Append: panelrow
+    panelBottomColumn.appendChild(panelBottomColumInfo);
+    panelBottom.appendChild(panelBottomColumn);
+
+    panelContent.appendChild(panelBottom);
+
+
+    /*
+     * Add dom nodes to original node
+     */
+    node.appendChild(panelContent);
+
+  },
   createPanelProgress: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
 
@@ -57,13 +214,6 @@ vis.binds["vistabbar"] = {
       return setTimeout(function () {
         vis.binds["vistabbar"].createPanelProgress(widgetID, view, data, style);
       }, 100);
-    }
-
-    if ('addEventListener' in document) {
-      document.addEventListener('DOMContentLoaded', function() {
-        FastClick.attach(document.body);
-        // FastClick.attach(node);
-      }, false);
     }
 
     // TODO: Check the following prams: data.title
