@@ -344,10 +344,10 @@ AppTabBar.Tab = function(id, name, icon, options, tabbar) {
 		//Apply eventual styles
 		// console.log("self.tabbar");
 		// console.log(self.tabbar);
-		console.log("self.tabbar.options");
-		console.log(self.tabbar.options);
+		// console.log("self.tabbar.options");
+		// console.log(self.tabbar.options);
 		if(typeof self.tabbar.options !== "undefined") {
-			console.log("--> Add button.style.height to: " + self.tabbar.options.button_height);
+			// console.log("--> Add button.style.height to: " + self.tabbar.options.button_height);
 			if ('button_height' in self.tabbar.options) button.style.height = self.tabbar.options.button_height;
 			if ('font_size' in self.tabbar.options) button.style.fontSize = self.tabbar.options.font_size;
 		}

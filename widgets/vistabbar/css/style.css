@@ -3,6 +3,18 @@
 	font-style: italic;
 }
 
+.vistabbar-height-20 {
+	height: 20%;
+}
+
+.vistabbar-height-60 {
+	height: 60%;
+}
+
+.vistabbar-height-100 {
+	height: 100%;
+}
+
 /*
  Responsiveness
  */
@@ -77,6 +89,7 @@ div.navigationBar div.navBtnCtn:after {
 }
 
 div.navigationBar div.navBtnCtn button {
+	cursor: pointer;
 	width: 100%;
 	outline: none;
 	height: 60px;
@@ -117,6 +130,7 @@ div.navigationBar div.navBtnCtn.active button {
 }
 
 .vistabbar-panel {
+	cursor: pointer;
 	background-color: rgb(41, 41, 51);
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
@@ -147,13 +161,13 @@ div.navigationBar div.navBtnCtn.active button {
 	flex-wrap: nowrap;
 	font-family: Roboto, Helvetica, Arial, Tahoma, Verdana, sans-serif;
 	font-size: 0.8em;
-	height: 435px;
-	justify-content: flex-start;
+	/* height: 435px; */
+	justify-content: center;
 	margin-bottom: 0px;
 	margin-left: 0px;
 	margin-right: 0px;
 	margin-top: 0px;
-	padding: 16px;
+	padding: 0px;
 	text-align: center;
 	-webkit-font-smoothing: antialiased;
 }
@@ -163,7 +177,7 @@ div.navigationBar div.navBtnCtn.active button {
 	color: rgba(255, 255, 255, 0.75);
 	display: block;
 	font-family: Roboto, Helvetica, Arial, Tahoma, Verdana, sans-serif;
-	font-size: 2.4em;
+	font-size: 1.8em;
 	font-weight: 300;
 	line-height: 1em;
 	margin-block-end: 0px;
@@ -188,7 +202,8 @@ div.navigationBar div.navBtnCtn.active button {
     align-content: center;
     /* align-items: center; */
     vertical-align: middle;
-    background-color: rgba(15, 14, 21, 0.1);
+	/* background-color: rgba(15, 14, 21, 0.1); */
+	background-color: #272630;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     border-top-left-radius: 0px;
@@ -205,7 +220,7 @@ div.navigationBar div.navBtnCtn.active button {
 }
 
 .vistabbar-panel-row-info-progress {
-	width: 80%;
+	/* width: 80%; */
     height: 100%;
 	background: #9dd3ae !important;
 	box-sizing: border-box;
@@ -219,7 +234,7 @@ div.navigationBar div.navBtnCtn.active button {
 }
 
 .vistabbar-panel-row-info-value-progress {
-    width: 171.5px;
+    /* width: 171.5px; */
 	text-align: center;
 	box-sizing: border-box;
     color: rgb(117, 120, 136);
@@ -245,7 +260,8 @@ div.navigationBar div.navBtnCtn.active button {
 	align-content: center;
 	align-items: center;
 	vertical-align: middle;
-	background-color: rgba(15, 14, 21, 0.1);
+	/* background-color: rgba(15, 14, 21, 0.1); */
+	background-color: #272630;
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-top-left-radius: 0px;
