@@ -8,7 +8,7 @@
 "use strict";
 
 if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     FastClick.attach(document.body);
     // FastClick.attach(node);
   }, false);
@@ -72,7 +72,7 @@ vis.binds["vistabbar"] = {
     panelContent.style.display = "flex";
 
     var panelContentHeading = document.createElement("div");
-    panelContentHeading.className = "vistabbar-panel-column padding-8";
+    panelContentHeading.className = "padding-8 vistabbar-panel-column";
     var heading = document.createElement("h3")
     heading.className = "vistabbar-panel-heading";
     heading.innerText = data.title;
@@ -86,12 +86,11 @@ vis.binds["vistabbar"] = {
     var panelContentColumns = document.createElement("div");
     panelContentColumns.className = "vistabbar-panel-column padding-8-top-bottom";
     panelContentColumns.style.justifyContent = "flex-start";
-    panelContentColumns.style.minHeight = "120px";    
 
     // 
     var panelContentColumnsRow1 = document.createElement("div");
     panelContentColumnsRow1.className = "vistabbar-panel-column-row";
-    
+
     // 1st row - left
     var panelContentColumnsRow1_1 = document.createElement("div");
     // 1st row - left - left
@@ -103,14 +102,14 @@ vis.binds["vistabbar"] = {
     // 1st row - left - right
     var panelContentColumnsRow1_1_2 = document.createElement("div");
     var panelContentColumnsRow1_1_2_data1 = document.createElement("p");
-    panelContentColumnsRow1_1_2_data1.innerText = vis.states[data.hid1 + '.val'];
+    panelContentColumnsRow1_1_2_data1.innerText = vis.states[data.hid1 + '.val'] + data.suffix1;
     panelContentColumnsRow1_1_2.appendChild(panelContentColumnsRow1_1_2_data1);
     panelContentColumnsRow1_1.appendChild(panelContentColumnsRow1_1_2);
-    
-    
+
+
     panelContentColumnsRow1.appendChild(panelContentColumnsRow1_1);
 
-    
+
     // 1st row - right
     var panelContentColumnsRow1_2 = document.createElement("div");
     // 1st row - right - left
@@ -122,7 +121,7 @@ vis.binds["vistabbar"] = {
     // 1st row - right - right
     var panelContentColumnsRow1_2_2 = document.createElement("div");
     var panelContentColumnsRow1_2_2_data2 = document.createElement("p");
-    panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'];
+    panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
     panelContentColumnsRow1_2_2.appendChild(panelContentColumnsRow1_2_2_data2);
     panelContentColumnsRow1_2.appendChild(panelContentColumnsRow1_2_2);
 
@@ -139,20 +138,20 @@ vis.binds["vistabbar"] = {
     // 2nd row - left - left
     var panelContentColumnsRow2_1_1 = document.createElement("div");
     var panelContentColumnsRow2_1_1_text3 = document.createElement("p");
-    panelContentColumnsRow2_1_1_text3.innerText = data.text3;
+    panelContentColumnsRow2_1_1_text3.innerText = data.text4;
     panelContentColumnsRow2_1_1.appendChild(panelContentColumnsRow2_1_1_text3);
     panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_1);
     // 2nd row - left - right
     var panelContentColumnsRow2_1_2 = document.createElement("div");
     var panelContentColumnsRow2_1_2_data3 = document.createElement("p");
-    panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid3 + '.val'];
+    panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid4 + '.val'] + data.suffix4;
     panelContentColumnsRow2_1_2.appendChild(panelContentColumnsRow2_1_2_data3);
     panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_2);
 
 
     panelContentColumnsRow2.appendChild(panelContentColumnsRow2_1);
 
-    
+
     // 2nd row - right
     var panelContentColumnsRow2_2 = document.createElement("div");
     // 2nd row - right - left
@@ -164,11 +163,11 @@ vis.binds["vistabbar"] = {
     // 2nd row - right - right
     var panelContentColumnsRow2_2_2 = document.createElement("div");
     var panelContentColumnsRow2_2_2_data4 = document.createElement("p");
-    panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid4 + '.val'];
+    panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid5 + '.val'] + data.suffix5;
     panelContentColumnsRow2_2_2.appendChild(panelContentColumnsRow2_2_2_data4);
-    panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_2);   
-    
-    
+    panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_2);
+
+
     panelContentColumnsRow2.appendChild(panelContentColumnsRow2_2);
     panelContentColumns.appendChild(panelContentColumnsRow2);
 
@@ -177,16 +176,114 @@ vis.binds["vistabbar"] = {
     var panelContentColumnsRow3 = document.createElement("div");
     panelContentColumnsRow3.className = "vistabbar-panel-column-row";
     var panelContentColumnsRow3_1 = document.createElement("div");
-    panelContentColumnsRow3_1.style.width = "100%";
-    panelContentColumnsRow3.appendChild(panelContentColumnsRow3_1);    
+    panelContentColumnsRow3_1.className = "vistabbar-panel-button";
+    // Butons
+    var panelContentColumnsRow3_1_Input1 = document.createElement("input");
+    panelContentColumnsRow3_1_Input1.type = "radio";
+    panelContentColumnsRow3_1_Input1.tabIndex = "-1";
+    panelContentColumnsRow3_1_Input1.value = "radio_auto";
+    panelContentColumnsRow3_1_Input1.readOnly = true;
+    panelContentColumnsRow3_1_Input1.id = "panelContentColumnsRow3_1_Input1";
+    panelContentColumnsRow3_1_Input1.name = "panelContentColumnsRow3_1_Input1";
+    var panelContentColumnsRow3_1_Label1 = document.createElement("label");
+    panelContentColumnsRow3_1_Label1.title = "panelContentColumnsRow3_1_Label1";
+    panelContentColumnsRow3_1_Label1.formTarget = "panelContentColumnsRow3_1_Input1"
+    var panelContentColumnsRow3_1_Label1_Icon = document.createElement("i");
+    panelContentColumnsRow3_1_Label1_Icon.className = "material-icons";;
+    panelContentColumnsRow3_1_Label1_Icon.innerText = "remove";
+    panelContentColumnsRow3_1_Label1.appendChild(panelContentColumnsRow3_1_Label1_Icon);
+
+    var panelContentColumnsRow3_1_Input2 = document.createElement("input");
+    panelContentColumnsRow3_1_Input2.type = "radio";
+    panelContentColumnsRow3_1_Input2.tabIndex = "-1";
+    panelContentColumnsRow3_1_Input2.value = "radio_auto";
+    panelContentColumnsRow3_1_Input2.readOnly = true;
+    panelContentColumnsRow3_1_Input2.id = "panelContentColumnsRow3_1_Input2";
+    panelContentColumnsRow3_1_Input2.name = "panelContentColumnsRow3_1_Input2";
+    var panelContentColumnsRow3_1_Label2 = document.createElement("label");
+    panelContentColumnsRow3_1_Label2.className = "vistabbar-panel-button-label-plus";
+    panelContentColumnsRow3_1_Label2.title = "panelContentColumnsRow3_1_Label2";
+    panelContentColumnsRow3_1_Label2.formTarget = "panelContentColumnsRow3_1_Input2"
+    // var panelContentColumnsRow3_1_Label2_originalBackground = panelContentColumnsRow3_1_Label2.style.backgroundColor;
+    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label2, data.clickcolor, data.clickdelay, data.bid1, data.step1);
+
+    var panelContentColumnsRow3_1_Label2_Icon = document.createElement("i");
+    panelContentColumnsRow3_1_Label2_Icon.className = "material-icons";;
+    panelContentColumnsRow3_1_Label2_Icon.innerText = "add";
+    panelContentColumnsRow3_1_Label2.appendChild(panelContentColumnsRow3_1_Label2_Icon);
+
+    panelContentColumnsRow3_1.appendChild(panelContentColumnsRow3_1_Input1);
+    panelContentColumnsRow3_1.appendChild(panelContentColumnsRow3_1_Label1);
+    panelContentColumnsRow3_1.appendChild(panelContentColumnsRow3_1_Input2);
+    panelContentColumnsRow3_1.appendChild(panelContentColumnsRow3_1_Label2);
+
+
+    panelContentColumnsRow3.appendChild(panelContentColumnsRow3_1);
     panelContentColumns.appendChild(panelContentColumnsRow3);
+    // END 3rd row
+
+    // 4th row
+    var panelContentColumnsRow4 = document.createElement("div");
+    panelContentColumnsRow4.className = "vistabbar-panel-column-row";
+    var panelContentColumnsRow4_1 = document.createElement("div");
+    panelContentColumnsRow4_1.className = "vistabbar-panel-button";
+    // Butons
+    var panelContentColumnsRow4_1_Input1 = document.createElement("input");
+    panelContentColumnsRow4_1_Input1.type = "radio";
+    panelContentColumnsRow4_1_Input1.tabIndex = "-1";
+    panelContentColumnsRow4_1_Input1.value = "radio_auto";
+    panelContentColumnsRow4_1_Input1.readOnly = true;
+    panelContentColumnsRow4_1_Input1.id = "panelContentColumnsRow4_1_Input1";
+    panelContentColumnsRow4_1_Input1.name = "panelContentColumnsRow4_1_Input1";
+    var panelContentColumnsRow4_1_Label1 = document.createElement("label");
+    panelContentColumnsRow4_1_Label1.title = "panelContentColumnsRow4_1_Label1";
+    panelContentColumnsRow4_1_Label1.formTarget = "panelContentColumnsRow4_1_Input1"
+    panelContentColumnsRow4_1_Label1.innerHTML = "Off";
+
+    var panelContentColumnsRow4_1_Input2 = document.createElement("input");
+    panelContentColumnsRow4_1_Input2.type = "radio";
+    panelContentColumnsRow4_1_Input2.tabIndex = "-1";
+    panelContentColumnsRow4_1_Input2.value = "radio_auto";
+    panelContentColumnsRow4_1_Input2.readOnly = true;
+    panelContentColumnsRow4_1_Input2.id = "panelContentColumnsRow4_1_Input2";
+    panelContentColumnsRow4_1_Input2.name = "panelContentColumnsRow4_1_Input2";
+    var panelContentColumnsRow4_1_Label2 = document.createElement("label");
+    panelContentColumnsRow4_1_Label2.className = "vistabbar-panel-button-label-active";
+    panelContentColumnsRow4_1_Label2.title = "panelContentColumnsRow4_1_Label2";
+    panelContentColumnsRow4_1_Label2.formTarget = "panelContentColumnsRow4_1_Input2"
+    panelContentColumnsRow4_1_Label2.innerHTML = "Heat (Eco)";
+
+    var panelContentColumnsRow4_1_Input3 = document.createElement("input");
+    panelContentColumnsRow4_1_Input3.type = "radio";
+    panelContentColumnsRow4_1_Input3.tabIndex = "-1";
+    panelContentColumnsRow4_1_Input3.value = "radio_auto";
+    panelContentColumnsRow4_1_Input3.readOnly = true;
+    panelContentColumnsRow4_1_Input3.id = "panelContentColumnsRow4_1_Input3";
+    panelContentColumnsRow4_1_Input3.name = "panelContentColumnsRow4_1_Input3";
+    var panelContentColumnsRow4_1_Label3 = document.createElement("label");    
+    panelContentColumnsRow4_1_Label3.title = "panelContentColumnsRow4_1_Label3";
+    panelContentColumnsRow4_1_Label3.formTarget = "panelContentColumnsRow4_1_Input3"
+    panelContentColumnsRow4_1_Label3.innerHTML = "Heat";
+
+    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input1);
+    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label1);
+    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input2);
+    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label2);
+    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input3);
+    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label3);
+
+    panelContentColumnsRow4.appendChild(panelContentColumnsRow4_1);
+    // panelContentColumns.appendChild(panelContentColumnsRow4);
+    // END 4th row
+
+
 
     panelContent.appendChild(panelContentColumns);
 
     /*
      * END panelContentColumns
      */
-    
+
     var panelBottom = document.createElement("div");
     panelBottom.className = "vistabbar-panel-heating-bottom";
 
@@ -197,8 +294,8 @@ vis.binds["vistabbar"] = {
     panelBottomColumInfo.innerText = "test"
     // Append: panelrow
     panelBottomColumn.appendChild(panelBottomColumInfo);
-    panelBottom.appendChild(panelBottomColumn);
-
+    
+    panelBottom.appendChild(panelContentColumnsRow4_1);
     panelContent.appendChild(panelBottom);
 
 
@@ -207,6 +304,30 @@ vis.binds["vistabbar"] = {
      */
     node.appendChild(panelContent);
 
+  },
+  addEventListenerToLabel: function(node, clickColor, clickDelay, bid, step) {
+    var originalBackground = node.style.backgroundColor;
+    node.addEventListener('touchstart', function (e) {
+      node.style.background = data.clickcolor;
+      e.preventDefault();
+    }, false);
+    node.addEventListener('touchend', function (e) {
+      node.style.background = originalBackground;
+      // vis.binds.vistabbar.setState(data);
+      e.preventDefault();
+    }, false);
+    node.addEventListener("click", function (e) {
+      // vis.binds.vistabbar.setState(data);
+      
+      // Simulate click
+      node.className = "";
+      node.style.backgroundColor = clickColor;
+      setTimeout(() => {
+        node.className = "vistabbar-panel-button-label-plus";
+        node.style.backgroundColor = originalBackground;
+      }, clickDelay);
+      e.preventDefault();
+    }, false);
   },
   createPanelProgress: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
@@ -219,10 +340,10 @@ vis.binds["vistabbar"] = {
     }
 
     // TODO: Check the following prams: data.title
-    
+
     var switchObjectVal = vis.states[data.oid1 + '.val'];
     var powerObjectVal = vis.states[data.oid2 + '.val'];
-  
+
     /*
      * Panel Column
      */
@@ -238,11 +359,11 @@ vis.binds["vistabbar"] = {
     var panelColumnIcon = document.createElement("div");
     panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
     var icon = document.createElement("i");
-    icon.className = "material-icons";    
+    icon.className = "material-icons";
     icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
     icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
-    panelColumnIcon.appendChild(icon);  
-    
+    panelColumnIcon.appendChild(icon);
+
 
     var panelColumns = document.createElement("div");
     panelColumns.className = "vistabbar-height-100";
@@ -272,11 +393,11 @@ vis.binds["vistabbar"] = {
 
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
-    node.addEventListener('touchstart', function(e) {
+    node.addEventListener('touchstart', function (e) {
       panelColumns.style.background = data.clickcolor;
       e.preventDefault();
-		}, false);
-    node.addEventListener('touchend', function(e) {
+    }, false);
+    node.addEventListener('touchend', function (e) {
       panelColumns.style.background = nodeOriginalBackground;
       vis.binds.vistabbar.setState(data);
       e.preventDefault();
@@ -284,12 +405,12 @@ vis.binds["vistabbar"] = {
     // node.addEventListener('mousedown', function(e) {
     //   panelColumnHeading.style.background = data.clickcolor;
     //   e.preventDefault();
-		// }, false);
+    // }, false);
     // node.addEventListener('mouseup', function(e) {
     //   panelColumnHeading.style.background = nodeOriginalBackground;
     //   vis.binds.vistabbar.setState(data);
     //   e.preventDefault();
-		// }, false);
+    // }, false);
     node.addEventListener("click", function (e) {
       vis.binds.vistabbar.setState(data);
 
@@ -301,7 +422,7 @@ vis.binds["vistabbar"] = {
       e.preventDefault();
     }, false);
 
-    
+
     /*
      * RESIZE (icon, progress bar)
      */
@@ -329,24 +450,36 @@ vis.binds["vistabbar"] = {
     }
 
   },
+  setState2(id) {
+    if (vis.binds.vistabbar.isEditeMode()) return;
+    var tmpVal = vis.states[id + '.val'];
+    if (typeof tmpVal !== "undefined" && typeof tmpVal !== "boolean") {
+      // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite
+      if (tmpVal === data.minvalue) vis.setValue(data.oid1, data.maxvalue);
+      if (tmpVal === data.maxvalue) vis.setValue(data.oid1, data.minvalue);
+    } else {
+      // data value is type of boolean; just use the opposote of the boolean value
+      vis.setValue(data.oid1, !tmpVal);
+    }
+  },
   setState(data) {
-    if(vis.binds.vistabbar.isEditeMode()) return;
-      var tmpVal = vis.states[data.oid1 + '.val'];
-      if(typeof tmpVal !== "boolean") {
-        // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite
-        if(tmpVal === data.minvalue) vis.setValue(data.oid1, data.maxvalue);
-        if(tmpVal === data.maxvalue) vis.setValue(data.oid1, data.minvalue);
-      } else {
-        // data value is type of boolean; just use the opposote of the boolean value
-        vis.setValue(data.oid1, !tmpVal);
-      }
+    if (vis.binds.vistabbar.isEditeMode()) return;
+    var tmpVal = vis.states[data.oid1 + '.val'];
+    if (typeof tmpVal !== "undefined" && typeof tmpVal !== "boolean") {
+      // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite
+      if (tmpVal === data.minvalue) vis.setValue(data.oid1, data.maxvalue);
+      if (tmpVal === data.maxvalue) vis.setValue(data.oid1, data.minvalue);
+    } else {
+      // data value is type of boolean; just use the opposote of the boolean value
+      vis.setValue(data.oid1, !tmpVal);
+    }
   },
   getProgress(val, data) {
-    if(typeof val === "boolean") {
-      if(val) return 100;
+    if (typeof val === "boolean") {
+      if (val) return 100;
       return 0;
     }
-    if(typeof val !== "number") {
+    if (typeof val !== "number") {
       val = Number.parseFloat(val).toFixed(0);
     }
     return (val - data.minvalue) / (data.maxvalue - data.minvalue) * 100;
@@ -362,7 +495,7 @@ vis.binds["vistabbar"] = {
     return String(iconoff);
   },
   getPanelProgessValue(val, data) {
-    if(typeof val !== "number") return data.prefix + vis.binds.vistabbar.getBooleanText(val) + data.suffix;
+    if (typeof val !== "number") return data.prefix + vis.binds.vistabbar.getBooleanText(val) + data.suffix;
     return data.prefix + Number.parseFloat(val).toFixed(data.numberdecimals) + data.suffix;
   },
   createPanel: function (widgetID, view, data, style) {
@@ -481,7 +614,7 @@ vis.binds["vistabbar"] = {
 
     // TODO: Any existing solution to detect if we are in the vis editor?
     // Check that the current widget is in the editor or main index.html page
-    if(vis.binds.vistabbar.isEditeMode()) return;
+    if (vis.binds.vistabbar.isEditeMode()) return;
 
     // Go to the current view
     // The current view has a special url format like: http://pi.local:8082/vis/index.html#01_TV_K%C3%BCche
@@ -501,7 +634,7 @@ vis.binds["vistabbar"] = {
     // console.log(defaultValues.tab);
     // console.log(defaultValues.tabs);
   },
-  isEditeMode: function() {
+  isEditeMode: function () {
     // "/vis/index.html" OR "/vis/edit.html"
     if (window.location.pathname.includes("edit")) {
       return true;
