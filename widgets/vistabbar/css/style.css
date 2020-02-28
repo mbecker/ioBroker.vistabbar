@@ -20,6 +20,14 @@
 	height: 32px;
 }
 
+.padding-8 {
+	padding: 8px;
+}
+
+.padding-8-top-bottom {
+	padding: 8px 0px 8px 0px;
+}
+
 /*
  Responsiveness
  */
@@ -178,10 +186,10 @@ div.navigationBar div.navBtnCtn.active button {
 .vistabbar-panel-column-row {
 	width: 90%;
     
-    height: 32px;
+    
     display: flex;
     flex-direction: row;
-	margin-bottom: 24px;
+	
 	justify-content: flex-start;
     align-items: center;
 }

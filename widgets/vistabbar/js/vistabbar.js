@@ -68,9 +68,11 @@ vis.binds["vistabbar"] = {
 
 
     var panelContent = document.createElement("div");
+    panelContent.style.flexDirection = "column";
+    panelContent.style.display = "flex";
 
     var panelContentHeading = document.createElement("div");
-    panelContentHeading.className = "vistabbar-panel-column vistabbar-height-32px";
+    panelContentHeading.className = "vistabbar-panel-column padding-8";
     var heading = document.createElement("h3")
     heading.className = "vistabbar-panel-heading";
     heading.innerText = data.title;
@@ -82,7 +84,7 @@ vis.binds["vistabbar"] = {
      * panelContentColumns
      */
     var panelContentColumns = document.createElement("div");
-    panelContentColumns.className = "vistabbar-panel-column";
+    panelContentColumns.className = "vistabbar-panel-column padding-8-top-bottom";
     panelContentColumns.style.justifyContent = "flex-start";
     panelContentColumns.style.minHeight = "120px";    
 
