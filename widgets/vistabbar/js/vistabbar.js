@@ -124,6 +124,16 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
     panelContentColumnsRow1_2_2.appendChild(panelContentColumnsRow1_2_2_data2);
     panelContentColumnsRow1_2.appendChild(panelContentColumnsRow1_2_2);
+    if (data.hid2) {
+      vis.states.bind(data.hid2 + ".val", function (e, newVal, oldVal) {
+        panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
+      });
+    }
+    if (data.hid3) {
+      vis.states.bind(data.hid3 + ".val", function (e, newVal, oldVal) {
+        panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
+      });
+    }
 
 
     panelContentColumnsRow1.appendChild(panelContentColumnsRow1_2);
@@ -147,7 +157,14 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid4 + '.val'] + data.suffix4;
     panelContentColumnsRow2_1_2.appendChild(panelContentColumnsRow2_1_2_data3);
     panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_2);
-
+    if (data.hid4) {
+      // Only change value if the value was acknowledged
+      vis.states.bind(data.hid4 + ".ack", function (e, newVal, oldVal) {
+        if(newVal === true) {
+          panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid4 + '.val'] + data.suffix4;
+        }
+      });
+    }
 
     panelContentColumnsRow2.appendChild(panelContentColumnsRow2_1);
 
@@ -158,6 +175,8 @@ vis.binds["vistabbar"] = {
     var panelContentColumnsRow2_2_1 = document.createElement("div");
     var panelContentColumnsRow2_2_1_text4 = document.createElement("p");
     panelContentColumnsRow2_2_1_text4.innerText = data.text4;
+
+
     panelContentColumnsRow2_2_1.appendChild(panelContentColumnsRow2_2_1_text4);
     panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_1);
     // 2nd row - right - right
@@ -166,6 +185,11 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid5 + '.val'] + data.suffix5;
     panelContentColumnsRow2_2_2.appendChild(panelContentColumnsRow2_2_2_data4);
     panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_2);
+    if (data.hid5) {
+      vis.states.bind(data.hid5 + ".val", function (e, newVal, oldVal) {
+        panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid5 + '.val'] + data.suffix5;
+      });
+    }
 
 
     panelContentColumnsRow2.appendChild(panelContentColumnsRow2_2);
@@ -185,6 +209,7 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow3_1_Input1.readOnly = true;
     panelContentColumnsRow3_1_Input1.id = "panelContentColumnsRow3_1_Input1";
     panelContentColumnsRow3_1_Input1.name = "panelContentColumnsRow3_1_Input1";
+    // BUtton 1
     var panelContentColumnsRow3_1_Label1 = document.createElement("label");
     panelContentColumnsRow3_1_Label1.title = "panelContentColumnsRow3_1_Label1";
     panelContentColumnsRow3_1_Label1.formTarget = "panelContentColumnsRow3_1_Input1"
@@ -192,7 +217,8 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow3_1_Label1_Icon.className = "material-icons";;
     panelContentColumnsRow3_1_Label1_Icon.innerText = "remove";
     panelContentColumnsRow3_1_Label1.appendChild(panelContentColumnsRow3_1_Label1_Icon);
-
+    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label1, data.clickcolor, data.clickdelay, data.bid1, data.step1);
+    // BUtton 2
     var panelContentColumnsRow3_1_Input2 = document.createElement("input");
     panelContentColumnsRow3_1_Input2.type = "radio";
     panelContentColumnsRow3_1_Input2.tabIndex = "-1";
@@ -205,7 +231,7 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow3_1_Label2.title = "panelContentColumnsRow3_1_Label2";
     panelContentColumnsRow3_1_Label2.formTarget = "panelContentColumnsRow3_1_Input2"
     // var panelContentColumnsRow3_1_Label2_originalBackground = panelContentColumnsRow3_1_Label2.style.backgroundColor;
-    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label2, data.clickcolor, data.clickdelay, data.bid1, data.step1);
+    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label2, data.clickcolor, data.clickdelay, data.bid2, data.step2);
 
     var panelContentColumnsRow3_1_Label2_Icon = document.createElement("i");
     panelContentColumnsRow3_1_Label2_Icon.className = "material-icons";;
@@ -222,81 +248,148 @@ vis.binds["vistabbar"] = {
     panelContentColumns.appendChild(panelContentColumnsRow3);
     // END 3rd row
 
+    panelContent.appendChild(panelContentColumns);
+
     // 4th row
-    var panelContentColumnsRow4 = document.createElement("div");
-    panelContentColumnsRow4.className = "vistabbar-panel-column-row";
-    var panelContentColumnsRow4_1 = document.createElement("div");
-    panelContentColumnsRow4_1.className = "vistabbar-panel-button";
+    if (data.tvalues) {
+      var tvalues = data.tvalues.split(";");
+      if (tvalues.length === 0) return;
+
+      var tequal = vis.states[data.tequal + '.val'];
+
+      var panelContentColumnsRow4_1 = document.createElement("div");
+      panelContentColumnsRow4_1.className = "vistabbar-panel-button";
+
+      var panelContentColumnsRow4_1_nodes = [];
+      for (let index = 0; index < tvalues.length; index++) {
+        const element = tvalues[index];
+        var panelContentColumnsRow4_1_Input1 = document.createElement("input");
+        panelContentColumnsRow4_1_Input1.type = "radio";
+        panelContentColumnsRow4_1_Input1.tabIndex = "-1";
+        panelContentColumnsRow4_1_Input1.value = "radio_auto";
+        panelContentColumnsRow4_1_Input1.readOnly = true;
+        panelContentColumnsRow4_1_Input1.id = "panelContentColumnsRow4_1_Input_" + element;
+        panelContentColumnsRow4_1_Input1.name = "panelContentColumnsRow4_1_Input_" + element;;
+        var panelContentColumnsRow4_1_Label1 = document.createElement("label");
+        // Check that element is equal to the tequal's value
+        if (element === tequal) panelContentColumnsRow4_1_Label1.className = "vistabbar-panel-button-label-active";
+        panelContentColumnsRow4_1_Label1.title = "panelContentColumnsRow4_1_Label_" + element;
+        panelContentColumnsRow4_1_Label1.formTarget = "panelContentColumnsRow4_1_Input_" + element;
+        panelContentColumnsRow4_1_Label1.innerHTML = element;
+        panelContentColumnsRow4_1_Label1.setAttribute("data-text", element); // Set data attribute "data-text" to change the buttons value for sending command to "Push" and then set back to iriginal text
+        vis.binds.vistabbar.addEventListenerTovalue(panelContentColumnsRow4_1_Label1, data.clickcolor, data.clickdelay, data.tid, element);
+
+        // Add elements to array
+        // panelContentColumnsRow4_1_nodes.push(panelContentColumnsRow4_1_Input1);
+        panelContentColumnsRow4_1_nodes.push(panelContentColumnsRow4_1_Label1);
+        // Add elements to dom
+        panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input1);
+        panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label1);
+      }
+
+      // Subscribe to tequal to change the button's className based on the value
+      if (data.tequal) {
+        vis.states.bind(data.tequal + ".ack", function (e, newVal, oldVal) {
+          if(newVal !== true) return;
+          console.log("data.ack === true");
+          var tequalTmp = vis.states[data.tequal + '.val'];
+          console.log(tequalTmp);
+          for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
+            const element = panelContentColumnsRow4_1_nodes[index];
+            console.log(element.innerText)
+            if (element.getAttribute("data-text") === tequalTmp) {
+              element.innerText = tequalTmp;
+              element.classList.add("vistabbar-panel-button-label-active");
+            } else {
+              element.classList.remove("vistabbar-panel-button-label-active");
+            }
+          }
+        });
+        // vis.states.bind(data.tequal + ".val", function (e, newVal, oldVal) {
+          
+        //   for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
+        //     const element = panelContentColumnsRow4_1_nodes[index];
+        //     console.log(element.innerHTML);
+        //     if (element.innerHTML === newVal) {
+        //       element.classList.add("vistabbar-panel-button-label-active");
+        //     } else {
+        //       element.classList.remove("vistabbar-panel-button-label-active");
+        //     }
+        //   }
+        // });
+      }
+
+
+
+
+      var panelBottom = document.createElement("div");
+      panelBottom.className = "vistabbar-panel-heating-bottom";
+
+      panelBottom.appendChild(panelContentColumnsRow4_1);
+      panelContent.appendChild(panelBottom);
+    }
+    // var panelContentColumnsRow4 = document.createElement("div");
+    // panelContentColumnsRow4.className = "vistabbar-panel-column-row";
+
+
     // Butons
-    var panelContentColumnsRow4_1_Input1 = document.createElement("input");
-    panelContentColumnsRow4_1_Input1.type = "radio";
-    panelContentColumnsRow4_1_Input1.tabIndex = "-1";
-    panelContentColumnsRow4_1_Input1.value = "radio_auto";
-    panelContentColumnsRow4_1_Input1.readOnly = true;
-    panelContentColumnsRow4_1_Input1.id = "panelContentColumnsRow4_1_Input1";
-    panelContentColumnsRow4_1_Input1.name = "panelContentColumnsRow4_1_Input1";
-    var panelContentColumnsRow4_1_Label1 = document.createElement("label");
-    panelContentColumnsRow4_1_Label1.title = "panelContentColumnsRow4_1_Label1";
-    panelContentColumnsRow4_1_Label1.formTarget = "panelContentColumnsRow4_1_Input1"
-    panelContentColumnsRow4_1_Label1.innerHTML = "Off";
 
-    var panelContentColumnsRow4_1_Input2 = document.createElement("input");
-    panelContentColumnsRow4_1_Input2.type = "radio";
-    panelContentColumnsRow4_1_Input2.tabIndex = "-1";
-    panelContentColumnsRow4_1_Input2.value = "radio_auto";
-    panelContentColumnsRow4_1_Input2.readOnly = true;
-    panelContentColumnsRow4_1_Input2.id = "panelContentColumnsRow4_1_Input2";
-    panelContentColumnsRow4_1_Input2.name = "panelContentColumnsRow4_1_Input2";
-    var panelContentColumnsRow4_1_Label2 = document.createElement("label");
-    panelContentColumnsRow4_1_Label2.className = "vistabbar-panel-button-label-active";
-    panelContentColumnsRow4_1_Label2.title = "panelContentColumnsRow4_1_Label2";
-    panelContentColumnsRow4_1_Label2.formTarget = "panelContentColumnsRow4_1_Input2"
-    panelContentColumnsRow4_1_Label2.innerHTML = "Heat (Eco)";
 
-    var panelContentColumnsRow4_1_Input3 = document.createElement("input");
-    panelContentColumnsRow4_1_Input3.type = "radio";
-    panelContentColumnsRow4_1_Input3.tabIndex = "-1";
-    panelContentColumnsRow4_1_Input3.value = "radio_auto";
-    panelContentColumnsRow4_1_Input3.readOnly = true;
-    panelContentColumnsRow4_1_Input3.id = "panelContentColumnsRow4_1_Input3";
-    panelContentColumnsRow4_1_Input3.name = "panelContentColumnsRow4_1_Input3";
-    var panelContentColumnsRow4_1_Label3 = document.createElement("label");    
-    panelContentColumnsRow4_1_Label3.title = "panelContentColumnsRow4_1_Label3";
-    panelContentColumnsRow4_1_Label3.formTarget = "panelContentColumnsRow4_1_Input3"
-    panelContentColumnsRow4_1_Label3.innerHTML = "Heat";
+    // var panelContentColumnsRow4_1_Input2 = document.createElement("input");
+    // panelContentColumnsRow4_1_Input2.type = "radio";
+    // panelContentColumnsRow4_1_Input2.tabIndex = "-1";
+    // panelContentColumnsRow4_1_Input2.value = "radio_auto";
+    // panelContentColumnsRow4_1_Input2.readOnly = true;
+    // panelContentColumnsRow4_1_Input2.id = "panelContentColumnsRow4_1_Input2";
+    // panelContentColumnsRow4_1_Input2.name = "panelContentColumnsRow4_1_Input2";
+    // var panelContentColumnsRow4_1_Label2 = document.createElement("label");
+    // panelContentColumnsRow4_1_Label2.className = "vistabbar-panel-button-label-active";
+    // panelContentColumnsRow4_1_Label2.title = "panelContentColumnsRow4_1_Label2";
+    // panelContentColumnsRow4_1_Label2.formTarget = "panelContentColumnsRow4_1_Input2"
+    // panelContentColumnsRow4_1_Label2.innerHTML = "Heat (Eco)";
 
-    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input1);
-    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label1);
-    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input2);
-    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label2);
-    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input3);
-    panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label3);
+    // var panelContentColumnsRow4_1_Input3 = document.createElement("input");
+    // panelContentColumnsRow4_1_Input3.type = "radio";
+    // panelContentColumnsRow4_1_Input3.tabIndex = "-1";
+    // panelContentColumnsRow4_1_Input3.value = "radio_auto";
+    // panelContentColumnsRow4_1_Input3.readOnly = true;
+    // panelContentColumnsRow4_1_Input3.id = "panelContentColumnsRow4_1_Input3";
+    // panelContentColumnsRow4_1_Input3.name = "panelContentColumnsRow4_1_Input3";
+    // var panelContentColumnsRow4_1_Label3 = document.createElement("label");
+    // panelContentColumnsRow4_1_Label3.title = "panelContentColumnsRow4_1_Label3";
+    // panelContentColumnsRow4_1_Label3.formTarget = "panelContentColumnsRow4_1_Input3"
+    // panelContentColumnsRow4_1_Label3.innerHTML = "Heat";
 
-    panelContentColumnsRow4.appendChild(panelContentColumnsRow4_1);
+    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input1);
+    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label1);
+    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input2);
+    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label2);
+    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input3);
+    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label3);
+
+    // panelContentColumnsRow4.appendChild(panelContentColumnsRow4_1);
     // panelContentColumns.appendChild(panelContentColumnsRow4);
     // END 4th row
 
 
 
-    panelContent.appendChild(panelContentColumns);
+
 
     /*
      * END panelContentColumns
      */
 
-    var panelBottom = document.createElement("div");
-    panelBottom.className = "vistabbar-panel-heating-bottom";
 
-    var panelBottomColumn = document.createElement("div");
-    panelBottomColumn.className = "vistabbar-panel-row-info-progress";
-    var panelBottomColumInfo = document.createElement("p");
-    panelBottomColumInfo.className = "vistabbar-panel-row-info-value-progress";
-    panelBottomColumInfo.innerText = "test"
-    // Append: panelrow
-    panelBottomColumn.appendChild(panelBottomColumInfo);
-    
-    panelBottom.appendChild(panelContentColumnsRow4_1);
-    panelContent.appendChild(panelBottom);
+
+    // var panelBottomColumn = document.createElement("div");
+    // panelBottomColumn.className = "vistabbar-panel-row-info-progress";
+    // var panelBottomColumInfo = document.createElement("p");
+    // panelBottomColumInfo.className = "vistabbar-panel-row-info-value-progress";
+    // panelBottomColumInfo.innerText = "test"
+    // // Append: panelrow
+    // panelBottomColumn.appendChild(panelBottomColumInfo);
+
+
 
 
     /*
@@ -305,27 +398,69 @@ vis.binds["vistabbar"] = {
     node.appendChild(panelContent);
 
   },
-  addEventListenerToLabel: function(node, clickColor, clickDelay, bid, step) {
+  setStateInc(bid, step) {
+    if (vis.binds.vistabbar.isEditeMode()) return;
+    if (typeof bid === "undefined" || typeof step === "undefined") return;
+
+    var val = Number.parseFloat(vis.states[bid + '.val']);
+    var inc = Number.parseFloat(step);
+
+    vis.setValue(bid, val + inc);
+  },
+  setStateValue(id, value) {
+    if (vis.binds.vistabbar.isEditeMode()) return;
+    if (typeof id === "undefined" || typeof value === "undefined") return;
+
+    vis.setValue(id, value);
+  },
+  addEventListenerTovalue: function (node, clickColor, clickDelay, id, value) {
     var originalBackground = node.style.backgroundColor;
+    var originalClassName = node.className;
+    // var originalText = node.innerHTML;
+    node.addEventListener('touchstart', function (e) {
+      node.style.background = data.clickcolor;
+      e.preventDefault();
+    }, false);
+    node.addEventListener('touchend', function (e) {
+      node.innerHTML = "Push...";
+      node.style.background = originalBackground;
+      vis.binds.vistabbar.setStateValue(id, value);
+      e.preventDefault();
+    }, false);
+    node.addEventListener("click", function (e) {
+      // Simulate click
+      node.innerHTML = "Push...";
+      node.className = "";
+      node.style.backgroundColor = clickColor;
+      setTimeout(() => {
+        node.className = originalClassName;
+        node.style.backgroundColor = originalBackground;
+      }, clickDelay);
+      vis.binds.vistabbar.setStateValue(id, value);
+      e.preventDefault();
+    }, false);
+  },
+  addEventListenerToLabel: function (node, clickColor, clickDelay, bid, step) {
+    var originalBackground = node.style.backgroundColor;
+    var originalClassName = node.className;
     node.addEventListener('touchstart', function (e) {
       node.style.background = data.clickcolor;
       e.preventDefault();
     }, false);
     node.addEventListener('touchend', function (e) {
       node.style.background = originalBackground;
-      // vis.binds.vistabbar.setState(data);
+      vis.binds.vistabbar.setStateInc(bid, step);
       e.preventDefault();
     }, false);
     node.addEventListener("click", function (e) {
-      // vis.binds.vistabbar.setState(data);
-      
       // Simulate click
       node.className = "";
       node.style.backgroundColor = clickColor;
       setTimeout(() => {
-        node.className = "vistabbar-panel-button-label-plus";
+        node.className = originalClassName;
         node.style.backgroundColor = originalBackground;
       }, clickDelay);
+      vis.binds.vistabbar.setStateInc(bid, step);
       e.preventDefault();
     }, false);
   },
@@ -449,18 +584,6 @@ vis.binds["vistabbar"] = {
       });
     }
 
-  },
-  setState2(id) {
-    if (vis.binds.vistabbar.isEditeMode()) return;
-    var tmpVal = vis.states[id + '.val'];
-    if (typeof tmpVal !== "undefined" && typeof tmpVal !== "boolean") {
-      // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite
-      if (tmpVal === data.minvalue) vis.setValue(data.oid1, data.maxvalue);
-      if (tmpVal === data.maxvalue) vis.setValue(data.oid1, data.minvalue);
-    } else {
-      // data value is type of boolean; just use the opposote of the boolean value
-      vis.setValue(data.oid1, !tmpVal);
-    }
   },
   setState(data) {
     if (vis.binds.vistabbar.isEditeMode()) return;
