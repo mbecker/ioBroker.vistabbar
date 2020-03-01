@@ -420,3 +420,7 @@ div.navigationBar div.navBtnCtn.active button {
 /* .vistabbar-panel-heating-bottom > .vistabbar-panel-button > label:hover {
 	background-color: #A2EBA4!important;
 } */
+
+.vistabbar-panel-button > label.vistabbar-panel-button-label-push {
+	background-color: #FFD255!important;
+}

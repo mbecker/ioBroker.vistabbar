@@ -160,7 +160,7 @@ vis.binds["vistabbar"] = {
     if (data.hid4) {
       // Only change value if the value was acknowledged
       vis.states.bind(data.hid4 + ".ack", function (e, newVal, oldVal) {
-        if(newVal === true) {
+        if (newVal === true) {
           panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid4 + '.val'] + data.suffix4;
         }
       });
@@ -290,13 +290,16 @@ vis.binds["vistabbar"] = {
       // Subscribe to tequal to change the button's className based on the value
       if (data.tequal) {
         vis.states.bind(data.tequal + ".ack", function (e, newVal, oldVal) {
-          if(newVal !== true) return;
+          if (newVal !== true) return;
           console.log("data.ack === true");
           var tequalTmp = vis.states[data.tequal + '.val'];
           console.log(tequalTmp);
           for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
             const element = panelContentColumnsRow4_1_nodes[index];
             console.log(element.innerText)
+            if (element.className.includes("vistabbar-panel-button-label-push")) {
+              element.classList.remove("vistabbar-panel-button-label-push");
+            }
             if (element.getAttribute("data-text") === tequalTmp) {
               element.innerText = tequalTmp;
               element.classList.add("vistabbar-panel-button-label-active");
@@ -306,7 +309,7 @@ vis.binds["vistabbar"] = {
           }
         });
         // vis.states.bind(data.tequal + ".val", function (e, newVal, oldVal) {
-          
+
         //   for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
         //     const element = panelContentColumnsRow4_1_nodes[index];
         //     console.log(element.innerHTML);
@@ -418,49 +421,57 @@ vis.binds["vistabbar"] = {
     var originalClassName = node.className;
     // var originalText = node.innerHTML;
     node.addEventListener('touchstart', function (e) {
-      node.style.background = data.clickcolor;
+      node.style.background = clickColor;
       e.preventDefault();
     }, false);
     node.addEventListener('touchend', function (e) {
+      console.log("touchend ...");
       node.innerHTML = "Push...";
-      node.style.background = originalBackground;
+      node.className = "vistabbar-panel-button-label-push"; // originalClassName;
+      node.style.backgroundColor = ""; // originalBackground;
       vis.binds.vistabbar.setStateValue(id, value);
       e.preventDefault();
     }, false);
     node.addEventListener("click", function (e) {
       // Simulate click
+      console.log("Click ...");
       node.innerHTML = "Push...";
       node.className = "";
       node.style.backgroundColor = clickColor;
       setTimeout(() => {
-        node.className = originalClassName;
-        node.style.backgroundColor = originalBackground;
+        node.className = "vistabbar-panel-button-label-push"; // originalClassName;
+        node.style.backgroundColor = ""; // originalBackground;
+        vis.binds.vistabbar.setStateValue(id, value);
       }, clickDelay);
-      vis.binds.vistabbar.setStateValue(id, value);
+
       e.preventDefault();
     }, false);
   },
   addEventListenerToLabel: function (node, clickColor, clickDelay, bid, step) {
+
     var originalBackground = node.style.backgroundColor;
     var originalClassName = node.className;
     node.addEventListener('touchstart', function (e) {
-      node.style.background = data.clickcolor;
+      node.className = "";
+      node.style.background = clickColor;
       e.preventDefault();
     }, false);
     node.addEventListener('touchend', function (e) {
+      node.className = originalClassName;
       node.style.background = originalBackground;
       vis.binds.vistabbar.setStateInc(bid, step);
       e.preventDefault();
     }, false);
     node.addEventListener("click", function (e) {
+      console.log("Click ...");
       // Simulate click
       node.className = "";
       node.style.backgroundColor = clickColor;
       setTimeout(() => {
         node.className = originalClassName;
         node.style.backgroundColor = originalBackground;
+        vis.binds.vistabbar.setStateInc(bid, step);
       }, clickDelay);
-      vis.binds.vistabbar.setStateInc(bid, step);
       e.preventDefault();
     }, false);
   },
