@@ -420,10 +420,10 @@ vis.binds["vistabbar"] = {
     var originalBackground = node.style.backgroundColor;
     var originalClassName = node.className;
     // var originalText = node.innerHTML;
-    node.addEventListener('touchstart', function (e) {
-      node.style.background = clickColor;
-      e.preventDefault();
-    }, false);
+    // node.addEventListener('touchstart', function (e) {
+    //   node.style.background = clickColor;
+    //   e.preventDefault();
+    // }, false);
     // node.addEventListener('touchend', function (e) {
     //   console.log("touchend ...");
     //   node.innerHTML = "Push...";
@@ -451,11 +451,11 @@ vis.binds["vistabbar"] = {
 
     var originalBackground = node.style.backgroundColor;
     var originalClassName = node.className;
-    node.addEventListener('touchstart', function (e) {
-      node.className = "";
-      node.style.background = clickColor;
-      e.preventDefault();
-    }, false);
+    // node.addEventListener('touchstart', function (e) {
+    //   node.className = "";
+    //   node.style.background = clickColor;
+    //   e.preventDefault();
+    // }, false);
     // node.addEventListener('touchend', function (e) {
     //   node.className = originalClassName;
     //   node.style.background = originalBackground;
@@ -539,10 +539,10 @@ vis.binds["vistabbar"] = {
 
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
-    node.addEventListener('touchstart', function (e) {
-      panelColumns.style.background = data.clickcolor;
-      e.preventDefault();
-    }, false);
+    // node.addEventListener('touchstart', function (e) {
+    //   panelColumns.style.background = data.clickcolor;
+    //   e.preventDefault();
+    // }, false);
     // node.addEventListener('touchend', function (e) {
     //   panelColumns.style.background = nodeOriginalBackground;
     //   vis.binds.vistabbar.setState(data);
