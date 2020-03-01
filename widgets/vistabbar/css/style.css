@@ -400,23 +400,23 @@ div.navigationBar div.navBtnCtn.active button {
     width: 50%;
 }
 
-.vistabbar-panel-button > label:hover {
+/* .vistabbar-panel-button > label:hover {
 	background-color: #00c9ff!important;
-}
+} */
 
 
 .vistabbar-panel-button > label.vistabbar-panel-button-label-plus {
 	background-color: #22ABF5!important;
 }
 
-.vistabbar-panel-button > label.vistabbar-panel-button-label-plus:hover {
+/* .vistabbar-panel-button > label.vistabbar-panel-button-label-plus:hover {
 	background-color: #00c9ff!important;
-}
+} */
 
 .vistabbar-panel-button > label.vistabbar-panel-button-label-active {
 	background-color: rgba(157, 211, 174, 1)!important;
 }
 
-.vistabbar-panel-heating-bottom > .vistabbar-panel-button > label:hover {
+/* .vistabbar-panel-heating-bottom > .vistabbar-panel-button > label:hover {
 	background-color: #A2EBA4!important;
-}
+} */
