@@ -206,8 +206,8 @@ AppTabBar.Tabbar = function(nodeId, options) {
 
 		//RENDER
 		//Render styles
-		self.tabs.tab_selected_classes = 'navBtnCtn'; // active tb-col-' + cols;
-		self.tabs.tab_unselected_classes = 'navBtnCtn'; // tb-col-' + cols;
+		self.tabs.tab_selected_classes = 'navBtnCtn active'; // Removed because width of columns are calculated and added wit inline styles: tb-col-' + cols;
+		self.tabs.tab_unselected_classes = 'navBtnCtn'; // Removed because width of columns are calculated and added wit inline styles: tb-col-' + cols;
 		
 
 		//Empty div
