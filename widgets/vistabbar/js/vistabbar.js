@@ -372,8 +372,8 @@ vis.binds["vistabbar"] = {
           for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
             const element = panelContentColumnsRow4_1_nodes[index];
             console.log(element.innerText)
-            if (element.className.includes("vistabbar-panel-button-label-push")) {
-              element.classList.remove("vistabbar-panel-button-label-push");
+            if (element.className.includes("vistabbar-push")) {
+              element.classList.remove("vistabbar-push");
             }
             if (element.getAttribute("data-text") === tequalTmp) {
               element.innerText = tequalTmp;
@@ -502,7 +502,7 @@ vis.binds["vistabbar"] = {
     // node.addEventListener('touchend', function (e) {
     //   console.log("touchend ...");
     //   node.innerHTML = "Push...";
-    //   node.className = "vistabbar-panel-button-label-push"; // originalClassName;
+    //   node.className = "vistabbar-push"; // originalClassName;
     //   node.style.backgroundColor = ""; // originalBackground;
     //   vis.binds.vistabbar.setStateValue(id, value);
     //   e.preventDefault();
@@ -514,7 +514,7 @@ vis.binds["vistabbar"] = {
       node.className = "";
       node.style.backgroundColor = clickColor;
       setTimeout(() => {
-        node.className = "vistabbar-push"; // Set the class to show the status of "pushing" the command to the device (user feedback)
+        node.classList.add("vistabbar-panel-button-label-active"); // Set the class to show the status of "pushing" the command to the device (user feedback)
         node.style.backgroundColor = ""; // That the background of the class in the line above works
         vis.binds.vistabbar.setStateValue(id, value);
       }, clickDelay);
@@ -616,6 +616,7 @@ vis.binds["vistabbar"] = {
     var nodeOriginalBackground = panelColumnHeading.style.background;
     vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
       panelColumns.style.background = nodeOriginalBackground;
+      node.classList.remove("vistabbar-push");
     });
     node.addEventListener("click", function (e) {
       vis.binds.vistabbar.setState(data);
@@ -623,7 +624,7 @@ vis.binds["vistabbar"] = {
       panelColumns.style.background = data.clickcolor;
       setTimeout(() => {
         // panelColumns.style.background = nodeOriginalBackground;
-        node.className = "vistabbar-push"; // Set the class to show the status of "pushing" the command to the device (user feedback)
+        node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
         node.style.backgroundColor = ""; // That the background of the class in the line above works
       }, data.clickdelay);
       e.preventDefault();
