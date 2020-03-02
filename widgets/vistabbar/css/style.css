@@ -1,11 +1,14 @@
 /* Style your widget here */
-.vistabbar-class {
-	font-style: italic;
+
+/* Color to show that the command was "pushed" to the device; waiting for acknwoledge */
+.vistabbar-push {
+	background-color: #FFD255!important;
 }
 
 .vistabbar-height-32px {
 	max-height: 32px;
-    height: 32px;
+	height: 32px;
+	min-height: 32px;
 }
 
 .vistabbar-height-20 {
@@ -18,11 +21,6 @@
 
 .vistabbar-height-100 {
 	height: 100%;
-}
-
-.vistabbar-height-32px {
-	min-height: 32px;
-	height: 32px;
 }
 
 .padding-8 {
@@ -436,7 +434,3 @@ div.navigationBar div.navBtnCtn.active button {
 /* .vistabbar-panel-heating-bottom > .vistabbar-panel-button > label:hover {
 	background-color: #A2EBA4!important;
 } */
-
-.vistabbar-panel-button > label.vistabbar-panel-button-label-push {
-	background-color: #FFD255!important;
-}

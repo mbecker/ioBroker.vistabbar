@@ -95,12 +95,14 @@ vis.binds["vistabbar"] = {
     // 2.1 - Icon
     var panelColumnIcon = document.createElement("div");
     panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
-    var icon = document.createElement("i");
+    if(typeof data.iconshow !== "undefined" && data.iconshow) {
+      var icon = document.createElement("i");
     icon.className = "material-icons";
     icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
     icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
     panelContentColumns.appendChild(icon);
-
+    }
+    
     // 3. - Bottom
     var panelBottom = document.createElement("div");
     panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
@@ -122,7 +124,9 @@ vis.binds["vistabbar"] = {
     node.appendChild(panelContent);
 
     // Resize
-    icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: containe rheight 140px - font height 48px
+    if(typeof data.iconshow !== "undefined" && data.iconshow) {
+      icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
+    }
     panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
     panelRowInfo.style.width = vis.binds.vistabbar.getProgress(powerObjectVal, data) + "%";
 
@@ -473,7 +477,7 @@ vis.binds["vistabbar"] = {
 
   },
   setStateInc(bid, step) {
-    if (vis.binds.vistabbar.isEditeMode()) return;
+    if (vis.binds.vistabbar.isEditMode()) return;
     if (typeof bid === "undefined" || typeof step === "undefined") return;
 
     var val = Number.parseFloat(vis.states[bid + '.val']);
@@ -482,7 +486,7 @@ vis.binds["vistabbar"] = {
     vis.setValue(bid, val + inc);
   },
   setStateValue(id, value) {
-    if (vis.binds.vistabbar.isEditeMode()) return;
+    if (vis.binds.vistabbar.isEditMode()) return;
     if (typeof id === "undefined" || typeof value === "undefined") return;
 
     vis.setValue(id, value);
@@ -510,8 +514,8 @@ vis.binds["vistabbar"] = {
       node.className = "";
       node.style.backgroundColor = clickColor;
       setTimeout(() => {
-        node.className = "vistabbar-panel-button-label-push"; // originalClassName;
-        node.style.backgroundColor = ""; // originalBackground;
+        node.className = "vistabbar-push"; // Set the class to show the status of "pushing" the command to the device (user feedback)
+        node.style.backgroundColor = ""; // That the background of the class in the line above works
         vis.binds.vistabbar.setStateValue(id, value);
       }, clickDelay);
 
@@ -610,31 +614,17 @@ vis.binds["vistabbar"] = {
 
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
-    // node.addEventListener('touchstart', function (e) {
-    //   panelColumns.style.background = data.clickcolor;
-    //   e.preventDefault();
-    // }, false);
-    // node.addEventListener('touchend', function (e) {
-    //   panelColumns.style.background = nodeOriginalBackground;
-    //   vis.binds.vistabbar.setState(data);
-    //   e.preventDefault();
-    // }, false);
-    // node.addEventListener('mousedown', function(e) {
-    //   panelColumnHeading.style.background = data.clickcolor;
-    //   e.preventDefault();
-    // }, false);
-    // node.addEventListener('mouseup', function(e) {
-    //   panelColumnHeading.style.background = nodeOriginalBackground;
-    //   vis.binds.vistabbar.setState(data);
-    //   e.preventDefault();
-    // }, false);
+    vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
+      panelColumns.style.background = nodeOriginalBackground;
+    });
     node.addEventListener("click", function (e) {
       vis.binds.vistabbar.setState(data);
-
       // Simulate click
       panelColumns.style.background = data.clickcolor;
       setTimeout(() => {
-        panelColumns.style.background = nodeOriginalBackground;
+        // panelColumns.style.background = nodeOriginalBackground;
+        node.className = "vistabbar-push"; // Set the class to show the status of "pushing" the command to the device (user feedback)
+        node.style.backgroundColor = ""; // That the background of the class in the line above works
       }, data.clickdelay);
       e.preventDefault();
     }, false);
@@ -668,7 +658,7 @@ vis.binds["vistabbar"] = {
 
   },
   setState(data) {
-    if (vis.binds.vistabbar.isEditeMode()) return;
+    if (vis.binds.vistabbar.isEditMode()) return;
     var tmpVal = vis.states[data.oid1 + '.val'];
     if (typeof tmpVal !== "undefined" && typeof tmpVal !== "boolean") {
       // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite
@@ -786,7 +776,7 @@ vis.binds["vistabbar"] = {
 
     // TODO: Any existing solution to detect if we are in the vis editor?
     // Check that the current widget is in the editor or main index.html page
-    if (vis.binds.vistabbar.isEditeMode()) return;
+    if (vis.binds.vistabbar.isEditMode()) return;
 
     // Go to the current view
     // The current view has a special url format like: http://pi.local:8082/vis/index.html#01_TV_K%C3%BCche
@@ -806,7 +796,7 @@ vis.binds["vistabbar"] = {
     // console.log(defaultValues.tab);
     // console.log(defaultValues.tabs);
   },
-  isEditeMode: function () {
+  isEditMode: function () {
     // "/vis/index.html" OR "/vis/edit.html"
     if (window.location.pathname.includes("edit")) {
       return true;
