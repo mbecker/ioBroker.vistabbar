@@ -138,23 +138,11 @@
   </div>
 </script>
 
-<!-- Panel -->
-
-<script id="tplVistabbarPanel" type="text/ejs" class="vis-tpl" data-vis-prev='<img src="widgets/vistabbar/images/panel_preview.png"></img>' 
-  data-vis-attrs="oid/id;title/text" data-vis-set="vistabbar" data-vis-type="static,helper" data-vis-name="Panel">
-    <div class="vis-widget <%== this.data.attr('class') %> vistabbar-panel" id="<%= this.data.attr('wid') %>">
-        <%
-      vis.binds.vistabbar.createPanel(this.data.wid, this.view, this.data, this.style);
-      %>
-      </div>
-      
-</script>  
-
 
 <!-- Panel Progress -->
 <script id="tplVistabbarPanelProgress" type="text/ejs" class="vis-tpl" data-vis-prev='<img src="widgets/vistabbar/images/panel_preview.png"></img>' 
   data-vis-attrs="oid(1-2)/id;title/text;prefix/text;suffix/text;numberdecimals[2]/number;minvalue[0]/number;maxvalue[100]/number;iconon[power]/select,power,power_off,wb_sunny,highlight_off;iconoff[power_off]/select,select,power,power_off,wb_sunny,highlight_off;iconcoloron[#9dd3ae]/color;iconcoloroff[rgb(117, 120, 136)]/color;clickmax[true]/text;clickmin[false]/text;clickcolor[rgba(117, 120, 136, 0.4)]/color;clickdelay[50]/number;"
-  data-vis-set="vistabbar" data-vis-type="static,helper" data-vis-name="Panel Progress">
+  data-vis-set="vistabbar" data-vis-type="ctrl,val,button" data-vis-name="Panel Progress">
     <div class="vis-widget <%== this.data.attr('class') %> vistabbar-panel" id="<%= this.data.attr('wid') %>">
     <%
         vis.binds.vistabbar.createPanelProgress(this.data.wid, this.view, this.data, this.style);
@@ -165,10 +153,9 @@
 
 
 <!-- Panel Heating  -->
-<script id="tplVistabbarPanelHeating" type="text/ejs" class="vis-
-tpl" data-vis-prev='<img src="widgets/vistabbar/images/panel_preview.png"></img>' 
+<script id="tplVistabbarPanelHeating" type="text/ejs" class="vis-tpl" data-vis-prev='<img src="widgets/vistabbar/images/panel_preview.png"></img>' 
     data-vis-attrs="oid(1-2)/id;title/text;text(1-5)/text;hid(1-5)/id;suffix(1-5)/text;bid(1-2)/id;step(1-2)[0.5]/number,-100,100,0.5;tid/id;tvalues/text;tequal/id;clickcolor[rgba(117, 120, 136, 0.4)]/color;clickdelay[50]/number;"
-    data-vis-set="vistabbar" data-vis-type="static,helper" data-vis-name="Panel Heating">
+    data-vis-set="vistabbar" data-vis-type="ctrl,val,button" data-vis-name="Panel Heating">
         <div class="vis-widget <%== this.data.attr('class') %> vistabbar-panel" id="<%= this.data.attr('wid') %>" style="">
             <%
                 vis.binds.vistabbar.createPanelHeating(this.data.wid, this.view, this.data, this.style);

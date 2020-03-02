@@ -632,39 +632,6 @@ vis.binds["vistabbar"] = {
     if (typeof val !== "number") return data.prefix + vis.binds.vistabbar.getBooleanText(val) + data.suffix;
     return data.prefix + Number.parseFloat(val).toFixed(data.numberdecimals) + data.suffix;
   },
-  createPanel: function (widgetID, view, data, style) {
-    var $div = $("#" + widgetID);
-    // if nothing found => wait
-    if (!$div.length) {
-      return setTimeout(function () {
-        vis.binds["vistabbar"].createPanel(widgetID, view, data, style);
-      }, 100);
-    }
-
-    var oidVal = vis.states[data.oid + '.val'];
-    var text = '';
-    text += '<div class="vistabbar-panel-column" >';
-    text += '<!-- <div class="vistabbar-panel-heading"></div> --> ';
-    text += '<h3 class="vistabbar-panel-heading">' + data.title + '</h3> ';
-    text += '</div>';
-    text += '<div class="vistabbar-panel-row">';
-    text += '<div class="vistabbar-panel-row-info">';
-    text += '<p id="vistabbar-panel-row-info-value" class="' + vis.binds.vistabbar.getBooleanClass(oidVal) + '">';
-    text += vis.binds.vistabbar.getBooleanText(oidVal);
-    //    <!-- <%= this.data.attr('info') %><code><%= this.data.attr('code') %></code> -->
-    text += '</p>';
-    text += '</div>';
-    text += '</div>';
-
-    $("#" + widgetID).html(text);
-
-    // subscribe on updates of value
-    if (data.oid) {
-      vis.states.bind(data.oid + ".val", function (e, newVal, oldVal) {
-        vis.binds.vistabbar.addTextAndToggleClasses($div, newVal);
-      });
-    }
-  },
   getBooleanText: function (val) {
     if (typeof val !== "boolean") return val;
     return val ? "on" : "off";
