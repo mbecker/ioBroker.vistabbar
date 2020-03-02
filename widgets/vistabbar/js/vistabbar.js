@@ -615,8 +615,12 @@ vis.binds["vistabbar"] = {
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
     vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
-      panelColumns.style.background = nodeOriginalBackground;
       node.classList.remove("vistabbar-push");
+      panelColumns.style.background = nodeOriginalBackground;
+      // Update the icon
+      var switchObjectValTmp = vis.states[data.oid1 + '.val'];
+      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
+        icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
     });
     node.addEventListener("click", function (e) {
       vis.binds.vistabbar.setState(data);
@@ -650,12 +654,12 @@ vis.binds["vistabbar"] = {
       });
     }
 
-    if (data.oid1) {
-      vis.states.bind(data.oid1 + ".val", function (e, newVal, oldVal) {
-        icon.style.color = vis.binds.vistabbar.getIconColor(newVal, data.iconcoloron, data.iconcoloroff);
-        icon.innerHTML = vis.binds.vistabbar.getIcon(newVal, data.iconon, data.iconoff);
-      });
-    }
+    // if (data.oid1) {
+    //   vis.states.bind(data.oid1 + ".val", function (e, newVal, oldVal) {
+    //     icon.style.color = vis.binds.vistabbar.getIconColor(newVal, data.iconcoloron, data.iconcoloroff);
+    //     icon.innerHTML = vis.binds.vistabbar.getIcon(newVal, data.iconon, data.iconoff);
+    //   });
+    // }
 
   },
   setState(data) {
