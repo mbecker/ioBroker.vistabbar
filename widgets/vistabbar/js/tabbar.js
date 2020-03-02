@@ -71,12 +71,12 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		var numTabs = self.tabs.tabs_objects.length;
 		var columns = (12 / numTabs);
 
-		var validColumns = [2,3,4,6,12];
-		if (validColumns.indexOf(columns) == -1) {
-			throw 'calculateColumns invalid_columns';
-		}
+		// var validColumns = [2,3,4,5,6,12];
+		// if (validColumns.indexOf(columns) == -1) {
+		// 	throw 'calculateColumns invalid_columns';
+		// }
 
-		self.calculation.columnsCalculated = columns;
+		self.calculation.columnsCalculated = numTabs;
 		//	2,3,4,6,12
 
 	}
@@ -203,11 +203,12 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		//PREPARE DATA
 		self.calculation.calculateColumns();
 		var cols = self.calculation.columnsCalculated;
-
+		
 		//RENDER
 		//Render styles
-		self.tabs.tab_selected_classes = 'navBtnCtn active tb-col-' + cols;
-		self.tabs.tab_unselected_classes = 'navBtnCtn tb-col-' + cols;
+		self.tabs.tab_selected_classes = 'navBtnCtn'; // active tb-col-' + cols;
+		self.tabs.tab_unselected_classes = 'navBtnCtn'; // tb-col-' + cols;
+		
 
 		//Empty div
 		self.obj.innerHTML = '';
@@ -226,7 +227,7 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		//Add tabs
 		for (var i = 0; i < self.tabs.tabs_objects.length; i++) {
 			var tab = self.tabs.tabs_objects[i];
-			var tabCode = tab.renderCode();
+			var tabCode = tab.renderCode(cols);
 
 			bar_obj.appendChild(tabCode);
 
@@ -324,11 +325,12 @@ AppTabBar.Tab = function(id, name, icon, options, tabbar) {
 
 	//FUNCTIONS
 
-	this.renderCode = function() {
+	this.renderCode = function(numberOfCols) {
 
 
 		var tabCode = document.createElement('div');
 		tabCode.setAttribute('class', self.tabbar.tabs.tab_unselected_classes);
+		tabCode.style.width = 100 / numberOfCols + '%';
 
 		var btnContent = '' +
 			'<button data-tab="' + self.id + '" type="button" class="navBtn btn btn-default">' +
