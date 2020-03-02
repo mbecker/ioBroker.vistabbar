@@ -56,7 +56,7 @@ vis.binds["vistabbar"] = {
       });
     }
   },
-  createPanelTmp: function(widgetID, view, data, style) {
+  createPanelTmp: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
 
     // if nothing found => wait
@@ -95,14 +95,14 @@ vis.binds["vistabbar"] = {
     // 2.1 - Icon
     var panelColumnIcon = document.createElement("div");
     panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
-    if(typeof data.iconshow !== "undefined" && data.iconshow) {
+    if (typeof data.iconshow !== "undefined" && data.iconshow) {
       var icon = document.createElement("i");
-    icon.className = "material-icons";
-    icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
-    icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
-    panelContentColumns.appendChild(icon);
+      icon.className = "material-icons";
+      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
+      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
+      panelContentColumns.appendChild(icon);
     }
-    
+
     // 3. - Bottom
     var panelBottom = document.createElement("div");
     panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
@@ -124,7 +124,7 @@ vis.binds["vistabbar"] = {
     node.appendChild(panelContent);
 
     // Resize
-    if(typeof data.iconshow !== "undefined" && data.iconshow) {
+    if (typeof data.iconshow !== "undefined" && data.iconshow) {
       icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
     }
     panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
@@ -615,21 +615,26 @@ vis.binds["vistabbar"] = {
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
     vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
-      node.classList.remove("vistabbar-push");
-      panelColumns.style.background = nodeOriginalBackground;
+
       // Update the icon
       var switchObjectValTmp = vis.states[data.oid1 + '.val'];
       icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
-        icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
+      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
+
+      // Update the classe and remove push indication
+      node.classList.remove("vistabbar-push");
+      panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
-      vis.binds.vistabbar.setState(data);
+      
       // Simulate click
       panelColumns.style.background = data.clickcolor;
       setTimeout(() => {
         // panelColumns.style.background = nodeOriginalBackground;
         node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
         node.style.backgroundColor = ""; // That the background of the class in the line above works
+
+        vis.binds.vistabbar.setState(data);
       }, data.clickdelay);
       e.preventDefault();
     }, false);
