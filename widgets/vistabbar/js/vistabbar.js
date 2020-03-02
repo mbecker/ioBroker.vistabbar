@@ -56,6 +56,77 @@ vis.binds["vistabbar"] = {
       });
     }
   },
+  createPanelTmp: function(widgetID, view, data, style) {
+    var node = document.getElementById(widgetID);
+
+    // if nothing found => wait
+    if (!node) {
+      return setTimeout(function () {
+        vis.binds["vistabbar"].createPanelTmp(widgetID, view, data, style);
+      }, 100);
+    }
+
+    // START DATA
+    // TODO: Check the following prams: data.title
+
+    var switchObjectVal = vis.states[data.oid1 + '.val'];
+    var powerObjectVal = vis.states[data.oid2 + '.val'];
+
+    // END DATA
+
+    var panelContent = document.createElement("div");
+    panelContent.style.flexDirection = "column";
+    panelContent.style.display = "flex";
+    panelContent.style.height = "100%";
+
+    // 3. - Header
+    var panelContentHeading = document.createElement("div");
+    panelContentHeading.className = "padding-8 vistabbar-panel-column vistabbar-height-32px";
+    // 3.1. - Headline (text)
+    var heading = document.createElement("h3")
+    heading.className = "vistabbar-panel-heading";
+    heading.innerText = data.title;
+    panelContentHeading.appendChild(heading);
+
+    // 2. - Content
+    var panelContentColumns = document.createElement("div");
+    panelContentColumns.className = "vistabbar-panel-column vistabbar-panel-content";
+    panelContentColumns.style.justifyContent = "flex-start"
+    // 2.1 - Icon
+    var panelColumnIcon = document.createElement("div");
+    panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
+    var icon = document.createElement("i");
+    icon.className = "material-icons";
+    icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
+    icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
+    panelContentColumns.appendChild(icon);
+
+    // 3. - Bottom
+    var panelBottom = document.createElement("div");
+    panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
+    // 3. - Progress    
+    var panelRowInfo = document.createElement("div");
+    panelRowInfo.className = "vistabbar-panel-row-info-progress";
+    var panelRowInfoP = document.createElement("p");
+    panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
+    panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(powerObjectVal, data);;
+    // Append: panelrow
+    panelRowInfo.appendChild(panelRowInfoP);
+    panelBottom.appendChild(panelRowInfo);
+
+
+
+    panelContent.appendChild(panelContentHeading);
+    panelContent.appendChild(panelContentColumns);
+    panelContent.appendChild(panelBottom);
+    node.appendChild(panelContent);
+
+    // Resize
+    icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: containe rheight 140px - font height 48px
+    panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
+    panelRowInfo.style.width = vis.binds.vistabbar.getProgress(powerObjectVal, data) + "%";
+
+  },
   createPanelHeating: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
 

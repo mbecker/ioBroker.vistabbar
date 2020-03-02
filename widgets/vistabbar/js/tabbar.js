@@ -69,7 +69,7 @@ AppTabBar.Tabbar = function(nodeId, options) {
 
 	this.calculation.calculateColumns = function() {
 		var numTabs = self.tabs.tabs_objects.length;
-		var columns = (12 / numTabs);
+		// var columns = (12 / numTabs);
 
 		// var validColumns = [2,3,4,5,6,12];
 		// if (validColumns.indexOf(columns) == -1) {
@@ -203,7 +203,7 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		//PREPARE DATA
 		self.calculation.calculateColumns();
 		var cols = self.calculation.columnsCalculated;
-		
+
 		//RENDER
 		//Render styles
 		self.tabs.tab_selected_classes = 'navBtnCtn'; // active tb-col-' + cols;
