@@ -71,6 +71,15 @@ vis.binds["vistabbar"] = {
 
     var switchObjectVal = vis.states[data.oid1 + '.val'];
     var powerObjectVal = vis.states[data.oid2 + '.val'];
+    // Set the font-size of the heading/h3 if the param exists and includes either "px" or "%"
+    var headingFontSize = (
+      typeof data.headingFontSize !== "undefined" &&
+      data.headingFontSize !== null &&
+      (
+        data.headingFontSize.includes("px") ||
+        data.headingFontSize.includes("%")
+      )) ? data.headingFontSize : "1.4em";
+
 
     // END DATA
 
@@ -85,6 +94,7 @@ vis.binds["vistabbar"] = {
     // 3.1. - Headline (text)
     var heading = document.createElement("h3")
     heading.className = "vistabbar-panel-heading";
+    heading.style.fontSize = headingFontSize;
     heading.innerText = data.title;
     panelContentHeading.appendChild(heading);
 
@@ -626,7 +636,7 @@ vis.binds["vistabbar"] = {
       panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
-      
+
       // Simulate click
       panelColumns.style.background = data.clickcolor;
       setTimeout(() => {
