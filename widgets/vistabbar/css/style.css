@@ -140,10 +140,45 @@ div.navigationBar div.navBtnCtn.active button {
 	background-color: #22adf6 !important;
 }
 
+/* Notification Panel */
+.vistabbar-notification-panel {
+	display: none;
+	position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background: yellow;
+    text-align: center;
+    color: #f2f4ff;
+    background-color: #7a65f2;
+    border-color: #7a65f2;
+    font-family: Roboto,Helvetica,Arial,Tahoma,Verdana,sans-serif;
+    border-style: solid;
+    border-width: 2px;
+    transition: background-color .25s ease,border-color .25s ease,box-shadow .25s ease,color .25s ease;
+    outline: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    padding: 0 9px;
+}
 
 .vistabbar-green {
 	color: #9dd3ae !important;
 }
+.vistabbar-background-green {
+	background-color: #9dd3ae !important;
+	border-color: #9dd3ae !important;
+}
+.vistabbar-background-red {
+	background-color: #ff8564 !important;
+	border-color: #ff8564 !important;
+}
+.vistabbar-background-purple {
+	background-color: #7a65f2 !important;
+	border-color: #7a65f2;
+}
+
 
 .vistabbar-panel {
 	cursor: pointer;

@@ -48,6 +48,8 @@ AppTabBar.Tabbar = function(nodeId, options) {
 		// var tabbarObj = node;
 
 		self.tabbar_spacer = document.createElement('div');
+		self.tabbar_spacer.id = "vistabbar-notification";
+		self.tabbar_spacer.className = "vistabbar-notification-panel";
 		var div_tabbar = document.createElement('div');
 
 		self.node.appendChild(self.tabbar_spacer);

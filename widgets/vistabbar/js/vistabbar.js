@@ -14,6 +14,12 @@ if ('addEventListener' in document) {
   }, false);
 }
 
+var VISTABBAR = {
+  SUCCESS: 1,
+  ERROR: 2,
+  INFO: 3,
+};
+
 // add translations for edit mode
 $.get("adapter/vistabbar/words.js", function (script) {
   let translation = script.substring(script.indexOf("{"), script.length);
@@ -206,19 +212,27 @@ vis.binds["vistabbar"] = {
     // 1st row - right - right
     var panelContentColumnsRow1_2_2 = document.createElement("div");
     var panelContentColumnsRow1_2_2_data2 = document.createElement("p");
-    panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
+    var panelContentColumnsRow1_2_2_data2_span1 = document.createElement("span");
+    panelContentColumnsRow1_2_2_data2_span1.innerText = vis.states[data.hid2 + '.val'] + data.suffix2;
+    var panelContentColumnsRow1_2_2_data2_span2 = document.createElement("span");
+    panelContentColumnsRow1_2_2_data2_span2.innerText = vis.states[data.hid3 + '.val'] + data.suffix3;
+
+
+    // panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
+    panelContentColumnsRow1_2_2_data2.appendChild(panelContentColumnsRow1_2_2_data2_span1);
+    panelContentColumnsRow1_2_2_data2.appendChild(panelContentColumnsRow1_2_2_data2_span2);
     panelContentColumnsRow1_2_2.appendChild(panelContentColumnsRow1_2_2_data2);
     panelContentColumnsRow1_2.appendChild(panelContentColumnsRow1_2_2);
     if (data.hid2) {
       vis.states.bind(data.hid2 + ".val", function (e, newVal, oldVal) {
-        panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
+        panelContentColumnsRow1_2_2_data2_span1.innerText = newVal + data.suffix2; //  + vis.states[data.hid3 + '.val'] + data.suffix3;
       });
     }
-    if (data.hid3) {
-      vis.states.bind(data.hid3 + ".val", function (e, newVal, oldVal) {
-        panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
-      });
-    }
+    // TODO: Subscribe / bind to .ack to show only acknowledged values
+    vis.states.bind(data.hid3 + ".val", function (e, newVal, oldVal) {
+      vis.binds.vistabbar.showNotification(`New temp ${newVal} ack for: ${data.title}`, VISTABBAR.SUCCESS);
+      panelContentColumnsRow1_2_2_data2_span2.innerText = newVal + data.suffix3;
+    });
 
 
     panelContentColumnsRow1.appendChild(panelContentColumnsRow1_2);
@@ -302,7 +316,7 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow3_1_Label1_Icon.className = "material-icons";;
     panelContentColumnsRow3_1_Label1_Icon.innerText = "remove";
     panelContentColumnsRow3_1_Label1.appendChild(panelContentColumnsRow3_1_Label1_Icon);
-    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label1, data.clickcolor, data.clickdelay, data.bid1, data.step1);
+    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label1, data.clickcolor, data.clickdelay, data.bid1, data.step1, data.title);
     // BUtton 2
     var panelContentColumnsRow3_1_Input2 = document.createElement("input");
     panelContentColumnsRow3_1_Input2.type = "radio";
@@ -316,7 +330,7 @@ vis.binds["vistabbar"] = {
     panelContentColumnsRow3_1_Label2.title = "panelContentColumnsRow3_1_Label2";
     panelContentColumnsRow3_1_Label2.formTarget = "panelContentColumnsRow3_1_Input2"
     // var panelContentColumnsRow3_1_Label2_originalBackground = panelContentColumnsRow3_1_Label2.style.backgroundColor;
-    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label2, data.clickcolor, data.clickdelay, data.bid2, data.step2);
+    vis.binds.vistabbar.addEventListenerToLabel(panelContentColumnsRow3_1_Label2, data.clickcolor, data.clickdelay, data.bid2, data.step2, data.title);
 
     var panelContentColumnsRow3_1_Label2_Icon = document.createElement("i");
     panelContentColumnsRow3_1_Label2_Icon.className = "material-icons";;
@@ -362,7 +376,7 @@ vis.binds["vistabbar"] = {
         panelContentColumnsRow4_1_Label1.formTarget = "panelContentColumnsRow4_1_Input_" + element;
         panelContentColumnsRow4_1_Label1.innerHTML = element;
         panelContentColumnsRow4_1_Label1.setAttribute("data-text", element); // Set data attribute "data-text" to change the buttons value for sending command to "Push" and then set back to iriginal text
-        vis.binds.vistabbar.addEventListenerTovalue(panelContentColumnsRow4_1_Label1, data.clickcolor, data.clickdelay, data.tid, element);
+        vis.binds.vistabbar.addEventListenerTovalue(panelContentColumnsRow4_1_Label1, data.clickcolor, data.clickdelay, data.tid, element, data.title);
 
         // Add elements to array
         // panelContentColumnsRow4_1_nodes.push(panelContentColumnsRow4_1_Input1);
@@ -376,35 +390,24 @@ vis.binds["vistabbar"] = {
       if (data.tequal) {
         vis.states.bind(data.tequal + ".ack", function (e, newVal, oldVal) {
           if (newVal !== true) return;
-          console.log("data.ack === true");
+          // console.log("data.ack === true");
           var tequalTmp = vis.states[data.tequal + '.val'];
-          console.log(tequalTmp);
+          // console.log(tequalTmp);
           for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
             const element = panelContentColumnsRow4_1_nodes[index];
-            console.log(element.innerText)
+            // console.log(element.innerText)
             if (element.className.includes("vistabbar-push")) {
               element.classList.remove("vistabbar-push");
             }
             if (element.getAttribute("data-text") === tequalTmp) {
               element.innerText = tequalTmp;
               element.classList.add("vistabbar-panel-button-label-active");
+              vis.binds.vistabbar.showNotification(`New modus ${tequalTmp} ack for: ${data.title}`, VISTABBAR.SUCCESS);
             } else {
               element.classList.remove("vistabbar-panel-button-label-active");
             }
           }
         });
-        // vis.states.bind(data.tequal + ".val", function (e, newVal, oldVal) {
-
-        //   for (let index = 0; index < panelContentColumnsRow4_1_nodes.length; index++) {
-        //     const element = panelContentColumnsRow4_1_nodes[index];
-        //     console.log(element.innerHTML);
-        //     if (element.innerHTML === newVal) {
-        //       element.classList.add("vistabbar-panel-button-label-active");
-        //     } else {
-        //       element.classList.remove("vistabbar-panel-button-label-active");
-        //     }
-        //   }
-        // });
       }
 
 
@@ -501,38 +504,23 @@ vis.binds["vistabbar"] = {
 
     vis.setValue(id, value);
   },
-  addEventListenerTovalue: function (node, clickColor, clickDelay, id, value) {
-    var originalBackground = node.style.backgroundColor;
-    var originalClassName = node.className;
-    // var originalText = node.innerHTML;
-    // node.addEventListener('touchstart', function (e) {
-    //   node.style.background = clickColor;
-    //   e.preventDefault();
-    // }, false);
-    // node.addEventListener('touchend', function (e) {
-    //   console.log("touchend ...");
-    //   node.innerHTML = "Push...";
-    //   node.className = "vistabbar-push"; // originalClassName;
-    //   node.style.backgroundColor = ""; // originalBackground;
-    //   vis.binds.vistabbar.setStateValue(id, value);
-    //   e.preventDefault();
-    // }, false);
+  addEventListenerTovalue: function (node, clickColor, clickDelay, id, value, title) {
     node.addEventListener("click", function (e) {
       // Simulate click
-      console.log("Click ...");
       node.innerHTML = "Push...";
       node.className = "";
       node.style.backgroundColor = clickColor;
-      setTimeout(() => {
+      setTimeout((node, title) => {
+        vis.binds.vistabbar.showNotification(`Send new modus ${node.getAttribute("data-text")} for: ${title}`, VISTABBAR.INFO);
         node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
         node.style.backgroundColor = ""; // That the background of the class in the line above works
         vis.binds.vistabbar.setStateValue(id, value);
-      }, clickDelay);
+      }, clickDelay, node, title);
 
       e.preventDefault();
     }, false);
   },
-  addEventListenerToLabel: function (node, clickColor, clickDelay, bid, step) {
+  addEventListenerToLabel: function (node, clickColor, clickDelay, bid, step, title) {
 
     var originalBackground = node.style.backgroundColor;
     var originalClassName = node.className;
@@ -548,15 +536,15 @@ vis.binds["vistabbar"] = {
     //   e.preventDefault();
     // }, false);
     node.addEventListener("click", function (e) {
-      console.log("Click ...");
       // Simulate click
       node.className = "";
       node.style.backgroundColor = clickColor;
-      setTimeout(() => {
+      setTimeout((node, title) => {
         node.className = originalClassName;
         node.style.backgroundColor = originalBackground;
+        vis.binds.vistabbar.showNotification(`Send new temp change ${step} for: ${title}`, VISTABBAR.INFO);
         vis.binds.vistabbar.setStateInc(bid, step);
-      }, clickDelay);
+      }, clickDelay, node, title);
       e.preventDefault();
     }, false);
   },
@@ -625,7 +613,7 @@ vis.binds["vistabbar"] = {
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
     vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
-
+      vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
       // Update the icon
       var switchObjectValTmp = vis.states[data.oid1 + '.val'];
       icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
@@ -636,7 +624,7 @@ vis.binds["vistabbar"] = {
       panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
-
+      vis.binds.vistabbar.showNotification("Send command: " + data.title);
       // Simulate click
       panelColumns.style.background = data.clickcolor;
       setTimeout(() => {
@@ -727,6 +715,29 @@ vis.binds["vistabbar"] = {
       $div.html(vis.binds.vistabbar.getBooleanText(status)).toggleClass("vistabbar-green");
     }
   },
+  showNotification: function (msg, status) {
+
+    var notificationClass = "";
+    if (typeof status !== "undefined") {
+      if (status === VISTABBAR.SUCCESS) {
+        notificationClass = "vistabbar-background-green" // green
+      } else if (status === VISTABBAR.ERROR) {
+        notificationClass = "vistabbar-background-red" // red
+      } else if (status === VISTABBAR.INFO) {
+        notificationClass = "vistabbar-background-purple";
+      }
+    }
+
+    var node = document.getElementById("vistabbar-notification");
+    if (notificationClass !== "") node.classList.add(notificationClass);
+    node.style.display = "block";
+    node.innerText = msg;
+    setTimeout((notificationClass) => {
+      if (notificationClass !== "") node.classList.remove(notificationClass);
+      node.style.display = "none";
+      node.innerText = "";
+    }, 1250, notificationClass);
+  },
   createTabBar: function (datawid, view, data, style) {
     var $div = $("#" + datawid).addClass("vis-tabbar-base");
     if (!$div.length) {
@@ -776,7 +787,9 @@ vis.binds["vistabbar"] = {
           var addedTab = tabbar.addTab(splitView[1], "icon", {
             events: {
               selected: function () {
+                var v = splitView[1];
                 vis.changeView(splitView[0]);
+                vis.binds.vistabbar.showNotification("View changed to: " + v)
               }
             }
           });
