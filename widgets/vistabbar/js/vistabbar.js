@@ -514,7 +514,7 @@ vis.binds["vistabbar"] = {
       node.className = "";
       node.style.backgroundColor = clickColor;
       setTimeout(() => {
-        node.classList.add("vistabbar-panel-button-label-active"); // Set the class to show the status of "pushing" the command to the device (user feedback)
+        node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
         node.style.backgroundColor = ""; // That the background of the class in the line above works
         vis.binds.vistabbar.setStateValue(id, value);
       }, clickDelay);
