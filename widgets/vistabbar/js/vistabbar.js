@@ -487,7 +487,13 @@ vis.binds["vistabbar"] = {
      * Add dom nodes to original node
      */
     node.appendChild(panelContent);
-
+    if(typeof data.addlastspacerheight !== "undefined" && data.addlastspacerheight !== null && data.addlastspacerheight !== "0px" && (
+      data.addlastspacerheight.includes("px") || data.addlastspacerheight.includes("%")
+    )) {
+      var bottomSpacer = document.createElement("div");
+      bottomSpacer.style.height = data.addlastspacerheight;
+      node.appendChild(bottomSpacer);
+    }
   },
   setStateInc(bid, step) {
     if (vis.binds.vistabbar.isEditMode()) return;
