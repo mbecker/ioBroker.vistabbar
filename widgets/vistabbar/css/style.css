@@ -150,14 +150,12 @@ div.navigationBar div.navBtnCtn.active button {
     z-index: 1;
     text-align: center;
     color: #6c757d;
-    background-color: rgba(255,255,255,.85) !important;
-    border: 1px solid rgba(0,0,0,.1) !important;
-    font-family: Roboto,Helvetica,Arial,Tahoma,Verdana,sans-serif;
+	font-family: Roboto,Helvetica,Arial,Tahoma,Verdana,sans-serif;
+	font-size: 0.8em;
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     transition: background-color .25s ease,border-color .25s ease,box-shadow .25s ease,color .25s ease;
-    outline: none;
-    border-radius: 4px;
+    border-radius: 2px;
     white-space: nowrap;
     padding: 9px;
 }
@@ -169,22 +167,26 @@ div.navigationBar div.navBtnCtn.active button {
 	color: #f2f4ff !important;
 	background-color: #9dd3ae !important;
 	border-color: #9dd3ae !important;
+    box-shadow: 0 0 5px 0 #9dd3ae;
 }
 .vistabbar-background-red {
 	color: #f2f4ff !important;
 	background-color: #ff8564 !important;
 	border-color: #ff8564 !important;
+	box-shadow: 0 0 5px 0 #9dd3ae;
 }
 .vistabbar-background-purple {
+	color: #f2f4ff !important;
 	background-color: #7a65f2 !important;
 	border-color: #7a65f2;
+	box-shadow: 0 0 5px 0 #7a65f2;
 }
 
 .vistabbar-notification-info {
-	color: #6c757d;
-    background-color: rgba(255,255,255,.85) !important;
-	border: 1px solid rgba(0,0,0,.1) !important;
-    border-radius: .25rem;
+	color: #d4d7dd;
+    background-color: #202028 !important;
+	border-color: #9394ff;
+    box-shadow: 0 0 5px 0 #9394ff;
 }
 
 

@@ -18,6 +18,7 @@ var VISTABBAR = {
   SUCCESS: 1,
   ERROR: 2,
   INFO: 3,
+  TIMEOUTMS: 1000,
 };
 
 // add translations for edit mode
@@ -61,6 +62,36 @@ vis.binds["vistabbar"] = {
         $div.find(".vistabbar-value").html(newVal);
       });
     }
+  },
+  createPanelHistory: function (widgetID, view, data, style) {
+    var node = document.getElementById(widgetID);
+
+    // if nothing found => wait
+    if (!node) {
+      return setTimeout(function () {
+        vis.binds["vistabbar"].createPanelHistory(widgetID, view, data, style);
+      }, 100);
+    }
+
+    var history = JSON.parse(vis.states[data.oid + '.val']);
+
+    var text = "";
+    if(typeof history.history === "undefined") {
+      text = "undefined";
+    } else {
+      history.history.forEach(el => {
+        text += el + "<br />";
+      })
+    }
+
+    var panelContent = document.createElement("div");
+    panelContent.style.flexDirection = "column";
+    panelContent.style.display = "flex";
+    panelContent.style.height = "100%";
+    panelContent.innerText = text;
+
+    node.appendChild(panelContent);
+
   },
   createPanelTmp: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
@@ -729,10 +760,10 @@ vis.binds["vistabbar"] = {
       $div.html(vis.binds.vistabbar.getBooleanText(status)).toggleClass("vistabbar-green");
     }
   },
-  timeout: null,
+  timeoutNotification: null,
   showNotification: function (msg, status) {
 
-    clearTimeout(vis.binds.vistabbar.timeout);
+    clearTimeout(vis.binds.vistabbar.timeoutNotification);
 
     var node = document.getElementById("vistabbar-notification");
     node.classList.remove("vistabbar-notification-info");
@@ -754,13 +785,13 @@ vis.binds["vistabbar"] = {
     
     if (notificationClass !== "") node.classList.add(notificationClass);
     node.style.display = "block";
-    node.innerText = msg;
+    node.innerHTML = msg;
     
     vis.binds.vistabbar.timeout = setTimeout((notificationClass) => {
       if (notificationClass !== "") node.classList.remove(notificationClass);
       node.style.display = "none";
-      node.innerText = "";
-    }, 1250, notificationClass);
+      node.innerHTML = "";
+    }, VISTABBAR.TIMEOUTMS, notificationClass);
   },
   createTabBar: function (datawid, view, data, style) {
     var $div = $("#" + datawid).addClass("vis-tabbar-base");
