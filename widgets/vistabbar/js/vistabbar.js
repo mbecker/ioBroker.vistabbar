@@ -63,6 +63,33 @@ vis.binds["vistabbar"] = {
       });
     }
   },
+  getText: function (el) {
+    return (typeof el !== "undefined") ? el : "null";
+  },
+  getTextForHistoryPanel: function (node, historyMsg) {
+    console.log("Scroll Start ??");
+    node.innerHTML = "";
+    var history = JSON.parse(historyMsg);
+
+    if (typeof history.history !== "undefined") {
+      history.history.forEach(el => {
+        var line = document.createElement("div");
+        line.innerHTML = `${vis.binds.vistabbar.getText(el.name)}; Field: ${vis.binds.vistabbar.getText(el.field)}; Raum: ${vis.binds.vistabbar.getText(el.room)}; Product: ${vis.binds.vistabbar.getText(el.product)}; Object: ${vis.binds.vistabbar.getText(el.object)}; Topic: ${vis.binds.vistabbar.getText(el.topic)}<br />`
+        node.appendChild(line);
+      })
+    } else {
+      var line = document.createElement("div");
+      line.innerHTML = "null"
+      node.appendChild(line);
+    }
+    node.scrollTop = node.scrollHeight;
+    node.scrollIntoView({ block: "end" });
+    setTimeout((node) => {
+      console.log("Scroll 5...")
+      node.scrollTop = node.scrollHeight;
+      node.scrollIntoView({ block: "end" });
+    }, 550, node);
+  },
   createPanelHistory: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
 
@@ -73,24 +100,18 @@ vis.binds["vistabbar"] = {
       }, 100);
     }
 
-    var history = JSON.parse(vis.states[data.oid + '.val']);
-
-    var text = "";
-    if(typeof history.history === "undefined") {
-      text = "undefined";
-    } else {
-      history.history.forEach(el => {
-        text += el + "<br />";
-      })
-    }
-
     var panelContent = document.createElement("div");
-    panelContent.style.flexDirection = "column";
-    panelContent.style.display = "flex";
-    panelContent.style.height = "100%";
-    panelContent.innerText = text;
+    panelContent.className = "vistabbar-code";
+    vis.binds.vistabbar.getTextForHistoryPanel(panelContent, vis.states[data.oid + '.val']);
+
+
 
     node.appendChild(panelContent);
+
+    vis.states.bind(data.oid + ".val", function (e, newVal, oldVal) {
+      vis.binds.vistabbar.showNotification("Added new history msg");
+      vis.binds.vistabbar.getTextForHistoryPanel(panelContent, newVal);
+    });
 
   },
   createPanelTmp: function (widgetID, view, data, style) {
@@ -518,8 +539,8 @@ vis.binds["vistabbar"] = {
      * Add dom nodes to original node
      */
     node.appendChild(panelContent);
-    if(typeof data.addlastspacerheight !== "undefined" && data.addlastspacerheight !== null && data.addlastspacerheight !== "0px" && (
-      data.addlastspacerheight.includes("px") || data.addlastspacerheight.includes("%")
+    if (typeof data.addlastspacerheight !== "undefined" && data.addlastspacerheight !== null && data.addlastspacerheight !== "0px" && (
+      data.addlastspacerheight.includes("px") || data.addlastspacerheight.includes("%")
     )) {
       var bottomSpacer = document.createElement("div");
       bottomSpacer.style.height = data.addlastspacerheight;
@@ -652,21 +673,21 @@ vis.binds["vistabbar"] = {
     var nodeOriginalBackground = panelColumnHeading.style.background;
     vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
       // Update panel only if the status is acknowledged by the device
-      if(newVal !== true) return;
-      
+      if (newVal !== true) return;
+
       // Update the classe and remove push indication
       node.classList.remove("vistabbar-push");
       vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
-      
+
       // Update the icon
       var switchObjectValTmp = vis.states[data.oid1 + '.val'];
       icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
       icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
-      
+
       panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
-      if(vis.binds.vistabbar.isEditMode()) return;
+      if (vis.binds.vistabbar.isEditMode()) return;
       vis.binds.vistabbar.showNotification("Send command: " + data.title);
       // Simulate click
       panelColumns.style.background = data.clickcolor;
@@ -782,11 +803,11 @@ vis.binds["vistabbar"] = {
       }
     }
 
-    
+
     if (notificationClass !== "") node.classList.add(notificationClass);
     node.style.display = "block";
     node.innerHTML = msg;
-    
+
     vis.binds.vistabbar.timeout = setTimeout((notificationClass) => {
       if (notificationClass !== "") node.classList.remove(notificationClass);
       node.style.display = "none";
