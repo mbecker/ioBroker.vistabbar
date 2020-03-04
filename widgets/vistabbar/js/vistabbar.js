@@ -492,7 +492,8 @@ vis.binds["vistabbar"] = {
     )) {
       var bottomSpacer = document.createElement("div");
       bottomSpacer.style.height = data.addlastspacerheight;
-      node.appendChild(bottomSpacer);
+      // Add dom element ("spacer") to the parents dom that the box/panel created here is not affected
+      node.parentNode.appendChild(bottomSpacer);
     }
   },
   setStateInc(bid, step) {
@@ -619,22 +620,28 @@ vis.binds["vistabbar"] = {
     // Add click event handler to node
     var nodeOriginalBackground = panelColumnHeading.style.background;
     vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
+      // Update panel only if the status is acknowledged by the device
+      if(newVal !== true) return;
+      
+      // Update the classe and remove push indication
+      node.classList.remove("vistabbar-push");
       vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
+      
       // Update the icon
       var switchObjectValTmp = vis.states[data.oid1 + '.val'];
       icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
       icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
-
-      // Update the classe and remove push indication
-      node.classList.remove("vistabbar-push");
+      
       panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
+      if(vis.binds.vistabbar.isEditMode()) return;
       vis.binds.vistabbar.showNotification("Send command: " + data.title);
       // Simulate click
       panelColumns.style.background = data.clickcolor;
       setTimeout(() => {
         // panelColumns.style.background = nodeOriginalBackground;
+        console.log("add class");
         node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
         node.style.backgroundColor = ""; // That the background of the class in the line above works
 
@@ -648,6 +655,7 @@ vis.binds["vistabbar"] = {
      * RESIZE (icon, progress bar)
      */
     // Resize the icon baed on the panel height
+    console.log(node.clientHeight + "px");
     panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
     icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: containe rheight 140px - font height 48px
     // Seth the width of the progress bar
@@ -721,24 +729,34 @@ vis.binds["vistabbar"] = {
       $div.html(vis.binds.vistabbar.getBooleanText(status)).toggleClass("vistabbar-green");
     }
   },
+  timeout: null,
   showNotification: function (msg, status) {
 
-    var notificationClass = "";
+    clearTimeout(vis.binds.vistabbar.timeout);
+
+    var node = document.getElementById("vistabbar-notification");
+    node.classList.remove("vistabbar-notification-info");
+    node.classList.remove("vistabbar-background-green");
+    node.classList.remove("vistabbar-background-red");
+
+
+    var notificationClass = "vistabbar-notification-info";
     if (typeof status !== "undefined") {
       if (status === VISTABBAR.SUCCESS) {
         notificationClass = "vistabbar-background-green" // green
       } else if (status === VISTABBAR.ERROR) {
         notificationClass = "vistabbar-background-red" // red
       } else if (status === VISTABBAR.INFO) {
-        notificationClass = "vistabbar-background-purple";
+        notificationClass = "vistabbar-notification-info";
       }
     }
 
-    var node = document.getElementById("vistabbar-notification");
+    
     if (notificationClass !== "") node.classList.add(notificationClass);
     node.style.display = "block";
     node.innerText = msg;
-    setTimeout((notificationClass) => {
+    
+    vis.binds.vistabbar.timeout = setTimeout((notificationClass) => {
       if (notificationClass !== "") node.classList.remove(notificationClass);
       node.style.display = "none";
       node.innerText = "";

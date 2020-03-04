@@ -6,6 +6,7 @@
     Copyright 2020 mbecker mats.becker@gmail.com
 -->
 <!-- here you can include so many css as you want -->
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="widgets/vistabbar/css/style.css" />
@@ -160,10 +161,12 @@
 <script id="tplVistabbarPanelHeating" type="text/ejs" class="vis-tpl" data-vis-prev='<img src="widgets/vistabbar/images/tplVistabbarPanelHeating.png"></img>' 
     data-vis-attrs="oid(1-2)/id;title/text;text(1-5)/text;hid(1-5)/id;suffix(1-5)/text;bid(1-2)/id;step(1-2)[0.5]/number,-100,100,0.5;tid/id;tvalues/text;tequal/id;clickcolor[rgba(117, 120, 136, 0.4)]/color;clickdelay[50]/number;addlastspacerheight[0px]/text;"
     data-vis-set="vistabbar" data-vis-type="ctrl,val,button" data-vis-name="Panel Heating">
-        <div class="vis-widget <%== this.data.attr('class') %> vistabbar-panel" id="<%= this.data.attr('wid') %>" style="">
+        <div class="vis-widget <%== this.data.attr('class') %>" id="<%= this.data.attr('wid') %>" style="">
+            <div id="<%= this.data.attr('wid') %>-panel" class="vistabbar-panel">
             <%
-                vis.binds.vistabbar.createPanelHeating(this.data.wid, this.view, this.data, this.style);
+                vis.binds.vistabbar.createPanelHeating(this.data.wid + "-panel", this.view, this.data, this.style);
             %>
+            </div>>
         </div>
 </script>
 
@@ -181,3 +184,41 @@
 <!-- 03/03/2020 20:38:31 -->
 
 <!-- 03/03/2020 20:39:28 -->
+
+<!-- 04/03/2020 07:51:31 -->
+
+<!-- 04/03/2020 08:11:48 -->
+
+<!-- 04/03/2020 08:13:19 -->
+
+<!-- 04/03/2020 08:13:55 -->
+
+<!-- 04/03/2020 08:19:56 -->
+
+<!-- 04/03/2020 09:24:31 -->
+
+<!-- 04/03/2020 09:26:00 -->
+
+<!-- 04/03/2020 09:27:36 -->
+
+<!-- 04/03/2020 09:30:33 -->
+
+<!-- 04/03/2020 10:59:32 -->
+
+<!-- 04/03/2020 11:09:03 -->
+
+<!-- 04/03/2020 11:13:08 -->
+
+<!-- 04/03/2020 11:13:20 -->
+
+<!-- 04/03/2020 11:14:52 -->
+
+<!-- 04/03/2020 11:16:27 -->
+
+<!-- 04/03/2020 11:21:07 -->
+
+<!-- 04/03/2020 11:21:22 -->
+
+<!-- 04/03/2020 11:45:07 -->
+
+<!-- 04/03/2020 11:47:40 -->
