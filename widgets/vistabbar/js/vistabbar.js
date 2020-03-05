@@ -121,54 +121,26 @@ vis.binds["vistabbar"] = {
           line.classList.add(el.ts)
           line.setAttribute("id", el.ts);
           line.setAttribute("data-ts", el.ts);
-          line.style.maxHeight = "260px";
-          line.style.height = "260px";
-          line.style.minHeight = "260px";
+          line.style.maxHeight = "300px";
+          line.style.height = "300px";
+          line.style.minHeight = "300px";
           var span1 = document.createElement("span");
           // Add an inline svg rect bo to show that the message is acknowledged by the system
           var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
           var svg = `<svg class="bd-placeholder-img rounded mr-2" width="10" height="10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" style="margin-bottom: -4px;padding: 4px;"><rect fill="${rectColor}" width="100%" height="100%"></rect></svg>`;
           // Add the follwing text: german data - ID - value
           span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
-          // Add the "field" and the "topic"
-          var span2 = document.createElement("span");
-          span2.innerHTML = `ID: ${el.id}<br />Value: ${el.val}<br>Ack: ${el.ack} <br />Group: ${vis.binds.vistabbar.capitalizeFirstLetter(el.msg.device.field)}<br />Rooom: ${vis.binds.vistabbar.capitalizeFirstLetter(el.msg.device.tags.room)}<br />Topic: ${el.msg.device.topic}`;
-          // Insert the JSON as string (JSON.stringify)
-          var span3 = document.createElement("span");
-          span3.innerHTML = `Message:<br />${JSON.stringify(el.msg)}`;
-
           line.appendChild(span1);
-
-          for (var key in el) {
-            var keyNode = document.createElement("div");
-            keyNode.className = "vistabbar-code-key";
-            if (typeof el[key] !== "object" && key !== "ts" && key !== "lc" && key !== "q") {
-              var keyNodeSpan1 = document.createElement("span");
-              keyNodeSpan1.innerHTML = key;
-              var keyNodeSpan2 = document.createElement("span");
-              keyNodeSpan2.innerHTML = el[key];
-              keyNode.appendChild(keyNodeSpan1);
-              keyNode.appendChild(keyNodeSpan2);
-              line.appendChild(keyNode);
-            }
-            if(typeof el[key] === "object") {
-              var obj = el[key];
-              for(var objKey in obj) {
-                var keyNodeSpan1 = document.createElement("span");
-                keyNodeSpan1.className = "vistabbar-code-key-tags";
-              keyNodeSpan1.innerHTML = objKey;
-              var keyNodeSpan2 = document.createElement("span");
-              keyNodeSpan2.innerHTML = obj[objKey];
-              keyNode.appendChild(keyNodeSpan1);
-              keyNode.appendChild(keyNodeSpan2);
-              line.appendChild(keyNode);
-              }
-            }
-          }
-
+          var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
+          spans.forEach(el => line.appendChild(el));
+          // Insert the JSON as string (JSON.stringify)
+          var h3 = document.createElement("h3");
+          h3.innerHTML = "Message";
+          var span3 = document.createElement("span");
+          span3.innerHTML = `${JSON.stringify(el.msg)}`;
+          line.appendChild(h3);
+          line.appendChild(span3);
           
-          // line.appendChild(span2);
-          // line.appendChild(span3);
           node.appendChild(line);
           line.addEventListener("click", function (e) {
             var lineHeight = Number.parseFloat(line.style.minHeight) + 20 + "px";
@@ -186,6 +158,32 @@ vis.binds["vistabbar"] = {
     // A new element is added to the dom element; scroll to the end of the element
     node.scrollTop = node.scrollHeight;
     node.scrollIntoView({ block: "end" });
+  },
+  getNodeFromLogMessage(el, n, heading) {
+    if(typeof el !== "object") return;
+    var nodes = [];
+    var h = document.createElement("h3");
+        h.innerHTML = heading;
+        nodes.push(h);
+
+    for(var key in el) {
+      if(typeof el[key] === "object") {
+        var tmpNodes = vis.binds.vistabbar.getNodeFromLogMessage(el[key], n+1, key);
+        tmpNodes.forEach(tn => nodes.push(tn));
+      } else if (key !== "ts" && key !== "lc" && key !== "q" && key !== "from" && key !== "user") {
+        var keyNode = document.createElement("div");
+        keyNode.className = "vistabbar-code-key";
+        keyNode.style.marginLeft = 4 + "px";
+        var keyNodeSpan1 = document.createElement("span");
+        keyNodeSpan1.innerHTML = key;
+        var keyNodeSpan2 = document.createElement("span");
+        keyNodeSpan2.innerHTML = el[key];
+        keyNode.appendChild(keyNodeSpan1);
+        keyNode.appendChild(keyNodeSpan2);
+        nodes.push(keyNode)
+      }
+    }
+    return nodes;
   },
   createPanelHistory: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
@@ -968,7 +966,7 @@ vis.binds["vistabbar"] = {
               selected: function () {
                 var v = splitView[1];
                 vis.changeView(splitView[0]);
-                vis.binds.vistabbar.showNotification("View changed to: " + v)
+                // vis.binds.vistabbar.showNotification("View changed to: " + v)
               }
             }
           });

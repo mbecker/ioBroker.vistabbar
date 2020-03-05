@@ -513,13 +513,18 @@ div.navigationBar div.navBtnCtn.active button {
     flex-direction: row;
 }
 
-.vistabbar-code-key > span:first-child {
-	width: 32px;
+.vistabbar-code > div > h3 {
+	font-size: 1em;
+    margin: 4px 4px 0px 0px;
+    padding: 0px;
 }
 
-.vistabbar-code-key > span.vistabbar-code-key-tags {
+.vistabbar-code-key > span:first-child {
+	width: 52px;
+}
+
+.vistabbar-code-key-tags {
 	margin-left: 8px;
-	width: 32px;
 }
 
 
