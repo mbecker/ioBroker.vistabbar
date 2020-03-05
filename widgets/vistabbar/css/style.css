@@ -484,6 +484,29 @@ div.navigationBar div.navBtnCtn.active button {
 
 
 /* HISTORY / CODE */
+.vistabbar-code {
+	/* flex-direction: column;
+    display: flex; */
+    line-height: 18px;
+    /* height: 100%; */
+    background-color: #202028;
+    color: #999dab;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    bottom: 46px;
+    right: 0px;
+    /* margin-bottom: -46px; */
+    font-family: RobotoMono,monospace;
+    /* background-color: transparent; */
+    color: #bec2cc;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 8px;
+	overflow-y: scroll!important;
+	cursor: default!important;
+}
+
 .vistabbar-code > div {
 	overflow-wrap: break-word;
 	margin-bottom: 4px;
@@ -510,45 +533,22 @@ div.navigationBar div.navBtnCtn.active button {
 
 .vistabbar-code-key {
 	display: flex;
-    flex-direction: row;
+	flex-direction: row;
+	min-height: 18px;
+	max-height: 36px;
 }
 
 .vistabbar-code > div > h3 {
 	font-size: 1em;
     margin: 4px 4px 0px 0px;
-    padding: 0px;
+	padding: 0px;
+	min-height: 18px
 }
 
 .vistabbar-code-key > span:first-child {
-	width: 52px;
+	width: 56px;
 }
 
 .vistabbar-code-key-tags {
 	margin-left: 8px;
-}
-
-
-.vistabbar-code {
-	flex-direction: column;
-    display: flex;
-    line-height: 18px;
-	flex-direction: column;
-    display: flex;
-    /* height: 100%; */
-    background-color: #202028;
-    color: #999dab;
-    position: fixed;
-    top: 0px;
-    left: 0;
-    bottom: 46px;
-    right: 0px;
-    /* margin-bottom: -46px; */
-    font-family: RobotoMono,monospace;
-    /* background-color: transparent; */
-    color: #bec2cc;
-    font-weight: 500;
-    font-size: 13px;
-    padding: 8px;
-	overflow-y: scroll!important;
-	cursor: default!important;
 }

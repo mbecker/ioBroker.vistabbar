@@ -121,9 +121,9 @@ vis.binds["vistabbar"] = {
           line.classList.add(el.ts)
           line.setAttribute("id", el.ts);
           line.setAttribute("data-ts", el.ts);
-          line.style.maxHeight = "300px";
-          line.style.height = "300px";
-          line.style.minHeight = "300px";
+          // line.style.maxHeight = "300px";
+          // line.style.height = "300px";
+          // line.style.minHeight = "300px";
           var span1 = document.createElement("span");
           // Add an inline svg rect bo to show that the message is acknowledged by the system
           var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
@@ -134,16 +134,24 @@ vis.binds["vistabbar"] = {
           var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
           spans.forEach(el => line.appendChild(el));
           // Insert the JSON as string (JSON.stringify)
+
           var h3 = document.createElement("h3");
           h3.innerHTML = "Message";
+          
+          var keyNode = document.createElement("div");
+        keyNode.className = "vistabbar-code-key";
+        keyNode.style.marginLeft = 4 + "px";
           var span3 = document.createElement("span");
+          span3.style.width = "100%";
           span3.innerHTML = `${JSON.stringify(el.msg)}`;
           line.appendChild(h3);
-          line.appendChild(span3);
+          keyNode.appendChild(span3);
+          line.appendChild(keyNode);
+          
           
           node.appendChild(line);
           line.addEventListener("click", function (e) {
-            var lineHeight = Number.parseFloat(line.style.minHeight) + 20 + "px";
+            var lineHeight = line.offsetHeight + 20 + "px";
             line.style.maxHeight = lineHeight;
             line.style.height = lineHeight;
             line.style.minHeight = lineHeight;
