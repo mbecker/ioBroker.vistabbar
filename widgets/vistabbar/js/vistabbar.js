@@ -70,13 +70,17 @@ vis.binds["vistabbar"] = {
   getText: function (el) {
     return (typeof el !== "undefined") ? el : "null";
   },
-  getTextForHistoryPanel: function (node, historyMsg) {
+  getTextForHistoryPanel: function (node, historyMsg, nodeNumberOfLogMessages) {
 
     // node.innerHTML = "";
     var history = JSON.parse(historyMsg);
 
     if (typeof history.history !== "undefined") {
-      history.history.forEach(el => {
+      
+      var numberOfShownLine = 0;
+      for (let index = 400; index < history.history.length; index++) {
+        numberOfShownLine = index;
+        const el = history.history[index];
         /* The strcuture of the element is as follows:
         var logMsg = {
                     id: val.id,
@@ -137,18 +141,18 @@ vis.binds["vistabbar"] = {
 
           var h3 = document.createElement("h3");
           h3.innerHTML = "Message";
-          
+
           var keyNode = document.createElement("div");
-        keyNode.className = "vistabbar-code-key";
-        keyNode.style.marginLeft = 4 + "px";
+          keyNode.className = "vistabbar-code-key";
+          keyNode.style.marginLeft = 4 + "px";
           var span3 = document.createElement("span");
           span3.style.width = "100%";
           span3.innerHTML = `${JSON.stringify(el.msg)}`;
           line.appendChild(h3);
           keyNode.appendChild(span3);
           line.appendChild(keyNode);
-          
-          
+
+
           node.appendChild(line);
           line.addEventListener("click", function (e) {
             var lineHeight = line.offsetHeight + 20 + "px";
@@ -159,8 +163,8 @@ vis.binds["vistabbar"] = {
             e.preventDefault();
           }, false)
         }
-
-      })
+      }
+      nodeNumberOfLogMessages.innerHTML =  "400 - " + history.history.length;
     }
 
     // A new element is added to the dom element; scroll to the end of the element
@@ -168,15 +172,15 @@ vis.binds["vistabbar"] = {
     node.scrollIntoView({ block: "end" });
   },
   getNodeFromLogMessage(el, n, heading) {
-    if(typeof el !== "object") return;
+    if (typeof el !== "object") return;
     var nodes = [];
     var h = document.createElement("h3");
-        h.innerHTML = heading;
-        nodes.push(h);
+    h.innerHTML = heading;
+    nodes.push(h);
 
-    for(var key in el) {
-      if(typeof el[key] === "object") {
-        var tmpNodes = vis.binds.vistabbar.getNodeFromLogMessage(el[key], n+1, key);
+    for (var key in el) {
+      if (typeof el[key] === "object") {
+        var tmpNodes = vis.binds.vistabbar.getNodeFromLogMessage(el[key], n + 1, key);
         tmpNodes.forEach(tn => nodes.push(tn));
       } else if (key !== "ts" && key !== "lc" && key !== "q" && key !== "from" && key !== "user") {
         var keyNode = document.createElement("div");
@@ -207,13 +211,18 @@ vis.binds["vistabbar"] = {
     if (vis.binds.vistabbar.isEditMode()) panelContent.style.position = "relative";
     panelContent.className = "vistabbar-code";
 
-    node.appendChild(panelContent);
+    var panelContentNumberOfMessages = document.createElement("div");
+    panelContentNumberOfMessages.className = "vistabbar-log-number";
+    panelContentNumberOfMessages.id = "vistabbar-log-number";
 
-    vis.binds.vistabbar.getTextForHistoryPanel(panelContent, vis.states[data.oid + '.val']);
+    node.appendChild(panelContent);
+    node.appendChild(panelContentNumberOfMessages);
+
+    vis.binds.vistabbar.getTextForHistoryPanel(panelContent, vis.states[data.oid + '.val'], panelContentNumberOfMessages);
 
     vis.states.bind(data.oid + ".val", function (e, newVal, oldVal) {
       vis.binds.vistabbar.showNotification("Added new history msg");
-      vis.binds.vistabbar.getTextForHistoryPanel(panelContent, newVal);
+      vis.binds.vistabbar.getTextForHistoryPanel(panelContent, newVal, panelContentNumberOfMessages);
     });
 
     // HACK: Feature to scroll at the bottom of the dom elemen;; because the dom is maybe not yet initialized set a timeout to scroll to the bottom
@@ -285,6 +294,7 @@ vis.binds["vistabbar"] = {
     panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
     // 3. - Progress    
     var panelRowInfo = document.createElement("div");
+    panelRowInfo.style.backgroundColor = data.iconcoloron + "!important";
     panelRowInfo.className = "vistabbar-panel-row-info-progress";
     var panelRowInfoP = document.createElement("p");
     panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
@@ -796,6 +806,7 @@ vis.binds["vistabbar"] = {
       panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
+      if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxcalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
       if (vis.binds.vistabbar.isEditMode()) return;
       vis.binds.vistabbar.showNotification("Send command: " + data.title);
       // Simulate click
@@ -842,6 +853,7 @@ vis.binds["vistabbar"] = {
   },
   setState(data) {
     if (vis.binds.vistabbar.isEditMode()) return;
+    if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxcalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
     var tmpVal = vis.states[data.oid1 + '.val'];
     if (typeof tmpVal !== "undefined" && typeof tmpVal !== "boolean") {
       // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite

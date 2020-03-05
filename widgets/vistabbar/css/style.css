@@ -330,7 +330,7 @@ div.navigationBar div.navBtnCtn.active button {
 .vistabbar-panel-row-info-progress {
 	/* width: 80%; */
     height: 100%;
-	background: #9dd3ae !important;
+	/* background: #9dd3ae !important; */
 	box-sizing: border-box;
     color: rgb(117, 120, 136);
     display: block;
@@ -551,4 +551,17 @@ div.navigationBar div.navBtnCtn.active button {
 
 .vistabbar-code-key-tags {
 	margin-left: 8px;
+}
+
+.vistabbar-log-number {
+	position: fixed;
+	top: 12px;
+	right: 12px;
+	background: #00C9FF;
+    z-index: 100;
+    color: #fff;
+    padding: 8px;
+    font-size: 0.8em;
+    font-weight: 600;
+    border-radius: 8%;
 }
