@@ -485,15 +485,44 @@ div.navigationBar div.navBtnCtn.active button {
 
 /* HISTORY / CODE */
 .vistabbar-code > div {
+	overflow-wrap: break-word;
 	margin-bottom: 4px;
     border-bottom: 1px solid #434453;
-    padding-bottom: 4px;
+	padding-bottom: 4px;
+	display: flex;
+	flex-direction: column;
+	font-size: 0.9em;
+	/* height: 260px;
+    min-height: 260px;
+	max-height: 260px; */
+	overflow: hidden;
 }
+
 .vistabbar-code > div:last-child {
 	margin-bottom: 4px;
     border-bottom: 1px solid #202028;
-    padding-bottom: 4px;
+	padding-bottom: 4px;
 }
+
+.vistabbar-code > div > span:first-child{
+	font-weight: 600;
+}
+
+.vistabbar-code-key {
+	display: flex;
+    flex-direction: row;
+}
+
+.vistabbar-code-key > span:first-child {
+	width: 32px;
+}
+
+.vistabbar-code-key > span.vistabbar-code-key-tags {
+	margin-left: 8px;
+	width: 32px;
+}
+
+
 .vistabbar-code {
 	flex-direction: column;
     display: flex;
@@ -515,5 +544,6 @@ div.navigationBar div.navBtnCtn.active button {
     font-weight: 500;
     font-size: 13px;
     padding: 8px;
-    overflow-y: scroll!important;
+	overflow-y: scroll!important;
+	cursor: default!important;
 }

@@ -63,32 +63,129 @@ vis.binds["vistabbar"] = {
       });
     }
   },
+  capitalizeFirstLetter(string) {
+    if (typeof string === "undefined") return "undefined";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  },
   getText: function (el) {
     return (typeof el !== "undefined") ? el : "null";
   },
   getTextForHistoryPanel: function (node, historyMsg) {
-    console.log("Scroll Start ??");
-    node.innerHTML = "";
+
+    // node.innerHTML = "";
     var history = JSON.parse(historyMsg);
 
     if (typeof history.history !== "undefined") {
       history.history.forEach(el => {
-        var line = document.createElement("div");
-        line.innerHTML = `${vis.binds.vistabbar.getText(el.name)}; Field: ${vis.binds.vistabbar.getText(el.field)}; Raum: ${vis.binds.vistabbar.getText(el.room)}; Product: ${vis.binds.vistabbar.getText(el.product)}; Object: ${vis.binds.vistabbar.getText(el.object)}; Topic: ${vis.binds.vistabbar.getText(el.topic)}<br />`
-        node.appendChild(line);
+        /* The strcuture of the element is as follows:
+        var logMsg = {
+                    id: val.id,
+                    val: val.val,
+                    ack: val.ack,
+                    ts: val.ts,
+                    lc: val.lc,
+                    q: val.q,
+                    msg: {
+                      ...,
+                      device: {
+                        "name": "Socket_Bad",
+                        "topic": "socket/bad/deconz/0/Lights_9/switch",
+                        "field": "socket",
+                        "tags": {
+                            "ack": "true",
+                            "haus": "ginsheim",
+                            "name": "Socket_Bad",
+                            "object": "deconz/0/Lights_9",
+                            "product": "aqara",
+                            "room": "bad"
+                        }
+                    }
+                    }
+                }
+        */
+        if (typeof el.id !== "undefined" && node.getElementsByClassName(el.ts).length === 0) {
+          // Get the date in local (german) time display
+          const event = new Date(el.ts);
+          const options = {
+            year: "numeric",
+            day: "2-digit",
+            month: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          };
+          const dt = event.toLocaleDateString("de-DE", options);
+
+          // && typeof el.state.name !== "undefined"
+          var line = document.createElement("div");
+          line.classList.add(el.ts)
+          line.setAttribute("id", el.ts);
+          line.setAttribute("data-ts", el.ts);
+          line.style.maxHeight = "260px";
+          line.style.height = "260px";
+          line.style.minHeight = "260px";
+          var span1 = document.createElement("span");
+          // Add an inline svg rect bo to show that the message is acknowledged by the system
+          var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
+          var svg = `<svg class="bd-placeholder-img rounded mr-2" width="10" height="10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" style="margin-bottom: -4px;padding: 4px;"><rect fill="${rectColor}" width="100%" height="100%"></rect></svg>`;
+          // Add the follwing text: german data - ID - value
+          span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
+          // Add the "field" and the "topic"
+          var span2 = document.createElement("span");
+          span2.innerHTML = `ID: ${el.id}<br />Value: ${el.val}<br>Ack: ${el.ack} <br />Group: ${vis.binds.vistabbar.capitalizeFirstLetter(el.msg.device.field)}<br />Rooom: ${vis.binds.vistabbar.capitalizeFirstLetter(el.msg.device.tags.room)}<br />Topic: ${el.msg.device.topic}`;
+          // Insert the JSON as string (JSON.stringify)
+          var span3 = document.createElement("span");
+          span3.innerHTML = `Message:<br />${JSON.stringify(el.msg)}`;
+
+          line.appendChild(span1);
+
+          for (var key in el) {
+            var keyNode = document.createElement("div");
+            keyNode.className = "vistabbar-code-key";
+            if (typeof el[key] !== "object" && key !== "ts" && key !== "lc" && key !== "q") {
+              var keyNodeSpan1 = document.createElement("span");
+              keyNodeSpan1.innerHTML = key;
+              var keyNodeSpan2 = document.createElement("span");
+              keyNodeSpan2.innerHTML = el[key];
+              keyNode.appendChild(keyNodeSpan1);
+              keyNode.appendChild(keyNodeSpan2);
+              line.appendChild(keyNode);
+            }
+            if(typeof el[key] === "object") {
+              var obj = el[key];
+              for(var objKey in obj) {
+                var keyNodeSpan1 = document.createElement("span");
+                keyNodeSpan1.className = "vistabbar-code-key-tags";
+              keyNodeSpan1.innerHTML = objKey;
+              var keyNodeSpan2 = document.createElement("span");
+              keyNodeSpan2.innerHTML = obj[objKey];
+              keyNode.appendChild(keyNodeSpan1);
+              keyNode.appendChild(keyNodeSpan2);
+              line.appendChild(keyNode);
+              }
+            }
+          }
+
+          
+          // line.appendChild(span2);
+          // line.appendChild(span3);
+          node.appendChild(line);
+          line.addEventListener("click", function (e) {
+            var lineHeight = Number.parseFloat(line.style.minHeight) + 20 + "px";
+            line.style.maxHeight = lineHeight;
+            line.style.height = lineHeight;
+            line.style.minHeight = lineHeight;
+            // line.style.minHeight = "260px";
+            e.preventDefault();
+          }, false)
+        }
+
       })
-    } else {
-      var line = document.createElement("div");
-      line.innerHTML = "null"
-      node.appendChild(line);
     }
+
+    // A new element is added to the dom element; scroll to the end of the element
     node.scrollTop = node.scrollHeight;
     node.scrollIntoView({ block: "end" });
-    setTimeout((node) => {
-      console.log("Scroll 5...")
-      node.scrollTop = node.scrollHeight;
-      node.scrollIntoView({ block: "end" });
-    }, 550, node);
   },
   createPanelHistory: function (widgetID, view, data, style) {
     var node = document.getElementById(widgetID);
@@ -101,17 +198,23 @@ vis.binds["vistabbar"] = {
     }
 
     var panelContent = document.createElement("div");
+    if (vis.binds.vistabbar.isEditMode()) panelContent.style.position = "relative";
     panelContent.className = "vistabbar-code";
-    vis.binds.vistabbar.getTextForHistoryPanel(panelContent, vis.states[data.oid + '.val']);
-
-
 
     node.appendChild(panelContent);
+
+    vis.binds.vistabbar.getTextForHistoryPanel(panelContent, vis.states[data.oid + '.val']);
 
     vis.states.bind(data.oid + ".val", function (e, newVal, oldVal) {
       vis.binds.vistabbar.showNotification("Added new history msg");
       vis.binds.vistabbar.getTextForHistoryPanel(panelContent, newVal);
     });
+
+    // HACK: Feature to scroll at the bottom of the dom elemen;; because the dom is maybe not yet initialized set a timeout to scroll to the bottom
+    setTimeout((node) => {
+      node.scrollTop = node.scrollHeight;
+      node.scrollIntoView({ block: "end" });
+    }, 550, panelContent);
 
   },
   createPanelTmp: function (widgetID, view, data, style) {
