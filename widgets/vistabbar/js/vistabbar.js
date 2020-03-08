@@ -151,16 +151,17 @@ vis.binds["vistabbar"] = {
           keyNode.appendChild(span3);
           line.appendChild(keyNode);
 
-
-          node.appendChild(line);
-          line.addEventListener("click", function (line) {
+          line.addEventListener("click", function (e) {
             var lineHeight = line.offsetHeight + 20 + "px";
             line.style.maxHeight = lineHeight;
             line.style.height = lineHeight;
             line.style.minHeight = lineHeight;
             // line.style.minHeight = "260px";
             // e.preventDefault();
-          }, false, line)
+          }, false)
+
+          node.appendChild(line);
+          
         }
       }
       nodeNumberOfLogMessages.innerHTML = startLogLine + " - " + history.history.length;
