@@ -79,7 +79,6 @@ vis.binds["vistabbar"] = {
 
       var startLogLine = history.history.length-200;
       for (let index = startLogLine; index < history.history.length; index++) {
-        numberOfShownLine = index;
         const el = history.history[index];
         /* The strcuture of the element is as follows:
         var logMsg = {
