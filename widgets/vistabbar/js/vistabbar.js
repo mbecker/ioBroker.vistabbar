@@ -76,9 +76,9 @@ vis.binds["vistabbar"] = {
     var history = JSON.parse(historyMsg);
 
     if (typeof history.history !== "undefined") {
-      
-      var numberOfShownLine = 0;
-      for (let index = 400; index < history.history.length; index++) {
+
+      var startLogLine = history.history.length-200;
+      for (let index = startLogLine; index < history.history.length; index++) {
         numberOfShownLine = index;
         const el = history.history[index];
         /* The strcuture of the element is as follows:
@@ -164,8 +164,14 @@ vis.binds["vistabbar"] = {
           }, false)
         }
       }
-      nodeNumberOfLogMessages.innerHTML =  "400 - " + history.history.length;
+      nodeNumberOfLogMessages.innerHTML = startLogLine + " - " + history.history.length;
     }
+
+    nodeNumberOfLogMessages.addEventListener("click", function (e) {
+      node.scrollTop = node.scrollHeight;
+      node.scrollIntoView({ block: "end" });
+      e.preventDefault()
+    }, false);
 
     // A new element is added to the dom element; scroll to the end of the element
     node.scrollTop = node.scrollHeight;
