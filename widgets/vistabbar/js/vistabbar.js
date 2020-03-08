@@ -159,7 +159,7 @@ vis.binds["vistabbar"] = {
             line.style.height = lineHeight;
             line.style.minHeight = lineHeight;
             // line.style.minHeight = "260px";
-            e.preventDefault();
+            // e.preventDefault();
           }, false)
         }
       }
