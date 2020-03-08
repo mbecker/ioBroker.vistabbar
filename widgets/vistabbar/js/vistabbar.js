@@ -806,7 +806,7 @@ vis.binds["vistabbar"] = {
       panelColumns.style.background = nodeOriginalBackground;
     });
     node.addEventListener("click", function (e) {
-      if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxcalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
+      if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
       if (vis.binds.vistabbar.isEditMode()) return;
       vis.binds.vistabbar.showNotification("Send command: " + data.title);
       // Simulate click
@@ -853,7 +853,7 @@ vis.binds["vistabbar"] = {
   },
   setState(data) {
     if (vis.binds.vistabbar.isEditMode()) return;
-    if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxcalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
+    if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
     var tmpVal = vis.states[data.oid1 + '.val'];
     if (typeof tmpVal !== "undefined" && typeof tmpVal !== "boolean") {
       // data value is not type of boolean; so identify which value is given at the moment an then just set to the opposite
