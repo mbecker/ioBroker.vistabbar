@@ -153,14 +153,14 @@ vis.binds["vistabbar"] = {
 
 
           node.appendChild(line);
-          line.addEventListener("click", function (e) {
+          line.addEventListener("click", function (line) {
             var lineHeight = line.offsetHeight + 20 + "px";
             line.style.maxHeight = lineHeight;
             line.style.height = lineHeight;
             line.style.minHeight = lineHeight;
             // line.style.minHeight = "260px";
             // e.preventDefault();
-          }, false)
+          }, false, line)
         }
       }
       nodeNumberOfLogMessages.innerHTML = startLogLine + " - " + history.history.length;
