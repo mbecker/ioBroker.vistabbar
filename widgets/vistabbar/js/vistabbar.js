@@ -833,7 +833,6 @@ vis.binds["vistabbar"] = {
      * RESIZE (icon, progress bar)
      */
     // Resize the icon baed on the panel height
-    console.log(node.clientHeight + "px");
     panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
     icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: containe rheight 140px - font height 48px
     // Seth the width of the progress bar
