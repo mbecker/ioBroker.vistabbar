@@ -37,32 +37,6 @@ vis.binds["vistabbar"] = {
       vis.binds["vistabbar"].version = null;
     }
   },
-  createWidget: function (widgetID, view, data, style) {
-    var $div = $("#" + widgetID);
-    // if nothing found => wait
-    if (!$div.length) {
-      return setTimeout(function () {
-        vis.binds["vistabbar"].createWidget(widgetID, view, data, style);
-      }, 100);
-    }
-
-    var text = "";
-    text += "OID: " + data.oid + "</div><br>";
-    text += 'OID value: <span class="myset-value">' + vis.states[data.oid + ".val"] + "</span><br>";
-    text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + "</span><br>";
-    text += "extraAttr: " + data.extraAttr + "<br>";
-    text += "Browser instance: " + vis.instance + "<br>";
-    text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || "") + "</textarea><br>";
-
-    $("#" + widgetID).html(text);
-
-    // subscribe on updates of value
-    if (data.oid) {
-      vis.states.bind(data.oid + ".val", function (e, newVal, oldVal) {
-        $div.find(".vistabbar-value").html(newVal);
-      });
-    }
-  },
   capitalizeFirstLetter(string) {
     if (typeof string === "undefined") return "undefined";
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -880,13 +854,14 @@ vis.binds["vistabbar"] = {
     }, VISTABBAR.TIMEOUTMS, notificationClass);
   },
   createTabBar: function (datawid, view, data, style) {
-    var $div = $("#" + datawid).addClass("vistabbar-tabbar-base");
+    var $div = $("#" + datawid);
     if (!$div.length) {
       setTimeout(function () {
         vis.binds.vistabbar.createTabBar(datawid, view, data, style);
       }, 100);
       return;
     }
+    // $div.addClass("vistabbar-tabbar-base");
 
     // Constants
     var defaultValues = {
