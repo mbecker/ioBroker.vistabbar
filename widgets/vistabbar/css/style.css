@@ -539,7 +539,11 @@ div.navigationBar div.navBtnCtn.active button {
 	display: flex;
 	flex-direction: row;
 	min-height: 18px;
-	max-height: 36px;
+	/* max-height: 36px; */
+}
+
+.vistabbar-code-json {
+	max-height: 12px;
 }
 
 .vistabbar-code > div > h3 {

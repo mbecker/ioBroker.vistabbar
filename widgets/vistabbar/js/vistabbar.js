@@ -93,41 +93,44 @@ vis.binds["vistabbar"] = {
         };
         const dt = event.toLocaleDateString("de-DE", options);
 
-        // && typeof el.state.name !== "undefined"
-        var line = document.createElement("div");
-        line.classList.add(el.ts)
-        line.setAttribute("id", el.ts);
-        line.setAttribute("data-ts", el.ts);
-        // line.style.maxHeight = "300px";
-        // line.style.height = "300px";
-        // line.style.minHeight = "300px";
-        var span1 = document.createElement("span");
-        // Add an inline svg rect bo to show that the message is acknowledged by the system
-        var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
-        var svg = `<svg class="bd-placeholder-img rounded mr-2" width="10" height="10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" style="margin-bottom: -4px;padding: 4px;"><rect fill="${rectColor}" width="100%" height="100%"></rect></svg>`;
-        // Add the follwing text: german data - ID - value
-        span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
-        line.appendChild(span1);
-        var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
-        spans.forEach(el => line.appendChild(el));
-        // Insert the JSON as string (JSON.stringify)
+        // Closure to handle event listener in a for loop
+        (function () {
+          // && typeof el.state.name !== "undefined"
+          var line = document.createElement("div");
+          line.classList.add(el.ts)
+          line.setAttribute("id", el.ts);
+          line.setAttribute("data-ts", el.ts);
+          var span1 = document.createElement("span");
+          // Add an inline svg rect bo to show that the message is acknowledged by the system
+          var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
+          var svg = `<svg class="bd-placeholder-img rounded mr-2" width="10" height="10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" style="margin-bottom: -4px;padding: 4px;"><rect fill="${rectColor}" width="100%" height="100%"></rect></svg>`;
+          // Add the follwing text: german data - ID - value
+          span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
+          line.appendChild(span1);
+          var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
+          spans.forEach(el => line.appendChild(el));
+          // Insert the JSON as string (JSON.stringify)
 
-        var h3 = document.createElement("h3");
-        h3.innerHTML = "Message";
+          var h3 = document.createElement("h3");
+          h3.innerHTML = "Message";
 
-        var keyNode = document.createElement("div");
-        keyNode.className = "vistabbar-code-key";
-        keyNode.style.marginLeft = 4 + "px";
-        var span3 = document.createElement("span");
-        span3.style.width = "100%";
-        span3.innerHTML = `${JSON.stringify(el.msg)}`;
-        line.appendChild(h3);
-        keyNode.appendChild(span3);
-        line.appendChild(keyNode);
-        
-        line.addEventListener("click", function() { vis.binds.vistabbar.clickHandler(node, el.ts) }, { passive: false })
+          var keyNode = document.createElement("div");
+          keyNode.className = "vistabbar-code-key vistabbar-code-json";
+          keyNode.id = "vistabbar-code-json-" + el.ts;
+          keyNode.style.marginLeft = 4 + "px";
+          var span3 = document.createElement("span");
+          span3.style.width = "100%";
+          span3.innerHTML = `${JSON.stringify(el.msg)}`;
+          line.appendChild(h3);
+          keyNode.appendChild(span3);
+          line.appendChild(keyNode);
 
-        node.appendChild(line);
+          line.addEventListener("click", function () {
+            keyNode.classList.toggle("vistabbar-code-json")
+          }, { passive: false })
+
+          node.appendChild(line);
+        }());
 
       }
     }
@@ -381,13 +384,13 @@ vis.binds["vistabbar"] = {
       });
     }
     // TODO: Subscribe / bind to .ack to show only acknowledged values
-    if(data.oid3){
+    if (data.oid3) {
       vis.states.bind(data.oid3 + ".val", function (e, newVal, oldVal) {
         vis.binds.vistabbar.showNotification(`New temp ${newVal} ack for: ${data.title}`, VISTABBAR.SUCCESS);
         panelContentColumnsRow1_2_2_data2_span2.innerText = newVal + vis.binds.vistabbar.isStateExists(data.suffix3);
       });
     }
-    
+
 
     panelContentColumnsRow1.appendChild(panelContentColumnsRow1_2);
     panelContentColumns.appendChild(panelContentColumnsRow1);
@@ -572,7 +575,7 @@ vis.binds["vistabbar"] = {
       panelBottom.appendChild(panelContentColumnsRow4_1);
       panelContent.appendChild(panelBottom);
     }
-    
+
     /*
      * Add dom nodes to original node
      */
@@ -952,13 +955,13 @@ vis.binds["vistabbar"] = {
     }
     return false;
   },
-  isStateExists: function(state) {
-    if(state === null || typeof state === "undefined" || state === "" || state.length === 0) return "";
+  isStateExists: function (state) {
+    if (state === null || typeof state === "undefined" || state === "" || state.length === 0) return "";
     return state;
   },
-  getStateVal: function(state, resp) {
-    if(state === null || typeof state === "undefined" || state === "" || state.length === 0) return (typeof resp !== "undefined") ? resp : "";
-    return vis.states[state + '.val']; 
+  getStateVal: function (state, resp) {
+    if (state === null || typeof state === "undefined" || state === "" || state.length === 0) return (typeof resp !== "undefined") ? resp : "";
+    return vis.states[state + '.val'];
   }
 };
 
