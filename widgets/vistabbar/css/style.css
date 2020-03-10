@@ -140,6 +140,10 @@ div.navigationBar div.navBtnCtn.active button {
 	background-color: #22adf6 !important;
 }
 
+.vistabbar-tabbar-base {
+	z-index: 1001;
+}
+
 /* Notification Panel */
 .vistabbar-notification-panel {
 	display: none;

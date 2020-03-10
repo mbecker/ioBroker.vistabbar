@@ -74,98 +74,90 @@ vis.binds["vistabbar"] = {
 
     // node.innerHTML = "";
     var history = JSON.parse(historyMsg);
+    if (history === null || typeof history['history'] === "undefined") return;
 
-    if (typeof history.history !== "undefined") {
+    var lines = [];
+    var startLogLine = history.history.length - 200;
+    for (let index = startLogLine; index < history.history.length; index++) {
+      const el = history.history[index];
+      /* The strcuture of the element is as follows:
+      var logMsg = {
+                  id: val.id,
+                  val: val.val,
+                  ack: val.ack,
+                  ts: val.ts,
+                  lc: val.lc,
+                  q: val.q,
+                  msg: {
+                    ...,
+                    device: {
+                      "name": "Socket_Bad",
+                      "topic": "socket/bad/deconz/0/Lights_9/switch",
+                      "field": "socket",
+                      "tags": {
+                          "ack": "true",
+                          "haus": "ginsheim",
+                          "name": "Socket_Bad",
+                          "object": "deconz/0/Lights_9",
+                          "product": "aqara",
+                          "room": "bad"
+                      }
+                  }
+                  }
+              }
+      */
+      if (typeof el.id !== "undefined" && node.getElementsByClassName(el.ts).length === 0) {
+        // Get the date in local (german) time display
+        const event = new Date(el.ts);
+        const options = {
+          year: "numeric",
+          day: "2-digit",
+          month: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        };
+        const dt = event.toLocaleDateString("de-DE", options);
 
-      var startLogLine = history.history.length-200;
-      for (let index = startLogLine; index < history.history.length; index++) {
-        const el = history.history[index];
-        /* The strcuture of the element is as follows:
-        var logMsg = {
-                    id: val.id,
-                    val: val.val,
-                    ack: val.ack,
-                    ts: val.ts,
-                    lc: val.lc,
-                    q: val.q,
-                    msg: {
-                      ...,
-                      device: {
-                        "name": "Socket_Bad",
-                        "topic": "socket/bad/deconz/0/Lights_9/switch",
-                        "field": "socket",
-                        "tags": {
-                            "ack": "true",
-                            "haus": "ginsheim",
-                            "name": "Socket_Bad",
-                            "object": "deconz/0/Lights_9",
-                            "product": "aqara",
-                            "room": "bad"
-                        }
-                    }
-                    }
-                }
-        */
-        if (typeof el.id !== "undefined" && node.getElementsByClassName(el.ts).length === 0) {
-          // Get the date in local (german) time display
-          const event = new Date(el.ts);
-          const options = {
-            year: "numeric",
-            day: "2-digit",
-            month: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          };
-          const dt = event.toLocaleDateString("de-DE", options);
+        // && typeof el.state.name !== "undefined"
+        var line = document.createElement("div");
+        line.classList.add(el.ts)
+        line.setAttribute("id", el.ts);
+        line.setAttribute("data-ts", el.ts);
+        // line.style.maxHeight = "300px";
+        // line.style.height = "300px";
+        // line.style.minHeight = "300px";
+        var span1 = document.createElement("span");
+        // Add an inline svg rect bo to show that the message is acknowledged by the system
+        var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
+        var svg = `<svg class="bd-placeholder-img rounded mr-2" width="10" height="10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" style="margin-bottom: -4px;padding: 4px;"><rect fill="${rectColor}" width="100%" height="100%"></rect></svg>`;
+        // Add the follwing text: german data - ID - value
+        span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
+        line.appendChild(span1);
+        var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
+        spans.forEach(el => line.appendChild(el));
+        // Insert the JSON as string (JSON.stringify)
 
-          // && typeof el.state.name !== "undefined"
-          var line = document.createElement("div");
-          line.classList.add(el.ts)
-          line.setAttribute("id", el.ts);
-          line.setAttribute("data-ts", el.ts);
-          // line.style.maxHeight = "300px";
-          // line.style.height = "300px";
-          // line.style.minHeight = "300px";
-          var span1 = document.createElement("span");
-          // Add an inline svg rect bo to show that the message is acknowledged by the system
-          var rectColor = (el.ack === true) ? "#9dd3ae" : "#7a65f2"; // lila
-          var svg = `<svg class="bd-placeholder-img rounded mr-2" width="10" height="10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" style="margin-bottom: -4px;padding: 4px;"><rect fill="${rectColor}" width="100%" height="100%"></rect></svg>`;
-          // Add the follwing text: german data - ID - value
-          span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
-          line.appendChild(span1);
-          var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
-          spans.forEach(el => line.appendChild(el));
-          // Insert the JSON as string (JSON.stringify)
+        var h3 = document.createElement("h3");
+        h3.innerHTML = "Message";
 
-          var h3 = document.createElement("h3");
-          h3.innerHTML = "Message";
+        var keyNode = document.createElement("div");
+        keyNode.className = "vistabbar-code-key";
+        keyNode.style.marginLeft = 4 + "px";
+        var span3 = document.createElement("span");
+        span3.style.width = "100%";
+        span3.innerHTML = `${JSON.stringify(el.msg)}`;
+        line.appendChild(h3);
+        keyNode.appendChild(span3);
+        line.appendChild(keyNode);
+        
+        line.addEventListener("click", function() { vis.binds.vistabbar.clickHandler(node, el.ts) }, { passive: false })
 
-          var keyNode = document.createElement("div");
-          keyNode.className = "vistabbar-code-key";
-          keyNode.style.marginLeft = 4 + "px";
-          var span3 = document.createElement("span");
-          span3.style.width = "100%";
-          span3.innerHTML = `${JSON.stringify(el.msg)}`;
-          line.appendChild(h3);
-          keyNode.appendChild(span3);
-          line.appendChild(keyNode);
+        node.appendChild(line);
 
-          line.addEventListener("click", function (e) {
-            var lineHeight = line.offsetHeight + 20 + "px";
-            line.style.maxHeight = lineHeight;
-            line.style.height = lineHeight;
-            line.style.minHeight = lineHeight;
-            // line.style.minHeight = "260px";
-            // e.preventDefault();
-          }, false)
-
-          node.appendChild(line);
-          
-        }
       }
-      nodeNumberOfLogMessages.innerHTML = startLogLine + " - " + history.history.length;
     }
+    nodeNumberOfLogMessages.innerHTML = startLogLine + " - " + history.history.length;
 
     nodeNumberOfLogMessages.addEventListener("click", function (e) {
       node.scrollTop = node.scrollHeight;
@@ -176,6 +168,15 @@ vis.binds["vistabbar"] = {
     // A new element is added to the dom element; scroll to the end of the element
     node.scrollTop = node.scrollHeight;
     node.scrollIntoView({ block: "end" });
+  },
+  clickHandler(node, id) {
+    var line = node.getElementsByClassName(id);
+    var lineHeight = line.offsetHeight + 20 + "px";
+    line.style.maxHeight = lineHeight;
+    line.style.height = lineHeight;
+    line.style.minHeight = lineHeight;
+    // line.style.minHeight = "260px";
+    // e.preventDefault();
   },
   getNodeFromLogMessage(el, n, heading) {
     if (typeof el !== "object") return;
@@ -343,7 +344,7 @@ vis.binds["vistabbar"] = {
     panelContentHeading.className = "padding-8 vistabbar-panel-column";
     var heading = document.createElement("h3")
     heading.className = "vistabbar-panel-heading";
-    heading.innerText = data.title;
+    heading.innerText = vis.binds.vistabbar.isStateExists(data.title);
     panelContentHeading.appendChild(heading);
 
     panelContent.appendChild(panelContentHeading);
@@ -364,13 +365,13 @@ vis.binds["vistabbar"] = {
     // 1st row - left - left
     var panelContentColumnsRow1_1_1 = document.createElement("div");
     var panelContentColumnsRow1_1_1_text1 = document.createElement("p");
-    panelContentColumnsRow1_1_1_text1.innerText = data.text1;
+    panelContentColumnsRow1_1_1_text1.innerText = vis.binds.vistabbar.isStateExists(data.text1);
     panelContentColumnsRow1_1_1.appendChild(panelContentColumnsRow1_1_1_text1);
     panelContentColumnsRow1_1.appendChild(panelContentColumnsRow1_1_1);
     // 1st row - left - right
     var panelContentColumnsRow1_1_2 = document.createElement("div");
     var panelContentColumnsRow1_1_2_data1 = document.createElement("p");
-    panelContentColumnsRow1_1_2_data1.innerText = vis.states[data.hid1 + '.val'] + data.suffix1;
+    panelContentColumnsRow1_1_2_data1.innerText = vis.binds.vistabbar.getStateVal(data.oid1, "") + vis.binds.vistabbar.isStateExists(data.suffix1);
     panelContentColumnsRow1_1_2.appendChild(panelContentColumnsRow1_1_2_data1);
     panelContentColumnsRow1_1.appendChild(panelContentColumnsRow1_1_2);
 
@@ -390,27 +391,29 @@ vis.binds["vistabbar"] = {
     var panelContentColumnsRow1_2_2 = document.createElement("div");
     var panelContentColumnsRow1_2_2_data2 = document.createElement("p");
     var panelContentColumnsRow1_2_2_data2_span1 = document.createElement("span");
-    panelContentColumnsRow1_2_2_data2_span1.innerText = vis.states[data.hid2 + '.val'] + data.suffix2;
+    panelContentColumnsRow1_2_2_data2_span1.innerText = vis.binds.vistabbar.getStateVal(data.oid2, "") + vis.binds.vistabbar.isStateExists(data.suffix2);
     var panelContentColumnsRow1_2_2_data2_span2 = document.createElement("span");
-    panelContentColumnsRow1_2_2_data2_span2.innerText = vis.states[data.hid3 + '.val'] + data.suffix3;
+    panelContentColumnsRow1_2_2_data2_span2.innerText = vis.binds.vistabbar.getStateVal(data.oid3, "") + vis.binds.vistabbar.isStateExists(data.suffix3);
 
 
-    // panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.hid2 + '.val'] + data.suffix2 + vis.states[data.hid3 + '.val'] + data.suffix3;
+    // panelContentColumnsRow1_2_2_data2.innerText = vis.states[data.oid2 + '.val'] + data.suffix2 + vis.states[data.oid3 + '.val'] + data.suffix3;
     panelContentColumnsRow1_2_2_data2.appendChild(panelContentColumnsRow1_2_2_data2_span1);
     panelContentColumnsRow1_2_2_data2.appendChild(panelContentColumnsRow1_2_2_data2_span2);
     panelContentColumnsRow1_2_2.appendChild(panelContentColumnsRow1_2_2_data2);
     panelContentColumnsRow1_2.appendChild(panelContentColumnsRow1_2_2);
-    if (data.hid2) {
-      vis.states.bind(data.hid2 + ".val", function (e, newVal, oldVal) {
-        panelContentColumnsRow1_2_2_data2_span1.innerText = newVal + data.suffix2; //  + vis.states[data.hid3 + '.val'] + data.suffix3;
+    if (data.oid2) {
+      vis.states.bind(data.oid2 + ".val", function (e, newVal, oldVal) {
+        panelContentColumnsRow1_2_2_data2_span1.innerText = newVal + vis.binds.vistabbar.isStateExists(data.suffix2); //  + vis.states[data.oid3 + '.val'] + data.suffix3;
       });
     }
     // TODO: Subscribe / bind to .ack to show only acknowledged values
-    vis.states.bind(data.hid3 + ".val", function (e, newVal, oldVal) {
-      vis.binds.vistabbar.showNotification(`New temp ${newVal} ack for: ${data.title}`, VISTABBAR.SUCCESS);
-      panelContentColumnsRow1_2_2_data2_span2.innerText = newVal + data.suffix3;
-    });
-
+    if(data.oid3){
+      vis.states.bind(data.oid3 + ".val", function (e, newVal, oldVal) {
+        vis.binds.vistabbar.showNotification(`New temp ${newVal} ack for: ${data.title}`, VISTABBAR.SUCCESS);
+        panelContentColumnsRow1_2_2_data2_span2.innerText = newVal + vis.binds.vistabbar.isStateExists(data.suffix3);
+      });
+    }
+    
 
     panelContentColumnsRow1.appendChild(panelContentColumnsRow1_2);
     panelContentColumns.appendChild(panelContentColumnsRow1);
@@ -424,20 +427,20 @@ vis.binds["vistabbar"] = {
     // 2nd row - left - left
     var panelContentColumnsRow2_1_1 = document.createElement("div");
     var panelContentColumnsRow2_1_1_text3 = document.createElement("p");
-    panelContentColumnsRow2_1_1_text3.innerText = data.text4;
+    panelContentColumnsRow2_1_1_text3.innerText = vis.binds.vistabbar.isStateExists(data.text4);
     panelContentColumnsRow2_1_1.appendChild(panelContentColumnsRow2_1_1_text3);
     panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_1);
     // 2nd row - left - right
     var panelContentColumnsRow2_1_2 = document.createElement("div");
     var panelContentColumnsRow2_1_2_data3 = document.createElement("p");
-    panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid4 + '.val'] + data.suffix4;
+    panelContentColumnsRow2_1_2_data3.innerText = vis.binds.vistabbar.getStateVal(data.oid4, "") + vis.binds.vistabbar.isStateExists(data.suffix4);
     panelContentColumnsRow2_1_2.appendChild(panelContentColumnsRow2_1_2_data3);
     panelContentColumnsRow2_1.appendChild(panelContentColumnsRow2_1_2);
-    if (data.hid4) {
+    if (data.oid4) {
       // Only change value if the value was acknowledged
-      vis.states.bind(data.hid4 + ".ack", function (e, newVal, oldVal) {
+      vis.states.bind(data.oid4 + ".ack", function (e, newVal, oldVal) {
         if (newVal === true) {
-          panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.hid4 + '.val'] + data.suffix4;
+          panelContentColumnsRow2_1_2_data3.innerText = vis.states[data.oid4 + '.val'] + vis.binds.vistabbar.isStateExists(data.suffix4);
         }
       });
     }
@@ -458,12 +461,12 @@ vis.binds["vistabbar"] = {
     // 2nd row - right - right
     var panelContentColumnsRow2_2_2 = document.createElement("div");
     var panelContentColumnsRow2_2_2_data4 = document.createElement("p");
-    panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid5 + '.val'] + data.suffix5;
+    panelContentColumnsRow2_2_2_data4.innerText = vis.binds.vistabbar.getStateVal(data.oid5, "") + vis.binds.vistabbar.isStateExists(data.suffix5);
     panelContentColumnsRow2_2_2.appendChild(panelContentColumnsRow2_2_2_data4);
     panelContentColumnsRow2_2.appendChild(panelContentColumnsRow2_2_2);
-    if (data.hid5) {
-      vis.states.bind(data.hid5 + ".val", function (e, newVal, oldVal) {
-        panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.hid5 + '.val'] + data.suffix5;
+    if (data.oid5) {
+      vis.states.bind(data.oid5 + ".val", function (e, newVal, oldVal) {
+        panelContentColumnsRow2_2_2_data4.innerText = vis.states[data.oid5 + '.val'] + vis.binds.vistabbar.isStateExists(data.suffix5);
       });
     }
 
@@ -532,7 +535,6 @@ vis.binds["vistabbar"] = {
       if (tvalues.length === 0) return;
 
       var tequal = vis.states[data.tequal + '.val'];
-
       var panelContentColumnsRow4_1 = document.createElement("div");
       panelContentColumnsRow4_1.className = "vistabbar-panel-button";
 
@@ -596,70 +598,7 @@ vis.binds["vistabbar"] = {
       panelBottom.appendChild(panelContentColumnsRow4_1);
       panelContent.appendChild(panelBottom);
     }
-    // var panelContentColumnsRow4 = document.createElement("div");
-    // panelContentColumnsRow4.className = "vistabbar-panel-column-row";
-
-
-    // Butons
-
-
-    // var panelContentColumnsRow4_1_Input2 = document.createElement("input");
-    // panelContentColumnsRow4_1_Input2.type = "radio";
-    // panelContentColumnsRow4_1_Input2.tabIndex = "-1";
-    // panelContentColumnsRow4_1_Input2.value = "radio_auto";
-    // panelContentColumnsRow4_1_Input2.readOnly = true;
-    // panelContentColumnsRow4_1_Input2.id = "panelContentColumnsRow4_1_Input2";
-    // panelContentColumnsRow4_1_Input2.name = "panelContentColumnsRow4_1_Input2";
-    // var panelContentColumnsRow4_1_Label2 = document.createElement("label");
-    // panelContentColumnsRow4_1_Label2.className = "vistabbar-panel-button-label-active";
-    // panelContentColumnsRow4_1_Label2.title = "panelContentColumnsRow4_1_Label2";
-    // panelContentColumnsRow4_1_Label2.formTarget = "panelContentColumnsRow4_1_Input2"
-    // panelContentColumnsRow4_1_Label2.innerHTML = "Heat (Eco)";
-
-    // var panelContentColumnsRow4_1_Input3 = document.createElement("input");
-    // panelContentColumnsRow4_1_Input3.type = "radio";
-    // panelContentColumnsRow4_1_Input3.tabIndex = "-1";
-    // panelContentColumnsRow4_1_Input3.value = "radio_auto";
-    // panelContentColumnsRow4_1_Input3.readOnly = true;
-    // panelContentColumnsRow4_1_Input3.id = "panelContentColumnsRow4_1_Input3";
-    // panelContentColumnsRow4_1_Input3.name = "panelContentColumnsRow4_1_Input3";
-    // var panelContentColumnsRow4_1_Label3 = document.createElement("label");
-    // panelContentColumnsRow4_1_Label3.title = "panelContentColumnsRow4_1_Label3";
-    // panelContentColumnsRow4_1_Label3.formTarget = "panelContentColumnsRow4_1_Input3"
-    // panelContentColumnsRow4_1_Label3.innerHTML = "Heat";
-
-    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input1);
-    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label1);
-    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input2);
-    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label2);
-    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Input3);
-    // panelContentColumnsRow4_1.appendChild(panelContentColumnsRow4_1_Label3);
-
-    // panelContentColumnsRow4.appendChild(panelContentColumnsRow4_1);
-    // panelContentColumns.appendChild(panelContentColumnsRow4);
-    // END 4th row
-
-
-
-
-
-    /*
-     * END panelContentColumns
-     */
-
-
-
-    // var panelBottomColumn = document.createElement("div");
-    // panelBottomColumn.className = "vistabbar-panel-row-info-progress";
-    // var panelBottomColumInfo = document.createElement("p");
-    // panelBottomColumInfo.className = "vistabbar-panel-row-info-value-progress";
-    // panelBottomColumInfo.innerText = "test"
-    // // Append: panelrow
-    // panelBottomColumn.appendChild(panelBottomColumInfo);
-
-
-
-
+    
     /*
      * Add dom nodes to original node
      */
@@ -941,7 +880,7 @@ vis.binds["vistabbar"] = {
     }, VISTABBAR.TIMEOUTMS, notificationClass);
   },
   createTabBar: function (datawid, view, data, style) {
-    var $div = $("#" + datawid).addClass("vis-tabbar-base");
+    var $div = $("#" + datawid).addClass("vistabbar-tabbar-base");
     if (!$div.length) {
       setTimeout(function () {
         vis.binds.vistabbar.createTabBar(datawid, view, data, style);
@@ -1037,6 +976,14 @@ vis.binds["vistabbar"] = {
       return true;
     }
     return false;
+  },
+  isStateExists: function(state) {
+    if(state === null || typeof state === "undefined" || state === "" || state.length === 0) return "";
+    return state;
+  },
+  getStateVal: function(state, resp) {
+    if(state === null || typeof state === "undefined" || state === "" || state.length === 0) return (typeof resp !== "undefined") ? resp : "";
+    return vis.states[state + '.val']; 
   }
 };
 
