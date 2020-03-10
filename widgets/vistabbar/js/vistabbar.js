@@ -146,15 +146,6 @@ vis.binds["vistabbar"] = {
     node.scrollTop = node.scrollHeight;
     node.scrollIntoView({ block: "end" });
   },
-  clickHandler(node, id) {
-    var line = node.getElementsByClassName(id);
-    var lineHeight = line.offsetHeight + 20 + "px";
-    line.style.maxHeight = lineHeight;
-    line.style.height = lineHeight;
-    line.style.minHeight = lineHeight;
-    // line.style.minHeight = "260px";
-    // e.preventDefault();
-  },
   getNodeFromLogMessage(el, n, heading) {
     if (typeof el !== "object") return;
     var nodes = [];
