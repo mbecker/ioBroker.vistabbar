@@ -50,10 +50,11 @@ vis.binds["vistabbar"] = {
     var history = JSON.parse(historyMsg);
     if (history === null || typeof history['history'] === "undefined") return;
 
-    var lines = [];
-    var startLogLine = history.history.length - 200;
+    var startLogLine = (history.history.length > 200) ? history.history.length - 200 : 0;
+    
     for (let index = startLogLine; index < history.history.length; index++) {
       const el = history.history[index];
+      
       /* The strcuture of the element is as follows:
       var logMsg = {
                   id: val.id,
@@ -80,7 +81,7 @@ vis.binds["vistabbar"] = {
                   }
               }
       */
-      if (typeof el.id !== "undefined" && node.getElementsByClassName(el.ts).length === 0) {
+      if (typeof el["id"] !== "undefined" && node.getElementsByClassName(el.ts).length === 0) {
         // Get the date in local (german) time display
         const event = new Date(el.ts);
         const options = {
@@ -815,10 +816,6 @@ vis.binds["vistabbar"] = {
         tabbar.selectTab(defaultValues.tabs[defaultValues.tab]);
       }
     }
-
-    // console.log("--- DEBUG: data ---");
-    // console.log(defaultValues.tab);
-    // console.log(defaultValues.tabs);
   },
   isEditMode: function () {
     // "/vis/index.html" OR "/vis/edit.html"
@@ -846,9 +843,6 @@ vis.binds["vistabbar"] = {
       }, 100);
     }
 
-
-    console.log("UPDATE 9");
-
     /*
      * START DATA
      * TODO: Check the following prams: data.title
@@ -866,6 +860,15 @@ vis.binds["vistabbar"] = {
         data.titleFontSize.includes("%") ||
         data.titleFontSize.includes("em")
       )) ? data.titleFontSize : "1.4em";
+
+      var bottomFontSize = (
+        typeof data.bottomFontSize !== "undefined" &&
+        data.bottomFontSize !== null &&
+        (
+          data.bottomFontSize.includes("px") ||
+          data.bottomFontSize.includes("%") ||
+          data.bottomFontSize.includes("em")
+        )) ? data.bottomFontSize : "1.6em";
 
 
     /*
@@ -897,7 +900,7 @@ vis.binds["vistabbar"] = {
     // 2.1 - Icon
     var panelColumnIcon = document.createElement("div");
     panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
-    console.log(data.iconshow);
+
     if (typeof data.iconshow !== "undefined" && data.iconshow) {
       var icon = document.createElement("i");
       icon.className = "material-icons";
@@ -911,9 +914,11 @@ vis.binds["vistabbar"] = {
     panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
     // 3. - Progress    
     var panelRowInfo = document.createElement("div");
-    panelRowInfo.style.backgroundColor = data.iconcoloron + "!important";
+    // TODO: If the data.oid2 iy typeof undefined then is the boolean true; check typeof undefined and null
+    panelRowInfo.style.backgroundColor = vis.binds.vistabbar.getIconColor(Boolean(data.oid2), data.iconcoloron, data.iconcoloroff);
     panelRowInfo.className = "vistabbar-panel-row-info-progress";
     var panelRowInfoP = document.createElement("p");
+    panelRowInfoP.style.fontSize = bottomFontSize;
     panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
     panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(powerObjectVal, data);;
     // Append: panelrow
@@ -944,16 +949,16 @@ vis.binds["vistabbar"] = {
       vis.states.bind(data.oid2 + ".val", function (e, newVal, oldVal) {
         panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(newVal, data);
         panelRowInfo.style.width = vis.binds.vistabbar.getProgress(newVal, data) + "%";
+        panelRowInfo.style.backgroundColor = vis.binds.vistabbar.getIconColor(Boolean(newVal), data.iconcoloron, data.iconcoloroff);
       });
     }
 
     /*
      * Click Handler
      */
-    vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
-      // Update panel only if the status is acknowledged by the device
-      if (newVal !== true) return;
+    console.log("UPDATE 25");
 
+    var setPanelStatus = function (deviceVal) {
       // Update the classe and remove push indication
       panelContentColumns.classList.remove("vistabbar-push");
       panelContentHeading.classList.remove("vistabbar-push");
@@ -962,16 +967,27 @@ vis.binds["vistabbar"] = {
       vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
 
       // Update the icon
-      var switchObjectValTmp = vis.states[data.oid1 + '.val'];
-      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
-      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
+      icon.style.color = vis.binds.vistabbar.getIconColor(deviceVal, data.iconcoloron, data.iconcoloroff);
+      icon.innerHTML = vis.binds.vistabbar.getIcon(deviceVal, data.iconon, data.iconoff);
+    };
 
+    // The process of updating the device's state is as follow: User push -> state val=true + ack=fals -> device updates its status and sends back status -> state val=true + ack=true -- Only process the last update: Subscribe to .ack and use .val as state's value
+    // The process of updating the device's state on its own as follows User useses other device not connected to ioBroker -> state val=true + ack=true -- Subscribe to .val because the .ack-Value may not change to the latest status
+    vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
+      if (newVal !== true) return;
+      setPanelStatus(vis.states[data.oid1 + '.val']);
+    });
+    vis.states.bind(data.oid1 + ".val", function (e, newVal, oldVal) {
+      var deviceAck = vis.states[data.oid1 + '.ack'];
+      // Update panel only if the status is acknowledged by the device
+      if (deviceAck !== true) return;
+      setPanelStatus(newVal);
     });
     node.addEventListener("click", function (e) {
       if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
       if (vis.binds.vistabbar.isEditMode()) return;
       vis.binds.vistabbar.showNotification("Send command: " + data.title);
-      
+
       panelContentColumns.classList.add("vistabbar-push");
       panelContentHeading.classList.add("vistabbar-push");
 
