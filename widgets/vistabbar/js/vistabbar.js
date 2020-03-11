@@ -876,7 +876,7 @@ vis.binds["vistabbar"] = {
     /*
      * END DATA
      */
-    console.log("Update 10");
+    
     /*
      * START CONTENT
      */
