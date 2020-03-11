@@ -900,11 +900,8 @@ vis.binds["vistabbar"] = {
     // 2. - Content
     var panelContentColumns = document.createElement("div");
     panelContentColumns.className = "vistabbar-panel-column vistabbar-panel-content";
-    panelContentColumns.style.justifyContent = "center"
+    
     // 2.1 - Icon
-    var panelColumnIcon = document.createElement("div");
-    panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
-
     if (typeof data.iconshow !== "undefined" && data.iconshow) {
       var icon = document.createElement("i");
       icon.className = "material-icons";
