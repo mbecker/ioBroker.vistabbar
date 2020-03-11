@@ -127,6 +127,10 @@ vis.binds["vistabbar"] = {
 
           line.addEventListener("click", function () {
             keyNode.classList.toggle("vistabbar-code-json")
+            line.style.backgroundColor = "rgba(34, 171, 245, 0.4)!important";
+            setTimeout(() => {
+              line.style.backgroundColor = "";
+            }, 250);
           }, { passive: false })
 
           node.appendChild(line);
@@ -639,130 +643,7 @@ vis.binds["vistabbar"] = {
       e.preventDefault();
     }, false);
   },
-  createPanelProgress: function (widgetID, view, data, style) {
-    var node = document.getElementById(widgetID);
 
-    // if nothing found => wait
-    if (!node) {
-      return setTimeout(function () {
-        vis.binds["vistabbar"].createPanelProgress(widgetID, view, data, style);
-      }, 100);
-    }
-
-    // TODO: Check the following prams: data.title
-
-    var switchObjectVal = vis.states[data.oid1 + '.val'];
-    var powerObjectVal = vis.states[data.oid2 + '.val'];
-
-    /*
-     * Panel Column
-     */
-    // Heading
-    var panelColumnHeading = document.createElement("div");
-    panelColumnHeading.className = "vistabbar-panel-column vistabbar-height-20";
-    var heading = document.createElement("h3")
-    heading.className = "vistabbar-panel-heading";
-    heading.innerText = data.title;
-    panelColumnHeading.appendChild(heading);
-
-    // Icon
-    var panelColumnIcon = document.createElement("div");
-    panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
-    var icon = document.createElement("i");
-    icon.className = "material-icons";
-    icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
-    icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
-    panelColumnIcon.appendChild(icon);
-
-
-    var panelColumns = document.createElement("div");
-    panelColumns.className = "vistabbar-height-100";
-    panelColumns.appendChild(panelColumnHeading);
-    panelColumns.appendChild(panelColumnIcon);
-
-    /*
-     * Panel Row
-     */
-    var panelRow = document.createElement("div");
-    panelRow.className = "vistabbar-panel-row-progress vistabbar-height-20";
-    var panelRowInfo = document.createElement("div");
-    panelRowInfo.className = "vistabbar-panel-row-info-progress";
-    var panelRowInfoP = document.createElement("p");
-    panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
-    panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(powerObjectVal, data);;
-    // Append: panelrow
-    panelRowInfo.appendChild(panelRowInfoP);
-    panelRow.appendChild(panelRowInfo);
-
-    /*
-     * Panel Node
-     */
-    node.appendChild(panelColumns);
-    // node.appendChild(panelColumnIcon);
-    node.appendChild(panelRow);
-
-    // Add click event handler to node
-    var nodeOriginalBackground = panelColumnHeading.style.background;
-    vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
-      // Update panel only if the status is acknowledged by the device
-      if (newVal !== true) return;
-
-      // Update the classe and remove push indication
-      node.classList.remove("vistabbar-push");
-      vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
-
-      // Update the icon
-      var switchObjectValTmp = vis.states[data.oid1 + '.val'];
-      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
-      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
-
-      panelColumns.style.background = nodeOriginalBackground;
-    });
-    node.addEventListener("click", function (e) {
-      if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
-      if (vis.binds.vistabbar.isEditMode()) return;
-      vis.binds.vistabbar.showNotification("Send command: " + data.title);
-      // Simulate click
-      panelColumns.style.background = data.clickcolor;
-      setTimeout(() => {
-        // panelColumns.style.background = nodeOriginalBackground;
-        console.log("add class");
-        node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
-        node.style.backgroundColor = ""; // That the background of the class in the line above works
-
-        vis.binds.vistabbar.setState(data);
-      }, data.clickdelay);
-      e.preventDefault();
-    }, false);
-
-
-    /*
-     * RESIZE (icon, progress bar)
-     */
-    // Resize the icon baed on the panel height
-    panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
-    icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: containe rheight 140px - font height 48px
-    // Seth the width of the progress bar
-    panelRowInfo.style.width = vis.binds.vistabbar.getProgress(powerObjectVal, data) + "%";
-
-    /*
-     * SUBSCRIBE
-     */
-    if (data.oid2) {
-      vis.states.bind(data.oid2 + ".val", function (e, newVal, oldVal) {
-        panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(newVal, data);
-        panelRowInfo.style.width = vis.binds.vistabbar.getProgress(newVal, data) + "%";
-      });
-    }
-
-    // if (data.oid1) {
-    //   vis.states.bind(data.oid1 + ".val", function (e, newVal, oldVal) {
-    //     icon.style.color = vis.binds.vistabbar.getIconColor(newVal, data.iconcoloron, data.iconcoloroff);
-    //     icon.innerHTML = vis.binds.vistabbar.getIcon(newVal, data.iconon, data.iconoff);
-    //   });
-    // }
-
-  },
   setState(data) {
     if (vis.binds.vistabbar.isEditMode()) return;
     if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
@@ -953,7 +834,278 @@ vis.binds["vistabbar"] = {
   getStateVal: function (state, resp) {
     if (state === null || typeof state === "undefined" || state === "" || state.length === 0) return (typeof resp !== "undefined") ? resp : "";
     return vis.states[state + '.val'];
-  }
+  },
+  createPanelProgress: function (widgetID, view, data, style) {
+
+    var node = document.getElementById(widgetID);
+
+    // if nothing found => wait
+    if (!node) {
+      return setTimeout(function () {
+        vis.binds["vistabbar"].createPanelProgress(widgetID, view, data, style);
+      }, 100);
+    }
+
+
+    console.log("UPDATE 9");
+
+    /*
+     * START DATA
+     * TODO: Check the following prams: data.title
+     */
+
+    var switchObjectVal = vis.states[data.oid1 + '.val'];
+    var powerObjectVal = vis.states[data.oid2 + '.val'];
+
+    // Set the font-size of the heading/h3 if the param exists and includes either "px" or "%"
+    var headingFontSize = (
+      typeof data.titleFontSize !== "undefined" &&
+      data.titleFontSize !== null &&
+      (
+        data.titleFontSize.includes("px") ||
+        data.titleFontSize.includes("%") ||
+        data.titleFontSize.includes("em")
+      )) ? data.titleFontSize : "1.4em";
+
+
+    /*
+     * END DATA
+     */
+
+    /*
+     * START CONTENT
+     */
+    var panelContent = document.createElement("div");
+    panelContent.style.flexDirection = "column";
+    panelContent.style.display = "flex";
+    panelContent.style.height = "100%";
+
+    // 1. - Header
+    var panelContentHeading = document.createElement("div");
+    panelContentHeading.className = "padding-8 vistabbar-panel-column vistabbar-height-32px";
+    // 1.1. - Headline (text)
+    var heading = document.createElement("h3")
+    heading.className = "vistabbar-panel-heading";
+    heading.style.fontSize = headingFontSize;
+    heading.innerText = data.title;
+    panelContentHeading.appendChild(heading);
+
+    // 2. - Content
+    var panelContentColumns = document.createElement("div");
+    panelContentColumns.className = "vistabbar-panel-column vistabbar-panel-content";
+    panelContentColumns.style.justifyContent = "flex-start"
+    // 2.1 - Icon
+    var panelColumnIcon = document.createElement("div");
+    panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
+    console.log(data.iconshow);
+    if (typeof data.iconshow !== "undefined" && data.iconshow) {
+      var icon = document.createElement("i");
+      icon.className = "material-icons";
+      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
+      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
+      panelContentColumns.appendChild(icon);
+    }
+
+    // 3. - Bottom
+    var panelBottom = document.createElement("div");
+    panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
+    // 3. - Progress    
+    var panelRowInfo = document.createElement("div");
+    panelRowInfo.style.backgroundColor = data.iconcoloron + "!important";
+    panelRowInfo.className = "vistabbar-panel-row-info-progress";
+    var panelRowInfoP = document.createElement("p");
+    panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
+    panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(powerObjectVal, data);;
+    // Append: panelrow
+    panelRowInfo.appendChild(panelRowInfoP);
+    panelBottom.appendChild(panelRowInfo);
+
+    panelContent.appendChild(panelContentHeading);
+    panelContent.appendChild(panelContentColumns);
+    panelContent.appendChild(panelBottom);
+    node.appendChild(panelContent);
+
+    /*
+     * END CNOTENT
+     */
+
+    // Resize
+    if (typeof data.iconshow !== "undefined" && data.iconshow) {
+      icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
+    }
+    panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
+    panelRowInfo.style.width = vis.binds.vistabbar.getProgress(powerObjectVal, data) + "%";
+
+
+    /*
+         * SUBSCRIBE
+         */
+    if (data.oid2) {
+      vis.states.bind(data.oid2 + ".val", function (e, newVal, oldVal) {
+        panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(newVal, data);
+        panelRowInfo.style.width = vis.binds.vistabbar.getProgress(newVal, data) + "%";
+      });
+    }
+
+    /*
+     * Click Handler
+     */
+    vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
+      // Update panel only if the status is acknowledged by the device
+      if (newVal !== true) return;
+
+      // Update the classe and remove push indication
+      panelContentColumns.classList.remove("vistabbar-push");
+      panelContentHeading.classList.remove("vistabbar-push");
+
+      // Show notification
+      vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
+
+      // Update the icon
+      var switchObjectValTmp = vis.states[data.oid1 + '.val'];
+      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
+      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
+
+    });
+    node.addEventListener("click", function (e) {
+      if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
+      if (vis.binds.vistabbar.isEditMode()) return;
+      vis.binds.vistabbar.showNotification("Send command: " + data.title);
+      
+      panelContentColumns.classList.add("vistabbar-push");
+      panelContentHeading.classList.add("vistabbar-push");
+
+      vis.binds.vistabbar.setState(data);
+
+      e.preventDefault();
+    }, false);
+
+
+  },
+  createPanelProgress2: function (widgetID, view, data, style) {
+    var node = document.getElementById(widgetID);
+
+    // if nothing found => wait
+    if (!node) {
+      return setTimeout(function () {
+        vis.binds["vistabbar"].createPanelProgress(widgetID, view, data, style);
+      }, 100);
+    }
+
+    // TODO: Check the following prams: data.title
+
+    var switchObjectVal = vis.states[data.oid1 + '.val'];
+    var powerObjectVal = vis.states[data.oid2 + '.val'];
+
+    /*
+     * Panel Column
+     */
+    // Heading
+    var panelColumnHeading = document.createElement("div");
+    panelColumnHeading.className = "vistabbar-panel-column vistabbar-height-20";
+    var heading = document.createElement("h3")
+    heading.className = "vistabbar-panel-heading";
+    heading.innerText = data.title;
+    panelColumnHeading.appendChild(heading);
+
+    // Icon
+    var panelColumnIcon = document.createElement("div");
+    panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
+    var icon = document.createElement("i");
+    icon.className = "material-icons";
+    icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectVal, data.iconcoloron, data.iconcoloroff);
+    icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectVal, data.iconon, data.iconoff);
+    panelColumnIcon.appendChild(icon);
+
+
+    var panelColumns = document.createElement("div");
+    panelColumns.className = "vistabbar-height-100";
+    panelColumns.appendChild(panelColumnHeading);
+    panelColumns.appendChild(panelColumnIcon);
+
+    /*
+     * Panel Row
+     */
+    var panelRow = document.createElement("div");
+    panelRow.className = "vistabbar-panel-row-progress vistabbar-height-20";
+    var panelRowInfo = document.createElement("div");
+    panelRowInfo.className = "vistabbar-panel-row-info-progress";
+    var panelRowInfoP = document.createElement("p");
+    panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
+    panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(powerObjectVal, data);;
+    // Append: panelrow
+    panelRowInfo.appendChild(panelRowInfoP);
+    panelRow.appendChild(panelRowInfo);
+
+    /*
+     * Panel Node
+     */
+    node.appendChild(panelColumns);
+    // node.appendChild(panelColumnIcon);
+    node.appendChild(panelRow);
+
+    // Add click event handler to node
+    var nodeOriginalBackground = panelColumnHeading.style.background;
+    vis.states.bind(data.oid1 + ".ack", function (e, newVal, oldVal) {
+      // Update panel only if the status is acknowledged by the device
+      if (newVal !== true) return;
+
+      // Update the classe and remove push indication
+      node.classList.remove("vistabbar-push");
+      vis.binds.vistabbar.showNotification("Ack command: " + data.title, VISTABBAR.SUCCESS);
+
+      // Update the icon
+      var switchObjectValTmp = vis.states[data.oid1 + '.val'];
+      icon.style.color = vis.binds.vistabbar.getIconColor(switchObjectValTmp, data.iconcoloron, data.iconcoloroff);
+      icon.innerHTML = vis.binds.vistabbar.getIcon(switchObjectValTmp, data.iconon, data.iconoff);
+
+      panelColumns.style.background = nodeOriginalBackground;
+    });
+    node.addEventListener("click", function (e) {
+      if (data.minvalue === null || data.minvalue === "" || data.minvalue.length === 0 || data.maxvalue.length === 0 || data.maxvalue === null || data.maxvalue === "") return;
+      if (vis.binds.vistabbar.isEditMode()) return;
+      vis.binds.vistabbar.showNotification("Send command: " + data.title);
+      // Simulate click
+      panelColumns.style.background = data.clickcolor;
+      setTimeout(() => {
+        // panelColumns.style.background = nodeOriginalBackground;
+        console.log("add class");
+        node.classList.add("vistabbar-push"); // Set the class to show the status of "pushing" the command to the device (user feedback)
+        node.style.backgroundColor = ""; // That the background of the class in the line above works
+
+        vis.binds.vistabbar.setState(data);
+      }, data.clickdelay);
+      e.preventDefault();
+    }, false);
+
+
+    /*
+     * RESIZE (icon, progress bar)
+     */
+    // Resize the icon baed on the panel height
+    panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
+    icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: containe rheight 140px - font height 48px
+    // Seth the width of the progress bar
+    panelRowInfo.style.width = vis.binds.vistabbar.getProgress(powerObjectVal, data) + "%";
+
+    /*
+     * SUBSCRIBE
+     */
+    if (data.oid2) {
+      vis.states.bind(data.oid2 + ".val", function (e, newVal, oldVal) {
+        panelRowInfoP.innerText = vis.binds.vistabbar.getPanelProgessValue(newVal, data);
+        panelRowInfo.style.width = vis.binds.vistabbar.getProgress(newVal, data) + "%";
+      });
+    }
+
+    // if (data.oid1) {
+    //   vis.states.bind(data.oid1 + ".val", function (e, newVal, oldVal) {
+    //     icon.style.color = vis.binds.vistabbar.getIconColor(newVal, data.iconcoloron, data.iconcoloroff);
+    //     icon.innerHTML = vis.binds.vistabbar.getIcon(newVal, data.iconon, data.iconoff);
+    //   });
+    // }
+
+  },
 };
 
 vis.binds["vistabbar"].showVersion();
