@@ -357,8 +357,8 @@ AppTabBar.Tab = function(id, name, icon, options, tabbar) {
 		}
 		
 		//Apply events
-		button.addEventListener("click", self.events.click);
-		button.addEventListener("touchstart", self.events.click);
+		button.addEventListener("click", self.events.click, {passive: false});
+		button.addEventListener("touchstart", self.events.click, {passive: false});
 
 		self.obj = tabCode;
 		return tabCode;

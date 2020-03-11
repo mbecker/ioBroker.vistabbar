@@ -51,10 +51,10 @@ vis.binds["vistabbar"] = {
     if (history === null || typeof history['history'] === "undefined") return;
 
     var startLogLine = (history.history.length > 200) ? history.history.length - 200 : 0;
-    
+
     for (let index = startLogLine; index < history.history.length; index++) {
       const el = history.history[index];
-      
+
       /* The strcuture of the element is as follows:
       var logMsg = {
                   id: val.id,
@@ -108,7 +108,7 @@ vis.binds["vistabbar"] = {
           // Add the follwing text: german data - ID - value
           span1.innerHTML = `${svg}${dt + ":" + event.getMilliseconds()}`;
           line.appendChild(span1);
-          var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg");
+          var spans = vis.binds.vistabbar.getNodeFromLogMessage(el["msg"], 0, "msg", rectColor);
           spans.forEach(el => line.appendChild(el));
           // Insert the JSON as string (JSON.stringify)
 
@@ -145,13 +145,13 @@ vis.binds["vistabbar"] = {
       node.scrollTop = node.scrollHeight;
       node.scrollIntoView({ block: "end" });
       e.preventDefault()
-    }, false);
+    }, { passive: false });
 
     // A new element is added to the dom element; scroll to the end of the element
     node.scrollTop = node.scrollHeight;
     node.scrollIntoView({ block: "end" });
   },
-  getNodeFromLogMessage(el, n, heading) {
+  getNodeFromLogMessage(el, n, heading, rectColor) {
     if (typeof el !== "object") return;
     var nodes = [];
     var h = document.createElement("h3");
@@ -167,8 +167,10 @@ vis.binds["vistabbar"] = {
         keyNode.className = "vistabbar-code-key";
         keyNode.style.marginLeft = 4 + "px";
         var keyNodeSpan1 = document.createElement("span");
+        keyNodeSpan1.style.color = (typeof rectColor !== "undefined") ? rectColor : "";
         keyNodeSpan1.innerHTML = key;
         var keyNodeSpan2 = document.createElement("span");
+        keyNodeSpan2.style.color = (typeof rectColor !== "undefined") ? rectColor : "";
         keyNodeSpan2.innerHTML = el[key];
         keyNode.appendChild(keyNodeSpan1);
         keyNode.appendChild(keyNodeSpan2);
@@ -614,7 +616,7 @@ vis.binds["vistabbar"] = {
       }, clickDelay, node, title);
 
       e.preventDefault();
-    }, false);
+    }, { passive: false });
   },
   addEventListenerToLabel: function (node, clickColor, clickDelay, bid, step, title) {
 
@@ -642,7 +644,7 @@ vis.binds["vistabbar"] = {
         vis.binds.vistabbar.setStateInc(bid, step);
       }, clickDelay, node, title);
       e.preventDefault();
-    }, false);
+    }, { passive: false });
   },
 
   setState(data) {
@@ -861,20 +863,20 @@ vis.binds["vistabbar"] = {
         data.titleFontSize.includes("em")
       )) ? data.titleFontSize : "1.4em";
 
-      var bottomFontSize = (
-        typeof data.bottomFontSize !== "undefined" &&
-        data.bottomFontSize !== null &&
-        (
-          data.bottomFontSize.includes("px") ||
-          data.bottomFontSize.includes("%") ||
-          data.bottomFontSize.includes("em")
-        )) ? data.bottomFontSize : "1.6em";
+    var bottomFontSize = (
+      typeof data.bottomFontSize !== "undefined" &&
+      data.bottomFontSize !== null &&
+      (
+        data.bottomFontSize.includes("px") ||
+        data.bottomFontSize.includes("%") ||
+        data.bottomFontSize.includes("em")
+      )) ? data.bottomFontSize : "1.6em";
 
 
     /*
      * END DATA
      */
-
+    console.log("Update 10");
     /*
      * START CONTENT
      */
@@ -885,18 +887,20 @@ vis.binds["vistabbar"] = {
 
     // 1. - Header
     var panelContentHeading = document.createElement("div");
-    panelContentHeading.className = "padding-8 vistabbar-panel-column vistabbar-height-32px";
-    // 1.1. - Headline (text)
-    var heading = document.createElement("h3")
-    heading.className = "vistabbar-panel-heading";
-    heading.style.fontSize = headingFontSize;
-    heading.innerText = data.title;
-    panelContentHeading.appendChild(heading);
+    if (typeof data.showTitle !== "undefined" && data.showTitle) {
+      panelContentHeading.className = "vistabbar-panel-column";
+      // 1.1. - Headline (text)
+      var heading = document.createElement("h3")
+      heading.className = "vistabbar-panel-heading";
+      heading.style.fontSize = headingFontSize;
+      heading.innerText = data.title;
+      panelContentHeading.appendChild(heading);
+    }
 
     // 2. - Content
     var panelContentColumns = document.createElement("div");
     panelContentColumns.className = "vistabbar-panel-column vistabbar-panel-content";
-    panelContentColumns.style.justifyContent = "flex-start"
+    panelContentColumns.style.justifyContent = "center"
     // 2.1 - Icon
     var panelColumnIcon = document.createElement("div");
     panelColumnIcon.className = "vistabbar-panel-column vistabbar-height-60";
@@ -956,8 +960,6 @@ vis.binds["vistabbar"] = {
     /*
      * Click Handler
      */
-    console.log("UPDATE 25");
-
     var setPanelStatus = function (deviceVal) {
       // Update the classe and remove push indication
       panelContentColumns.classList.remove("vistabbar-push");
@@ -994,7 +996,7 @@ vis.binds["vistabbar"] = {
       vis.binds.vistabbar.setState(data);
 
       e.preventDefault();
-    }, false);
+    }, { passive: false });
 
 
   },
@@ -1092,7 +1094,7 @@ vis.binds["vistabbar"] = {
         vis.binds.vistabbar.setState(data);
       }, data.clickdelay);
       e.preventDefault();
-    }, false);
+    }, { passive: false });
 
 
     /*
