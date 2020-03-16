@@ -876,7 +876,7 @@ vis.binds["vistabbar"] = {
     /*
      * END DATA
      */
-    
+
     /*
      * START CONTENT
      */
@@ -900,7 +900,7 @@ vis.binds["vistabbar"] = {
     // 2. - Content
     var panelContentColumns = document.createElement("div");
     panelContentColumns.className = "vistabbar-panel-column vistabbar-panel-content";
-    
+
     // 2.1 - Icon
     if (typeof data.iconshow !== "undefined" && data.iconshow) {
       var icon = document.createElement("i");
@@ -1121,6 +1121,66 @@ vis.binds["vistabbar"] = {
     // }
 
   },
+  createPanelCounter: function (widgetID, view, data, style) {
+    var node = document.getElementById(widgetID);
+
+    // if nothing found => wait
+    if (!node) {
+      return setTimeout(function () {
+        vis.binds["vistabbar"].createPanelCounter(widgetID, view, data, style);
+      }, 100);
+    }
+
+    var bottomFontSize = (
+      typeof data.bottomFontSize !== "undefined" &&
+      data.bottomFontSize !== null &&
+      (
+        data.bottomFontSize.includes("px") ||
+        data.bottomFontSize.includes("%") ||
+        data.bottomFontSize.includes("em")
+      )) ? data.bottomFontSize : "1.6em";
+
+    /*
+     * START CONTENT
+     */
+    var panelContent = document.createElement("div");
+    panelContent.style.flexDirection = "column";
+    panelContent.style.display = "flex";
+    panelContent.style.height = "100%";
+
+    // 2. - Content
+    var panelContentColumns = document.createElement("div");
+    panelContentColumns.className = "vistabbar-panel-column vistabbar-panel-content";
+
+    // 2.1 - Counter oid
+    var counter = document.createElement("span");
+    counter.innerHTML = vis.states[data.oid + '.val']
+    panelContentColumns.appendChild(counter);
+
+    // 3. - Bottom
+    var panelBottom = document.createElement("div");
+    panelBottom.className = "vistabbar-panel-heating-bottom vistabbar-height-32px";
+    panelBottom.style.justifyContent = "center";
+    panelBottom.style.alignItems = "center";
+    // 3. - Progress    
+    var panelRowInfoP = document.createElement("p");
+    panelRowInfoP.style.fontSize = bottomFontSize;
+    panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
+    panelRowInfoP.innerText = data.title;
+    // Append: panelrow
+    
+    panelBottom.appendChild(panelRowInfoP);
+
+
+    panelContent.appendChild(panelContentColumns);
+    panelContent.appendChild(panelBottom);
+    node.appendChild(panelContent);
+
+    vis.states.bind(data.oid + ".val", function (e, newVal, oldVal) {
+      counter.innerHTML = vis.states[data.oid + '.val'];
+    });
+
+  }
 };
 
 vis.binds["vistabbar"].showVersion();
