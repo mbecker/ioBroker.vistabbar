@@ -252,10 +252,11 @@ vis.binds["vistabbar"] = {
     // 3.0 Heading Icon
     var headingIcon = document.createElement("i");
     headingIcon.className = "material-icons";
-      headingIcon.innerHTML = data.iconheadingname;
-      headingIcon.style.margin = "0px 5px 0px 0px";
-    if(data.iconheadingshow === true) {
+    headingIcon.innerHTML = data.iconheadingname;
+    headingIcon.style.margin = "0px 5px 0px 0px";
+    if (data.iconheadingshow === true) {
       panelContentHeading.appendChild(headingIcon);
+      panelContentHeading.style.flexDirection = "row";
     }
     // 3.1. - Headline (text)
     var heading = document.createElement("h3")
@@ -305,7 +306,7 @@ vis.binds["vistabbar"] = {
     if (typeof data.iconshow !== "undefined" && data.iconshow) {
       icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
     }
-    if(data.iconheadingshow) {
+    if (data.iconheadingshow) {
       headingIcon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
     }
     panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
@@ -1180,7 +1181,7 @@ vis.binds["vistabbar"] = {
     panelRowInfoP.className = "vistabbar-panel-row-info-value-progress";
     panelRowInfoP.innerText = data.title;
     // Append: panelrow
-    
+
     panelBottom.appendChild(panelRowInfoP);
 
 
