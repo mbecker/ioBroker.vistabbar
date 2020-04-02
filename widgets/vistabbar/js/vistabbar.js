@@ -249,12 +249,21 @@ vis.binds["vistabbar"] = {
     // 3. - Header
     var panelContentHeading = document.createElement("div");
     panelContentHeading.className = "padding-8 vistabbar-panel-column vistabbar-height-32px";
+    // 3.0 Heading Icon
+    var headingIcon = document.createElement("i");
+    headingIcon.className = "material-icons";
+      headingIcon.innerHTML = data.iconheadingname;
+      headingIcon.style.margin = "0px 5px 0px 0px";
+    if(data.iconheadingshow === true) {
+      panelContentHeading.appendChild(headingIcon);
+    }
     // 3.1. - Headline (text)
     var heading = document.createElement("h3")
     heading.className = "vistabbar-panel-heading";
     heading.style.fontSize = headingFontSize;
     heading.innerText = data.title;
     panelContentHeading.appendChild(heading);
+
 
     // 2. - Content
     var panelContentColumns = document.createElement("div");
@@ -295,6 +304,9 @@ vis.binds["vistabbar"] = {
     // Resize
     if (typeof data.iconshow !== "undefined" && data.iconshow) {
       icon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
+    }
+    if(data.iconheadingshow) {
+      headingIcon.style.fontSize = (node.clientHeight / 160) * 62 + "px"; // Height of Icon: container height 140px - font height 48px
     }
     panelRowInfoP.style.width = node.clientWidth + "px"; // "p"-element widt to align the text into the center
     panelRowInfo.style.width = vis.binds.vistabbar.getProgress(powerObjectVal, data) + "%";
